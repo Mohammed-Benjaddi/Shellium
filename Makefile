@@ -3,7 +3,7 @@ CFLAGS = #-Wall -Wextra -Werror
 
 NAME = minishell
 
-SRCS = main.c
+SRCS = main.c ft_libc1.c ft_split.c
 OBJS = ${SRCS:.c=.o}
 
 all: $(NAME)
