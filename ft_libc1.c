@@ -89,3 +89,29 @@ size_t	ft_strlcpy(char *dst,   char *src, size_t dstsize)
 	}
 	return (src_size);
 }
+
+int ft_strcmp(char *s1, char *s2)
+{
+	int i;
+
+	i = 0;
+	while (s1[i] && s2[i] && s1[i] == s2[i])
+		i++;
+	return (s1[i] - s2[i]);
+}
+
+char *ft_strncpy(char *str, int size)
+{
+  int i;
+  char *result;
+
+  i = 0;
+  result = malloc(sizeof(char) * size + 1);
+  while (i < size)
+  {
+    result[i] = str[i];
+    i++;
+  }
+  result[i] = '\0';
+  return result;
+}
