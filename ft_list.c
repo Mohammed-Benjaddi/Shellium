@@ -3,7 +3,6 @@
 void ft_init(t_shell *shell)
 {
   shell->head = NULL;
-  shell->rear = NULL;
   shell->size = 0;
   shell->state = NORMAL;
 }
@@ -36,24 +35,21 @@ t_node *ft_lstlast(t_node *head)
 void ft_lstadd_back(t_shell **shell, t_node *new_node)
 {
   t_shell *sh;
-  t_node *tail;
   t_node *head;
 
   sh = *shell;
-  tail = sh->rear;
   head = sh->head;
   if(!new_node)
     return;
   if(!head)
   {
-    tail = new_node;
-    sh->head = tail;
+    sh->head = new_node;
     return;
   }
   while(head->next != NULL)
     head = head->next;
   head->next = new_node;
   new_node->next = NULL;
-  tail = new_node;
+  new_node->prev = head;
 }
 

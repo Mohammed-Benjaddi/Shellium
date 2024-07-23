@@ -41,9 +41,9 @@ typedef struct s_node
 typedef struct s_shell
 {
   t_node *head;
-  t_node *rear;
   int     size;
   t_state state;
+  int cmd_nbr;
 } t_shell;
 
 // libc functions
@@ -54,6 +54,7 @@ char	*ft_substr(char   *s, unsigned int start, size_t len);
 size_t	ft_strlcpy(char *dst,   char *src, size_t dstsize);
 char    **ft_split(char   *s, char c);
 int ft_strcmp(char *s1, char *s2);
+int ft_isalpha(char c);
 
 // ft_list.c
 t_node *ft_lstnew(char *content, t_type type, t_state state);
