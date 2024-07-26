@@ -12,10 +12,8 @@ int main(int ac, char **av, char **env)
     if(!read)
       continue;
     add_history(read);
-    printf("read: %s\n", read);
-    // ft_lexer(read, shell);
-
-
+    // printf("read: %s\n", read);
+    ft_lexer(read, shell);
     free(read);
   }
   

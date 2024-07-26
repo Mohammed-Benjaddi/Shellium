@@ -122,3 +122,17 @@ int ft_isalpha(char c)
 		return 1;
 	return 0;
 }
+
+int ft_strchr(char *str, char c, bool inside_quotes)
+{
+	int i;
+
+	i = 0;
+	while(str[i] && str[i] != c)
+	{
+		i++;
+		if(str[i] == '\0' || (!inside_quotes && (str[i] == SINGLE_QUOTE || str[i] == DOUBLE_QUOTE)))
+			return -1;
+	}
+	return i + 1;
+}

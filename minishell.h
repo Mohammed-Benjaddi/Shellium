@@ -5,6 +5,10 @@
 #include <readline/readline.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdbool.h>
+
+#define SINGLE_QUOTE '\''
+#define DOUBLE_QUOTE '\"'
 
 // typedef enum e_type 
 // { 
@@ -61,13 +65,12 @@ size_t	ft_strlcpy(char *dst,   char *src, size_t dstsize);
 char    **ft_split(char   *s, char c);
 int ft_strcmp(char *s1, char *s2);
 int ft_isalpha(char c);
+int ft_strchr(char *str, char c, bool inside_quotes);
 
 // ft_list.c
 t_cmd	*ft_lstnew(char *content);
 void	ft_lstadd_back(t_cmd **lst, t_cmd *new);
-
-void ft_init(t_shell *shell);
-
+void  ft_init(t_shell *shell);
 
 // ft_lexer.c
 void ft_lexer(char *command, t_shell *shell);
