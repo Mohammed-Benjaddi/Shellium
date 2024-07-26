@@ -5,19 +5,20 @@ int main(int ac, char **av, char **env)
   t_shell *shell;
 
   ft_init(shell);
-  char *read = readline("minishell > ");
-  if(!read)
-    return 0;
-  ft_lexer(read, shell);
+  using_history();
+  while(1)
+  {
+    char *read = readline("minishell > ");
+    if(!read)
+      continue;
+    add_history(read);
+    printf("read: %s\n", read);
+    // ft_lexer(read, shell);
+
+
+    free(read);
+  }
+  
 
   return 0;
 }
-dup2(fd[0], 0);
-
-fd[2];
-pip(fd);
-int fd = dup(fd[0]);
-close(fd);
-pip(fd);
-
-dup(fd[0]);
