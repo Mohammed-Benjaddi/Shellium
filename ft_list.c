@@ -8,14 +8,35 @@ void ft_init(t_shell *shell)
   shell->state = NORMAL;
 }
 
-t_cmd	*ft_lstnew(char *content)
+char **ft_args_dup(char **args, int args_count)
+{
+	int i;
+	char **result;
+
+	i = 0;
+	result = malloc(sizeof(char *) * args_count + 1);
+	if(!result)
+		return NULL;
+	while (args[i])
+	{
+		result[i] = ft_strdup(args[i]);
+		i++;
+	}
+	result[i] = NULL;
+	return result;
+}
+
+t_cmd	*ft_lstnew(char **args, int args_nbr)
 {
 	t_cmd	*new_node;
 
 	new_node = malloc(sizeof(t_cmd));
 	if (!new_node)
 		return (NULL);
-	new_node->cmd = content;
+	new_node->cmd = ft_strdup(args[0]);
+	new_node->full_path = NULL;
+	new_node->arg_count = args_nbr;
+	new_node->args = ft_args_dup(args, args_nbr);
 	new_node->next = NULL;
 	return (new_node);
 }
@@ -46,4 +67,19 @@ void	ft_lstadd_back(t_cmd **cmd, t_cmd *new)
 	current->next = new;
 }
 
+void    ft_lstclear(t_cmd **lst)
+{
+	t_cmd  *current;
 
+	if (!lst)
+		return ;
+	while (*lst != NULL)
+	{
+		current = (*lst)->next;
+		ft_free((*lst)->args);
+		free((*lst)->cmd);
+		free(*lst);
+		*lst = NULL;
+		*lst = current;
+	}
+}

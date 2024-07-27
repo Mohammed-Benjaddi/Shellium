@@ -9,6 +9,10 @@
 
 #define SINGLE_QUOTE '\''
 #define DOUBLE_QUOTE '\"'
+#define PIPE '|'
+
+# define NC "\e[0m"
+# define GREEN "\x1b[32m"
 
 // typedef enum e_type 
 // { 
@@ -37,7 +41,7 @@ typedef enum e_state
 typedef struct s_command_line {
 char *cmd; // The command name (e.g., "echo", "ls")
 char *full_path; // The full path to the command (e.g., "/bin/echo", "/bin
-char *args; // Array of arguments including the command
+char **args; // Array of arguments including the command
 int  arg_count; // Number of arguments
 char *in_file; // For input redirection (<)
 char *out_file; // For output redirection (>)
@@ -68,11 +72,20 @@ int ft_isalpha(char c);
 int ft_strchr(char *str, char c, bool inside_quotes);
 
 // ft_list.c
-t_cmd	*ft_lstnew(char *content);
+t_cmd	*ft_lstnew(char **args, int args_nbr);
 void	ft_lstadd_back(t_cmd **lst, t_cmd *new);
 void  ft_init(t_shell *shell);
+void    ft_lstclear(t_cmd **lst);
 
 // ft_lexer.c
-void ft_lexer(char *command, t_shell *shell);
+void ft_lexer(char *command, t_cmd **head);
+
+
+// utils_1.c
+void throw_error(char *msg);
+int find_pipe_index(char *str);
+size_t words_counter(char *str, int len);
+void ft_free(char **args);
+void print_list(t_cmd *head);
 
 #endif

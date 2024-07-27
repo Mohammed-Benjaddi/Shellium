@@ -36,8 +36,8 @@ static  char    **set_free(char **res, size_t i)
   j = 0;
   while (j < i)
   {
-          free(res[j]);
-          j++;
+    free(res[j]);
+    j++;
   }
   free(res);
   return (NULL);
