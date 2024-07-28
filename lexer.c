@@ -27,6 +27,7 @@ void ft_lexer(char *command, t_cmd **head)
 {
   int i;
   int j;
+  int k;
   int len;
   char *buffer;
   int pipe_idx;
@@ -36,33 +37,37 @@ void ft_lexer(char *command, t_cmd **head)
 
   i = 0;
   j = 0;
+  k = 0;
   buffer = NULL;
   while(command[i])
   {
     j = 0;
-    pipe_idx = find_pipe_index(command + i);
+    pipe_idx = find_pipe_index(command + i); // i = 20
     if(pipe_idx == -1)
       pipe_idx = ft_strlen(command);
     words = words_counter(command + i, pipe_idx);
     args = malloc(sizeof(char *) * words + 1);
     if(!args)
       return;
-    printf("%swords ---- %d%s\n", GREEN, words, NC);
+    k = i;
+    printf("%spipe --> %d --- i --> %d --- k --> %d%s\n", GREEN, pipe_idx, i, k, NC);
+    // k = i - 1;
     while(i < pipe_idx)
     {
+      printf("---------------\n");
       len = 0;
       while (command[i] && ft_isspace(command[i]))
         i++;
       if(command[i] == '\'')
       {
         i++;
-        len = ft_strchr(command + i + 1, '\'', true);
+        len = ft_strchr(command + i, '\'', true);
         if(len == -1)
         {
           throw_error("single quote must be closed");
           return;
         }
-        buffer = ft_substr(command, i, len);
+        buffer = ft_substr(command + i, 0, len - 1);
         i += len;
       }
       else if(command[i] == '\"')
@@ -76,7 +81,7 @@ void ft_lexer(char *command, t_cmd **head)
           return;
         }
         // buffer = ft_substr(command, i, len);
-        buffer = ft_substr(command + i, 0, len);
+        buffer = ft_substr(command + i, 0, len - 1);
         i += len;
       }
       else
@@ -94,6 +99,7 @@ void ft_lexer(char *command, t_cmd **head)
       printf("buffer: %s\n", buffer);
       j++;
       i++;
+      // k++;
     }
     args[j] = NULL;
     cmd = ft_lstnew(args, words);
