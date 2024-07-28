@@ -37,7 +37,7 @@ int find_pipe_index(char *str)
   return -1;
 }
 
-size_t words_counter(char *str, int len)
+size_t args_counter(char *str, int len)
 {
   int i;
   int s_quote;

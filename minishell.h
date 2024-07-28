@@ -60,6 +60,16 @@ typedef struct s_shell
   int nums_of_pipes;
 } t_shell;
 
+typedef struct s_lexer
+{
+  int i;
+  int j;
+  char *buffer;
+  int pipe_idx;
+  int words;
+  char **args;
+} t_lexer;
+
 // libc functions
 char *ft_strdup(char *str);
 char	*ft_strjoin(char   *s1, char   *s2);
@@ -84,7 +94,7 @@ void ft_lexer(char *command, t_cmd **head);
 // utils_1.c
 void throw_error(char *msg);
 int find_pipe_index(char *str);
-size_t words_counter(char *str, int len);
+size_t args_counter(char *str, int len);
 void ft_free(char **args);
 void print_list(t_cmd *head);
 

@@ -18,7 +18,7 @@ int main(int ac, char **av, char **env)
     // printf("read: %s\n", read);
     ft_lexer(read, &head);
     // printf("pipe was found ---> %d\n", find_pipe_index(read));
-    // printf("command words ---> %zu\n", words_counter(read, find_pipe_index(read)));
+    // printf("command words ---> %zu\n", args_counter(read, find_pipe_index(read)));
     free(read);
     ft_lstclear(&head);
   }
