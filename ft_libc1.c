@@ -136,3 +136,19 @@ int ft_strchr(char *str, char c, bool inside_quotes)
 	}
 	return i + 1;
 }
+
+int ft_strchr_pro(char *str, char c1, char c2, bool inside_quotes)
+{
+	int i;
+
+	i = 0;
+	while(str[i] && str[i] != c1 && str[i] != c2)
+	{
+		i++;
+		if(str[i] == '\0')
+			return -1;
+		if((!inside_quotes && (str[i] == SINGLE_QUOTE || str[i] == DOUBLE_QUOTE)))
+			return -2;
+	}
+	return i + 1;
+}

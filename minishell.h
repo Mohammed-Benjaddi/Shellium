@@ -68,6 +68,7 @@ typedef struct s_lexer
   int pipe_idx;
   int words;
   char **args;
+  size_t length;
 } t_lexer;
 
 // libc functions
@@ -80,6 +81,7 @@ char    **ft_split(char   *s, char c);
 int ft_strcmp(char *s1, char *s2);
 int ft_isalpha(char c);
 int ft_strchr(char *str, char c, bool inside_quotes);
+int ft_strchr_pro(char *str, char c1, char c2, bool inside_quotes);
 
 // ft_list.c
 t_cmd	*ft_lstnew(char **args, int args_nbr);

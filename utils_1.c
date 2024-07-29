@@ -54,14 +54,14 @@ size_t args_counter(char *str, int len)
   {
     while (str[i] && str[i] == ' ' && i < len)
     {
-      if(str[i] == SINGLE_QUOTE)
-        s_quote++;
-      else if(str[i] == DOUBLE_QUOTE)
-        d_quote++;
-      if(s_quote == 2)
-        s_quote = 0;
-      if(d_quote == 2)
-        d_quote = 0;
+      // if(str[i] == SINGLE_QUOTE)
+      //   s_quote++;
+      // else if(str[i] == DOUBLE_QUOTE)
+      //   d_quote++;
+      // if(s_quote == 2)
+      //   s_quote = 0;
+      // if(d_quote == 2)
+      //   d_quote = 0;
       i++;
     }
     if (str[i] && str[i] != ' ' && s_quote == 0 && d_quote == 0 && i < len)
@@ -104,7 +104,18 @@ void print_list(t_cmd *head)
   printf("-----------------------------\n");
   while(head)
   {
-    printf("--> %s\n", head->cmd);
+    int i;
+
+    i = 0;
+    while(head->args[i])
+    {
+      printf("%s | ", head->args[i]);
+      i++;
+
+    }
+    char *s  ="echo \"\'\"\'\"\'hello\'\"\'\"\'\"";
+    printf("\n");
+    write(1, &s, 20);
     head = head->next;
   }
   printf("-----------------------------\n");

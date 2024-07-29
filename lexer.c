@@ -11,12 +11,7 @@ int find_len(char *str, bool inside_quotes)
 {
   int len;
 
-  len = ft_strchr(str + 1, '|', inside_quotes);
-  // len = ft_strchr(str + 1, ' ', inside_quotes);
-  if(len != -1)
-    return len;
-  len = ft_strchr(str + 1, ' ', inside_quotes);
-  // len = ft_strchr(str + 1, '|', inside_quotes);
+  len = ft_strchr_pro(str + 1, ' ', '|', inside_quotes); 
   if(len != -1)
     return len;
   return ft_strlen(str);
@@ -28,9 +23,9 @@ char *get_str_without_quotes(char *command, int *i)
   char *buffer;
 
   len = find_len(command + *i, false);
-  if(len == -1)
+  if(len == -2)
   {
-    throw_error("space must be closed");
+    throw_error("quotes must be closed");
     return NULL;
   }
   buffer = ft_substr(command, *i, len);
@@ -45,7 +40,8 @@ char *get_str_in_quotes(char *command, int *i, char c)
 
   *i += 1;
   len = ft_strchr(command + *i, c, true);
-   if(len == -1)
+  // printf("===> length: %d\n", len);
+  if(len == -1)
   {
     if(c == '\'')
       throw_error("single quote must be closed");
@@ -85,13 +81,19 @@ void ft_lexer(char *command, t_cmd **head)
   t_lexer lexer;
 
   lexer.i = 0;
-  while(command[lexer.i])
+  lexer.length = ft_strlen(command);
+  while(lexer.i < lexer.length)
   {
     lexer.j = 0;
+    // printf("words: %d\n", lexer.words);
+    // printf("length: %zu\n", ft_strlen(command));
+    // printf("%scommand + i: %s --- i: %d%s\n", GREEN, command + lexer.i, lexer.i, NC);
+    while (command[lexer.i] && ft_isspace(command[lexer.i]))
+        lexer.i++;
     lexer.args = allocate_args(command, &lexer.pipe_idx, &lexer.words, lexer.i);
     if(!lexer.args)
       return;
-    while(lexer.j < lexer.words)
+    while(command[lexer.i] && lexer.j < lexer.words)
     {
       while (command[lexer.i] && ft_isspace(command[lexer.i]))
         lexer.i++;
@@ -103,8 +105,11 @@ void ft_lexer(char *command, t_cmd **head)
         lexer.buffer = get_str_without_quotes(command, &lexer.i);
       if(lexer.buffer == NULL)
         return;
+      if(!ft_strlen(lexer.buffer))
+        break;
       lexer.args[lexer.j] = lexer.buffer;
-      printf("buffer: %s\n", lexer.buffer);
+      // printf("buffer: %s --> %zu\n", lexer.buffer, ft_strlen(lexer.buffer));
+      // printf("---> %s\n", lexer.buffer);
       lexer.j++;
       lexer.i++;
     }
