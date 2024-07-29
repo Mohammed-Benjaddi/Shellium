@@ -109,13 +109,11 @@ void print_list(t_cmd *head)
     i = 0;
     while(head->args[i])
     {
-      printf("%s | ", head->args[i]);
+      printf("%s - ", head->args[i]);
       i++;
 
     }
-    char *s  ="echo \"\'\"\'\"\'hello\'\"\'\"\'\"";
     printf("\n");
-    write(1, &s, 20);
     head = head->next;
   }
   printf("-----------------------------\n");

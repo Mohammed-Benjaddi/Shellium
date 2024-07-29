@@ -147,8 +147,6 @@ int ft_strchr_pro(char *str, char c1, char c2, bool inside_quotes)
 		i++;
 		if(str[i] == '\0')
 			return -1;
-		if((!inside_quotes && (str[i] == SINGLE_QUOTE || str[i] == DOUBLE_QUOTE)))
-			return -2;
 	}
 	return i + 1;
 }
