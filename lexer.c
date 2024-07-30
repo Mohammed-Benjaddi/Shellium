@@ -23,17 +23,17 @@ char *get_str_in_quotes(char *command, int *i, char c)
   char *buffer;
 
   *i += 1;
-  len = ft_strchr(command + *i, c, true);
-  // printf("===> length: %d\n", len);
+  len = ft_strchr(command + *i, c);
   if(len == -1)
   {
-    if(c == '\'')
+    if(c == SINGLE_QUOTE)
       throw_error("single quote must be closed");
     else
       throw_error("double quote must be closed");
     return NULL;
   }
   buffer = ft_substr(command + *i, 0, len - 1);
+  printf("%s==> %s%s\n", GREEN, buffer, NC);
   *i += len;
   return buffer;
 }
@@ -117,9 +117,9 @@ void ft_lexer(char *command, t_cmd **head)
         lexer.i++;
       }
       if(command[lexer.i] == '\'')
-        lexer.buffer = get_str_in_quotes(command, &lexer.i, '\'');
+        lexer.buffer = get_str_in_quotes(command, &lexer.i, SINGLE_QUOTE);
       else if(command[lexer.i] == '\"')
-        lexer.buffer = get_str_in_quotes(command, &lexer.i, '\"');
+        lexer.buffer = get_str_in_quotes(command, &lexer.i, DOUBLE_QUOTE);
       else
         lexer.buffer = get_str_without_quotes(command, &lexer.i);
       if(lexer.buffer == NULL)

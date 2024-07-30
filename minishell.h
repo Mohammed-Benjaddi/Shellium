@@ -10,6 +10,7 @@
 #define SINGLE_QUOTE '\''
 #define DOUBLE_QUOTE '\"'
 #define PIPE '|'
+#define SPACE ' '
 
 # define NC "\e[0m"
 # define GREEN "\x1b[32m"
@@ -80,8 +81,9 @@ size_t	ft_strlcpy(char *dst,   char *src, size_t dstsize);
 char    **ft_split(char   *s, char c);
 int ft_strcmp(char *s1, char *s2);
 int ft_isalpha(char c);
-int ft_strchr(char *str, char c, bool inside_quotes);
+int ft_strchr(char *str, char c);
 int ft_strchr_pro(char *str, char c1, char c2, bool inside_quotes);
+int ft_isspace(char c);
 
 // ft_list.c
 t_cmd	*ft_lstnew(char **args, int args_nbr);

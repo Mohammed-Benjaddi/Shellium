@@ -123,17 +123,39 @@ int ft_isalpha(char c)
 	return 0;
 }
 
-int ft_strchr(char *str, char c, bool inside_quotes)
+bool search_for_2nd_quote(char *str, char c)
+{
+	int i;
+	int counter;
+
+	i = 0;
+	counter = 0;
+	while(str[i])
+	{
+		if(str[i] == c)
+			counter++;
+		i++;
+	}
+	if(counter % 2)
+		return true;
+	return false;
+}
+
+int ft_strchr(char *str, char c)
 {
 	int i;
 
 	i = 0;
-	while(str[i] && str[i] != c)
+	if(!search_for_2nd_quote(str, c))
+		return -1;
+	while(str[i])
 	{
+		if((str[i] == SPACE || str[i] == PIPE))
+			return i;
 		i++;
-		if(str[i] == '\0' || (!inside_quotes && (str[i] == SINGLE_QUOTE || str[i] == DOUBLE_QUOTE)))
-			return -1;
 	}
+	if(str[i - 1])
+		return i;
 	return i + 1;
 }
 
