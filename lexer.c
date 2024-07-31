@@ -24,6 +24,7 @@ char *get_str_in_quotes(char *command, int *i, char c)
 
   *i += 1;
   len = ft_strchr(command + *i, c);
+  // printf("%slen: %d%s\n", CYAN, len, NC);
   if(len == -1)
   {
     if(c == SINGLE_QUOTE)
@@ -35,8 +36,21 @@ char *get_str_in_quotes(char *command, int *i, char c)
   buffer = ft_substr(command + *i, 0, len);
   *i += len;
   buffer = find_and_remove(buffer, c);
-  printf("+++++%s\n", find_and_remove(buffer, c));
   return buffer;
+}
+
+bool str_has_quotes(char *str, char c)
+{
+  int i;
+
+  i = 0;
+  while (str[i])
+  {
+    if(str[i] == c)
+      return true;
+    i++;
+  }
+  return false;
 }
 
 char *get_str_without_quotes(char *command, int *i)
@@ -46,15 +60,22 @@ char *get_str_without_quotes(char *command, int *i)
 
   len = find_len(command + *i, false);
   buffer = ft_substr(command, *i, len);
+
+  if(str_has_quotes(buffer, DOUBLE_QUOTE))
+    buffer = find_and_remove(buffer, DOUBLE_QUOTE);
+  else if(str_has_quotes(buffer, SINGLE_QUOTE))
+    buffer = find_and_remove(buffer, SINGLE_QUOTE);
   *i += len;
   return buffer;
 }
 
-void create_cmd(t_cmd **head, char **args, int words)
+void create_cmd(t_cmd **head, char **args, int words, int is_pipe)
 {
   t_cmd *cmd;
 
   cmd = ft_lstnew(args, words);
+  cmd->pipe = is_pipe;
+  printf("%sis pipe %d%s\n", CYAN, cmd->pipe, NC);
   ft_lstadd_back(head, cmd);
   ft_free(args);
 }
@@ -72,6 +93,18 @@ char **allocate_args(char *command, int *pipe_idx, int *words, int i)
   return args;
 }
 
+bool is_pipe_after(char *str)
+{
+  int i;
+
+  i = 0;
+  while (str[i] && ft_isspace(str[i]))
+    i++;
+  if(str[i] == PIPE)
+    return true;
+  return false;
+}
+
 void ft_lexer(char *command, t_cmd **head)
 {
   t_lexer lexer;
@@ -81,6 +114,7 @@ void ft_lexer(char *command, t_cmd **head)
   while(lexer.i < lexer.length)
   {
     lexer.j = 0;
+    lexer.pipe = 0;
     while (command[lexer.i] && ft_isspace(command[lexer.i]))
       lexer.i++;
     lexer.args = allocate_args(command, &lexer.pipe_idx, &lexer.words, lexer.i);
@@ -89,10 +123,9 @@ void ft_lexer(char *command, t_cmd **head)
     while(command[lexer.i] && lexer.j < lexer.words)
     {
       while (command[lexer.i] && ft_isspace(command[lexer.i]))
-      {
-        printf("-> %c", command[lexer.i]);
         lexer.i++;
-      }
+      // if(command[lexer.i] == PIPE)
+      //   printf("%s----> pipe%s\n", GREEN, NC);
       if(command[lexer.i] == '\'')
         lexer.buffer = get_str_in_quotes(command, &lexer.i, SINGLE_QUOTE);
       else if(command[lexer.i] == '\"')
@@ -107,7 +140,12 @@ void ft_lexer(char *command, t_cmd **head)
       lexer.j++;
     }
     lexer.args[lexer.j] = NULL;
-    create_cmd(head, lexer.args, lexer.words);
+    if(lexer.words)
+    {
+      if(is_pipe_after(command + lexer.i))
+        lexer.pipe = 1;
+      create_cmd(head, lexer.args, lexer.words, lexer.pipe);
+    }
     lexer.i++;
   }
 }

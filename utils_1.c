@@ -107,14 +107,15 @@ void print_list(t_cmd *head)
     int i;
 
     i = 0;
+    printf("command: %s --- ", head->cmd);
     while(head->args[i])
     {
-      printf("%s - ", head->args[i]);
+      printf("%s{ %s }%s", YELLOW, head->args[i], NC);
       i++;
     }
-    printf("*******");
-    // exit(0);
+    printf("  %sis there a pipe: %d%s\n", CYAN, head->pipe, NC);
     head = head->next;
+    printf("\n");
   }
   printf("\n-----------------------------\n");
 }
@@ -138,25 +139,28 @@ size_t nums_of_chars(char *str, char c)
 char *find_and_remove(char *str, char c)
 {
   int i;
+  int j;
   size_t len;
   char *res;
 
   i = 0;
+  j = 0;
   len = ft_strlen(str) - nums_of_chars(str, c) + 1;
-  printf("%sbefore: %s --> %d%s\n", RED, str, len, NC);
-  res = malloc(len);
+  // printf("%sbefore: %s --> %zu%s\n", RED, str, len, NC);
+  res = (char *)malloc(sizeof(char) * len);
   while(str[i])
   {
     if(str[i] != c)
     {
-      res[i] = str[i];
-      printf("%s%c%s", YELLOW, str[i], NC);
+      res[j] = str[i];
+      // printf("%s%c%s", YELLOW, str[i], NC);
+      j++;
     }
     i++;
   }
-  printf("\n");
-  res[i] = '\0';
-  printf("%safter: %s%s\n", GREEN, res, NC);
-  // free(str);
+  res[j] = '\0';
+  // printf("\n");
+  // printf("%safter: %s --> %zu%s\n", GREEN, res, ft_strlen(res), NC);
+  free(str);
   return res;
 }

@@ -130,14 +130,12 @@ bool search_for_2nd_quote(char *str, char c)
 
 	i = 0;
 	counter = 0;
-	// printf("trying to find quotes --> %s\n", str);
 	while(str[i])
 	{
 		if(str[i] == c)
 			counter++;
 		i++;
 	}
-	// printf("counter --> %d\n", counter);
 	if(counter % 2 == 1)
 		return true;
 	return false;
@@ -152,7 +150,6 @@ int ft_strchr(char *str, char c)
 	in_quotes = 1;
 	if(!search_for_2nd_quote(str, c))
 		return -1;
-	// printf("--> c: %c\n", str[i]);
 	while(str[i] && str[i] != PIPE)
 		i++;
 	return i;

@@ -15,14 +15,10 @@ int main(int ac, char **av, char **env)
     if(!read)
       continue;
     add_history(read);
-    // printf("read: %s\n", read);
     ft_lexer(read, &head);
-    // printf("pipe was found ---> %d\n", find_pipe_index(read));
-    // printf("command words ---> %zu\n", args_counter(read, find_pipe_index(read)));
+    get_path(head);
     free(read);
-
     print_list(head);
-
     ft_lstclear(&head);
   }
   return 0;

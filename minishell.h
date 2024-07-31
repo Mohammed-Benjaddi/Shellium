@@ -75,6 +75,7 @@ typedef struct s_lexer
   int words;
   char **args;
   size_t length;
+  int pipe;
 } t_lexer;
 
 // libc functions
