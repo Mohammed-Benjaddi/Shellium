@@ -111,10 +111,52 @@ void print_list(t_cmd *head)
     {
       printf("%s - ", head->args[i]);
       i++;
-
     }
-    printf("\n");
+    printf("*******");
+    // exit(0);
     head = head->next;
   }
-  printf("-----------------------------\n");
+  printf("\n-----------------------------\n");
+}
+
+size_t nums_of_chars(char *str, char c)
+{
+  int i;
+  int counter;
+
+  i = 0;
+  counter = 0;
+  while(str[i])
+  {
+    if(str[i] == c)
+      counter++;
+    i++;
+  }
+  return counter;
+}
+
+char *find_and_remove(char *str, char c)
+{
+  int i;
+  size_t len;
+  char *res;
+
+  i = 0;
+  len = ft_strlen(str) - nums_of_chars(str, c) + 1;
+  printf("%sbefore: %s --> %d%s\n", RED, str, len, NC);
+  res = malloc(len);
+  while(str[i])
+  {
+    if(str[i] != c)
+    {
+      res[i] = str[i];
+      printf("%s%c%s", YELLOW, str[i], NC);
+    }
+    i++;
+  }
+  printf("\n");
+  res[i] = '\0';
+  printf("%safter: %s%s\n", GREEN, res, NC);
+  // free(str);
+  return res;
 }

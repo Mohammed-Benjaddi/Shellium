@@ -130,13 +130,15 @@ bool search_for_2nd_quote(char *str, char c)
 
 	i = 0;
 	counter = 0;
+	// printf("trying to find quotes --> %s\n", str);
 	while(str[i])
 	{
 		if(str[i] == c)
 			counter++;
 		i++;
 	}
-	if(counter % 2)
+	// printf("counter --> %d\n", counter);
+	if(counter % 2 == 1)
 		return true;
 	return false;
 }
@@ -144,19 +146,16 @@ bool search_for_2nd_quote(char *str, char c)
 int ft_strchr(char *str, char c)
 {
 	int i;
+	int in_quotes;
 
 	i = 0;
+	in_quotes = 1;
 	if(!search_for_2nd_quote(str, c))
 		return -1;
-	while(str[i])
-	{
-		if((str[i] == SPACE || str[i] == PIPE))
-			return i;
+	// printf("--> c: %c\n", str[i]);
+	while(str[i] && str[i] != PIPE)
 		i++;
-	}
-	if(str[i - 1])
-		return i;
-	return i + 1;
+	return i;
 }
 
 int ft_strchr_pro(char *str, char c1, char c2, bool inside_quotes)

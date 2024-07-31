@@ -13,8 +13,13 @@
 #define SPACE ' '
 
 # define NC "\e[0m"
+# define YELLOW "\e[1;33m"
 # define GREEN "\x1b[32m"
-
+# define CYAN "\x1b[36m"
+# define RED "\x1b[31m"
+# define BLUE "\x1b[34m"
+# define MAGENTA "\x1b[35m"
+# define WHITE "\x1b[37m"
 // typedef enum e_type 
 // { 
 //   WORD = 'a',
@@ -101,5 +106,6 @@ int find_pipe_index(char *str);
 size_t args_counter(char *str, int len);
 void ft_free(char **args);
 void print_list(t_cmd *head);
+char *find_and_remove(char *str, char c);
 
 #endif
