@@ -26,7 +26,7 @@ char **ft_args_dup(char **args, int args_count)
 	return result;
 }
 
-t_cmd	*ft_lstnew(char **args, int args_nbr)
+t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 {
 	t_cmd	*new_node;
 
@@ -34,9 +34,16 @@ t_cmd	*ft_lstnew(char **args, int args_nbr)
 	if (!new_node)
 		return (NULL);
 	new_node->cmd = ft_strdup(args[0]);
+	// new_node->full_path = get_path(new_node->cmd);
 	new_node->full_path = NULL;
 	new_node->arg_count = args_nbr;
 	new_node->args = ft_args_dup(args, args_nbr);
+	new_node->in_file = NULL;
+	new_node->out_file = NULL;
+	new_node->append_file = NULL;
+	new_node->heredoc_delimiter = NULL;
+	new_node->heredoc_content = NULL;
+	new_node->pipe = pipe;
 	new_node->next = NULL;
 	return (new_node);
 }

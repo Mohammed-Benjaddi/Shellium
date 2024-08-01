@@ -16,7 +16,7 @@ int main(int ac, char **av, char **env)
       continue;
     add_history(read);
     ft_lexer(read, &head);
-    get_path(head);
+    // get_path(head);
     free(read);
     print_list(head);
     ft_lstclear(&head);

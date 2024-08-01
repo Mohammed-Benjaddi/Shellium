@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdbool.h>
+#include <string.h>
 
 #define SINGLE_QUOTE '\''
 #define DOUBLE_QUOTE '\"'
@@ -20,6 +21,7 @@
 # define BLUE "\x1b[34m"
 # define MAGENTA "\x1b[35m"
 # define WHITE "\x1b[37m"
+
 // typedef enum e_type 
 // { 
 //   WORD = 'a',
@@ -92,7 +94,7 @@ int ft_strchr_pro(char *str, char c1, char c2, bool inside_quotes);
 int ft_isspace(char c);
 
 // ft_list.c
-t_cmd	*ft_lstnew(char **args, int args_nbr);
+t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe);
 void	ft_lstadd_back(t_cmd **lst, t_cmd *new);
 void  ft_init(t_shell *shell);
 void    ft_lstclear(t_cmd **lst);
@@ -108,5 +110,8 @@ size_t args_counter(char *str, int len);
 void ft_free(char **args);
 void print_list(t_cmd *head);
 char *find_and_remove(char *str, char c);
+
+// utils_2.c
+char *get_path(char *cmd);
 
 #endif
