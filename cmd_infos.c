@@ -70,6 +70,7 @@ char *get_input_redirection_file(char **args)
 char *get_output_redirection_file(char **args)
 {
   int i;
+  int fd;
   char *out_file;
 
   i = 0;
@@ -84,8 +85,9 @@ char *get_output_redirection_file(char **args)
       {
         free(out_file);
         out_file = ft_strdup(args[i + 1]);
-        creat(out_file, O_CREAT | O_WRONLY);
-      }
+        fd = open(out_file, O_CREAT | O_WRONLY);
+        close(fd);
+      } 
     }
     i++;
   }
@@ -95,10 +97,8 @@ char *get_output_redirection_file(char **args)
 char *get_append_from_file(char **args)
 {
   int i;
-  char *append_file;
 
   i = 0;
-  append_file = NULL;
   while(args[i])
   {
     if(!ft_strcmp(args[i], ">>"))
@@ -106,12 +106,36 @@ char *get_append_from_file(char **args)
       if(!args[i - 1])
         throw_error("syntax error near unexpected token `newline'");
       else
+        return ft_strdup(args[i - 1]);
+    }
+    i++;
+  }
+  return NULL;
+}
+
+char *get_append_to_file(char **args)
+{
+  int i;
+  int fd;
+  char *file;
+
+  i = 0;
+  file = NULL;
+  while(args[i])
+  {
+    if(!ft_strcmp(args[i], ">>"))
+    {
+      if(!args[i + 1])
+        throw_error("syntax error near unexpected token `newline'");
+      else
       {
-        free(append_file);
-        append_file = ft_strdup(args[i - 1]);
+        free(file);
+        file = ft_strdup(args[i + 1]);
+        fd = open(file, O_CREAT | O_WRONLY);
+        close(fd);
       }
     }
     i++;
   }
-  return append_file;
+  return file;
 }

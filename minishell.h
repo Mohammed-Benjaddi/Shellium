@@ -93,5 +93,7 @@ char *find_and_remove(char *str, char c);
 char *get_path(char *cmd);
 char *get_input_redirection_file(char **args);
 char *get_output_redirection_file(char **args);
+char *get_append_from_file(char **args);
+char *get_append_to_file(char **args);
 
 #endif

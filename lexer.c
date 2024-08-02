@@ -76,7 +76,6 @@ void create_cmd(t_cmd **head, char **args, int words, int is_pipe)
   t_cmd *cmd;
 
   cmd = ft_lstnew(args, words, is_pipe);
-  // printf("%sis pipe %d%s\n", CYAN, cmd->pipe, NC);
   ft_lstadd_back(head, cmd);
   ft_free(args);
 }
