@@ -1,12 +1,12 @@
 #include "minishell.h"
 
-void ft_init(t_shell *shell)
-{
-  shell = malloc(sizeof(t_shell));
-  shell->head = NULL;
-  shell->size = 0;
-  shell->state = NORMAL;
-}
+// void ft_init(t_shell *shell)
+// {
+//   shell = malloc(sizeof(t_shell));
+//   shell->head = NULL;
+//   shell->size = 0;
+//   shell->state = NORMAL;
+// }
 
 char **ft_args_dup(char **args, int args_count)
 {
@@ -34,13 +34,12 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	if (!new_node)
 		return (NULL);
 	new_node->cmd = ft_strdup(args[0]);
-	// new_node->full_path = get_path(new_node->cmd);
-	new_node->full_path = NULL;
+	new_node->full_path = get_path(new_node->cmd);
 	new_node->arg_count = args_nbr;
 	new_node->args = ft_args_dup(args, args_nbr);
-	new_node->in_file = NULL;
-	new_node->out_file = NULL;
-	new_node->append_file = NULL;
+	new_node->in_file = get_input_redirection_file(new_node->args);
+	new_node->out_file = get_output_redirection_file(new_node->args);
+	new_node->append_to_file = NULL;
 	new_node->heredoc_delimiter = NULL;
 	new_node->heredoc_content = NULL;
 	new_node->pipe = pipe;

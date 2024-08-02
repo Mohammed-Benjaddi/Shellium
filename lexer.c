@@ -24,7 +24,7 @@ char *get_str_in_quotes(char *command, int *i, char c)
 
   *i += 1;
   len = ft_strchr(command + *i, c);
-  printf("%slen: %d%s\n", CYAN, len, NC);
+  // printf("%slen: %d%s\n", CYAN, len, NC);
   
   if(len == -1)
   {
@@ -37,7 +37,7 @@ char *get_str_in_quotes(char *command, int *i, char c)
   buffer = ft_substr(command + *i, 0, len);
   *i += len;
   buffer = find_and_remove(buffer, c);
-  printf("%sbuffer: %s%s\n", GREEN, buffer, NC);
+  // printf("%sbuffer: %s%s\n", GREEN, buffer, NC);
   return buffer;
 }
 
@@ -88,11 +88,11 @@ char **allocate_args(char *command, int *pipe_idx, int *words, int i)
   *pipe_idx = find_pipe_index(command + i); // i = 20
   if(*pipe_idx == -1)
   {
-    printf("%spipe is the lenght%s\n", CYAN, NC);
+    // printf("%spipe is the lenght%s\n", CYAN, NC);
     *pipe_idx = ft_strlen(command);
   }
   *words = args_counter(command + i, *pipe_idx);
-  printf("%swords: %d%s\n", MAGENTA, *words, NC);
+  // printf("%swords: %d%s\n", MAGENTA, *words, NC);
   args = malloc(sizeof(char *) * *words + 1);
 
   return args;

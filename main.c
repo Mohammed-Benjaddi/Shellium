@@ -2,10 +2,10 @@
 
 int main(int ac, char **av, char **env)
 {
-  t_shell *shell;
+   // t_shell *shell;
   t_cmd *head;
 
-  ft_init(shell);
+  // ft_init(shell);
   using_history();
   head = NULL;
   while(1)

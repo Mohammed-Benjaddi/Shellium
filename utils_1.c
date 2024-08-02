@@ -54,7 +54,7 @@ int find_pipe_index(char *str)
   {
     if(str[i] == PIPE)
     {
-      printf("%si: %d%s\n", RED, i, NC);
+      // printf("%si: %d%s\n", RED, i, NC);
       return i;
     }
     else if(str[i] == DOUBLE_QUOTE)
@@ -87,7 +87,7 @@ size_t args_counter(char *str, int len)
   words = 0;
   if(len == -1)
     len = ft_strlen(str);
-  printf("+++ len: %d\n", len);
+  // printf("+++ len: %d\n", len);
   while(str[i] && i < len)
   {
     while (str[i] && str[i] == SPACE && i < len)
@@ -171,13 +171,16 @@ void print_list(t_cmd *head)
     int i;
 
     i = 0;
-    printf("command: %s --- ", head->cmd);
+    printf("%s --> ", head->cmd);
     while(head->args[i])
     {
-      printf("%s{ %s }%s", YELLOW, head->args[i], NC);
+      printf("%s{ %s } %s", YELLOW, head->args[i], NC);
       i++;
     }
     // printf("  %sis there a pipe: %d%s\n", CYAN, head->pipe, NC);
+    printf("%s %s %s", CYAN, head->full_path, NC);
+    printf("%s %s %s", RED, head->in_file, NC);
+    printf("%s %s %s", RED, head->out_file, NC);
     head = head->next;
     printf("\n");
   }
