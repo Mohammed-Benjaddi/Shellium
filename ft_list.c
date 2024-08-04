@@ -39,8 +39,7 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	new_node->args = ft_args_dup(args, args_nbr);
 	new_node->in_file = get_input_redirection_file(new_node->args);
 	new_node->out_file = get_output_redirection_file(new_node->args);
-	new_node->append_from_file = get_append_from_file(new_node->args);
-	new_node->append_to_file = get_append_to_file(new_node->args);
+	new_node->append_file = get_append_to_file(new_node->args);
 	new_node->heredoc_delimiter = NULL;
 	new_node->heredoc_content = NULL;
 	new_node->pipe = pipe;

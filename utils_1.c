@@ -3,6 +3,7 @@
 void throw_error(char *msg)
 {
   printf("Error: %s\n", msg);
+  exit(1);
 }
 
 int find_pipe_index(char *str)
@@ -34,6 +35,25 @@ int find_pipe_index(char *str)
   return -1;
 }
 
+void skip_reds(char *str, int *i, char c)
+{
+  int counter;
+  char redirection;
+
+  counter = 0;
+  while(str[*i] && str[*i] == c)
+  {
+    counter++;
+    *i += 1;
+    if(counter > 2)
+      throw_error("parse error");
+  }
+  while (str[*i] && str[*i] == SPACE)
+      i++;
+  if(is_symbol(str[*i]))
+    throw_error("parse error");
+}
+
 size_t args_counter(char *str, int len)
 {
   int i;
@@ -53,19 +73,28 @@ size_t args_counter(char *str, int len)
       i++;
     if (str[i] && str[i] != SPACE && s_quote == 0 && d_quote == 0 && i < len)
       words++;
-    while (str[i] && str[i] != ' ' && i < len)
+    // while (str[i] && str[i] != SPACE && str[i] != IN_RED && str[i] != OUT_RED && i < len)
+    while (str[i] && str[i] != SPACE && i < len)
     {
-      if(str[i] == SINGLE_QUOTE)
+      if (str[i] == SINGLE_QUOTE)
         s_quote++;
-      else if(str[i] == DOUBLE_QUOTE)
+      else if (str[i] == DOUBLE_QUOTE)
         d_quote++;
-      if(s_quote == 2)
+      if (s_quote == 2)
         s_quote = 0;
-      if(d_quote == 2)
+      if (d_quote == 2)
         d_quote = 0;
+      if(str[i] == IN_RED || str[i] == OUT_RED)
+      {
+        skip_reds(str, &i, str[i]);
+        i++;
+        break;
+      }
       i++;
     }
   }
+
+  printf("words ==> %zu\n", words);
   return words;
 }
 
@@ -102,10 +131,10 @@ void print_list(t_cmd *head)
     }
     // printf("  %sis there a pipe: %d%s\n", CYAN, head->pipe, NC);
     printf("%s %s %s", CYAN, head->full_path, NC);
-    // printf("%s %s %s", RED, head->in_file, NC);
-    // printf("%s %s %s", RED, head->out_file, NC);
-    printf("%s %s %s", RED, head->append_from_file, NC);
-    printf("%s %s %s", RED, head->append_to_file, NC);
+    printf("%s %s %s", RED, head->in_file, NC);
+    printf("%s %s %s", RED, head->out_file, NC);
+    // printf("%s %s %s", RED, head->i, NC);
+    printf("%s %s %s", RED, head->append_file, NC);
     head = head->next;
     printf("\n");
   }

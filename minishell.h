@@ -13,6 +13,8 @@
 #define DOUBLE_QUOTE '\"'
 #define PIPE '|'
 #define SPACE ' '
+#define IN_RED '<'
+#define OUT_RED '>'
 
 # define NC "\e[0m"
 # define YELLOW "\e[1;33m"
@@ -30,8 +32,8 @@ char **args; // Array of arguments including the command
 int  arg_count; // Number of arguments
 char *in_file; // For input redirection (<)
 char *out_file; // For output redirection (>)
-char *append_to_file; // For append redirection (>>)
-char *append_from_file; // For append redirection (>>)
+char *append_file; // For append redirection (>>)
+// char *append_from_file; // For append redirection (>>)
 char *heredoc_delimiter; // For heredoc (<<)
 char *heredoc_content; // Content of heredoc
 int   pipe; // 1 if this command pipes to next, 0 otherwise
@@ -79,7 +81,7 @@ void    ft_lstclear(t_cmd **lst);
 
 // ft_lexer.c
 void ft_lexer(char *command, t_cmd **head);
-
+bool is_symbol(char c);
 
 // utils_1.c
 void throw_error(char *msg);
@@ -93,7 +95,7 @@ char *find_and_remove(char *str, char c);
 char *get_path(char *cmd);
 char *get_input_redirection_file(char **args);
 char *get_output_redirection_file(char **args);
-char *get_append_from_file(char **args);
+// char *get_append_from_file(char **args);
 char *get_append_to_file(char **args);
 
 #endif

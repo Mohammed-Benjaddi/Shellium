@@ -19,29 +19,15 @@ char  *get_path(char *cmd)
     free(command);
     if(access(path, X_OK) == 0)
     {
-      // printf("%spath: %s%s\n", GREEN, path, NC);
       // ft_free(all_paths);
       // free(command);
       return path;
     }
-    // free(command);
     free(path);
-    // ft_free(all_paths);
     i++;
   }
   return NULL;
 }
-
-// char *handle_redirections(t_cmd *cmd)
-// {
-//   int i;
-
-//   i = 0;
-//   while()
-//   {
-
-//   }
-// }
 
 char *get_input_redirection_file(char **args)
 {
@@ -60,6 +46,19 @@ char *get_input_redirection_file(char **args)
       {
         free(in_file);
         in_file = ft_strdup(args[i + 1]);
+      }
+    }
+    else if(!ft_strcmp(args[i], ">>") || !ft_strcmp(args[i], ">"))
+    {
+      if(!args[i - 1])
+        throw_error("syntax error near unexpected token `newline'");
+      else if (i == 1)
+        return NULL;
+      else
+      {
+        free(in_file);
+        in_file = ft_strdup(args[i - 1]);
+        return in_file;
       }
     }
     i++;
@@ -87,30 +86,11 @@ char *get_output_redirection_file(char **args)
         out_file = ft_strdup(args[i + 1]);
         fd = open(out_file, O_CREAT | O_WRONLY);
         close(fd);
-      } 
+      }
     }
     i++;
   }
   return out_file;
-}
-
-char *get_append_from_file(char **args)
-{
-  int i;
-
-  i = 0;
-  while(args[i])
-  {
-    if(!ft_strcmp(args[i], ">>"))
-    {
-      if(!args[i - 1])
-        throw_error("syntax error near unexpected token `newline'");
-      else
-        return ft_strdup(args[i - 1]);
-    }
-    i++;
-  }
-  return NULL;
 }
 
 char *get_append_to_file(char **args)

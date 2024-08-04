@@ -86,12 +86,8 @@ char **allocate_args(char *command, int *pipe_idx, int *words, int i)
 
   *pipe_idx = find_pipe_index(command + i); // i = 20
   if(*pipe_idx == -1)
-  {
-    // printf("%spipe is the lenght%s\n", CYAN, NC);
     *pipe_idx = ft_strlen(command);
-  }
   *words = args_counter(command + i, *pipe_idx);
-  // printf("%swords: %d%s\n", MAGENTA, *words, NC);
   args = malloc(sizeof(char *) * *words + 1);
 
   return args;
@@ -109,12 +105,70 @@ bool is_pipe_after(char *str)
   return false;
 }
 
+void skip_str_inside_quote(char *cmd, int *i, char c)
+{
+  while(cmd[*i] && cmd[*i] != c)
+    *i += 1;
+}
+
+bool is_symbol(char c)
+{
+	if(c == PIPE|| c == IN_RED || c ==  OUT_RED)
+		return true;
+	return false;
+}
+
+void reds_counter(char *cmd)
+{
+  int i;
+  size_t counter;
+
+  i = 0;
+  counter = 0;
+  while(cmd[i])
+  {
+    if(cmd[i] == SINGLE_QUOTE || cmd[i] == DOUBLE_QUOTE)
+    {
+      i++;
+      skip_str_inside_quote(cmd, &i, cmd[i]);
+    }
+    if(cmd[i] == IN_RED || cmd[i] == OUT_RED)
+      counter++;
+    i++;
+  }
+  printf("----> counter: %zu\n", counter);
+}
+
+void fix_cmd(char *cmd)
+{
+  int i;
+  // char *line;
+
+  i = 0;
+  // line = malloc(sizeof(char) * ft_strlen(cmd) + reds_counter(cmd));
+  reds_counter(cmd);
+  // while (cmd[i])
+  // {
+  //   if(cmd[i] == SINGLE_QUOTE || cmd[i] == DOUBLE_QUOTE)
+  //   {
+  //     i++;
+  //     skip_str_inside_quote(cmd, &i, cmd[i]);
+  //   }
+  //   if(cmd[i] == IN_RED || cmd[i] == OUT_RED)
+  //     printf("---> %c <---\n", cmd[i]);
+  //   i++;
+  // }
+  
+  // return line;
+}
+
 void ft_lexer(char *command, t_cmd **head)
 {
   t_lexer lexer;
 
   lexer.i = 0;
   lexer.length = ft_strlen(command);
+  // fix_cmd(command);
   while(lexer.i < lexer.length)
   {
     lexer.j = 0;
@@ -128,8 +182,6 @@ void ft_lexer(char *command, t_cmd **head)
     {
       while (command[lexer.i] && ft_isspace(command[lexer.i]))
         lexer.i++;
-      // if(command[lexer.i] == PIPE)
-      //   printf("%s----> pipe%s\n", GREEN, NC);
       if(command[lexer.i] == '\'')
         lexer.buffer = get_str_in_quotes(command, &lexer.i, SINGLE_QUOTE);
       else if(command[lexer.i] == '\"')

@@ -141,6 +141,9 @@ bool search_for_2nd_quote(char *str, char c)
 	return false;
 }
 
+	  // || c ==  APPEND_RED || c == HERDOC
+
+
 int ft_strchr(char *str, char c)
 {
 	int i;
@@ -154,8 +157,11 @@ int ft_strchr(char *str, char c)
 		return -1;
 	while(str[i])
 	{
+		// 
+		// if(!in_quotes && is_symbol(str[i]))
 		if(!in_quotes && (str[i] == SPACE || str[i] == PIPE))
 		{
+			printf("-------> here\n");
 			return i;
 		}
 		if(str[i] == c)
@@ -176,6 +182,7 @@ int ft_strchr_pro(char *str, char c1, char c2, bool inside_quotes)
 	int i;
 
 	i = 0;
+	// while(str[i] && !is_symbol(str[i]))
 	while(str[i] && str[i] != c1 && str[i] != c2)
 	{
 		i++;
