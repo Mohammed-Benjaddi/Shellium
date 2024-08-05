@@ -2,8 +2,8 @@
 
 void throw_error(char *msg)
 {
-  printf("Error: %s\n", msg);
-  exit(1);
+  printf("%sError: %s%s\n", RED, msg, NC);
+  // exit(1);
 }
 
 int find_pipe_index(char *str)
@@ -33,25 +33,6 @@ int find_pipe_index(char *str)
     i++;
   }
   return -1;
-}
-
-void skip_reds(char *str, int *i, char c)
-{
-  int counter;
-  char redirection;
-
-  counter = 0;
-  while(str[*i] && str[*i] == c)
-  {
-    counter++;
-    *i += 1;
-    if(counter > 2)
-      throw_error("parse error");
-  }
-  while (str[*i] && str[*i] == SPACE)
-      i++;
-  if(is_symbol(str[*i]))
-    throw_error("parse error");
 }
 
 size_t args_counter(char *str, int len)
@@ -84,12 +65,13 @@ size_t args_counter(char *str, int len)
         s_quote = 0;
       if (d_quote == 2)
         d_quote = 0;
-      if(str[i] == IN_RED || str[i] == OUT_RED)
-      {
-        skip_reds(str, &i, str[i]);
-        i++;
-        break;
-      }
+      // if((str[i] == IN_RED || str[i] == OUT_RED) && s_quote == 0 && d_quote == 0)
+      // {
+      //   words++;
+      //   skip_reds(str, &i, str[i]);
+      //   i++;
+      //   break;
+      // }
       i++;
     }
   }
@@ -155,6 +137,27 @@ size_t nums_of_chars(char *str, char c)
     i++;
   }
   return counter;
+}
+
+void skip_reds(char *str, int *i, char c)
+{
+  int counter;
+  char redirection;
+
+  counter = 0;
+  printf("%s----- %s -----%s\n", RED, str, NC);
+  while(str[*i] && str[*i] == c)
+  {
+    printf("%s==> %c <==%s\n", CYAN, str[*i], NC);
+    counter++;
+    *i += 1;
+    if(counter > 2)
+      throw_error("parse error");
+  }
+  while (str[*i] && str[*i] == SPACE)
+    *i += 1;
+  if(is_symbol(str[*i]))
+    throw_error("parse error");
 }
 
 char *find_and_remove(char *str, char c)

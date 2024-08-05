@@ -90,6 +90,7 @@ size_t args_counter(char *str, int len);
 void ft_free(char **args);
 void print_list(t_cmd *head);
 char *find_and_remove(char *str, char c);
+void skip_reds(char *str, int *i, char c);
 
 // cmd_infos.c
 char *get_path(char *cmd);

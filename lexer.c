@@ -107,6 +107,7 @@ bool is_pipe_after(char *str)
 
 void skip_str_inside_quote(char *cmd, int *i, char c)
 {
+  printf("cmd ---> %c\n", c);
   while(cmd[*i] && cmd[*i] != c)
     *i += 1;
 }
@@ -118,35 +119,54 @@ bool is_symbol(char c)
 	return false;
 }
 
-void reds_counter(char *cmd)
+size_t reds_counter(char *cmd)
 {
   int i;
   size_t counter;
 
   i = 0;
   counter = 0;
-  while(cmd[i])
+  while(cmd[i] && i < ft_strlen(cmd))
   {
+    // printf("---> %c\n", cmd[i]);
     if(cmd[i] == SINGLE_QUOTE || cmd[i] == DOUBLE_QUOTE)
     {
       i++;
-      skip_str_inside_quote(cmd, &i, cmd[i]);
+      // printf("%s quotes here %s\n", BLUE, NC);
+      skip_str_inside_quote(cmd, &i, cmd[i - 1]);
     }
     if(cmd[i] == IN_RED || cmd[i] == OUT_RED)
+    {
       counter++;
+      printf("%s---> %d <---%s\n", GREEN, i, NC);
+      skip_reds(cmd, &i, cmd[i]);
+    }
     i++;
   }
   printf("----> counter: %zu\n", counter);
+  return counter * 2;
 }
 
 void fix_cmd(char *cmd)
 {
   int i;
-  // char *line;
+  int j;
+  char *line;
 
   i = 0;
-  // line = malloc(sizeof(char) * ft_strlen(cmd) + reds_counter(cmd));
-  reds_counter(cmd);
+  j = 0;
+  line = malloc(sizeof(char) * ft_strlen(cmd) + reds_counter(cmd) + 1);
+  while (cmd[i])
+  {
+    if((cmd[i] == IN_RED || cmd[i] == OUT_RED) && (cmd[i - 1] != IN_RED || cmd[i - 1] != OUT_RED))
+      line[j++] = ' ';
+    else if ((cmd[i - 1] == IN_RED || cmd[i - 1] == OUT_RED) && cmd[i] != SPACE)
+      line[j++] = ' ';
+    line[j++] = cmd[i++];
+  }
+  line[j] = '\0';
+  printf("+++++++++ %s\n", line);
+  // reds_counter(cmd);
   // while (cmd[i])
   // {
   //   if(cmd[i] == SINGLE_QUOTE || cmd[i] == DOUBLE_QUOTE)
@@ -168,7 +188,7 @@ void ft_lexer(char *command, t_cmd **head)
 
   lexer.i = 0;
   lexer.length = ft_strlen(command);
-  // fix_cmd(command);
+  fix_cmd(command);
   while(lexer.i < lexer.length)
   {
     lexer.j = 0;

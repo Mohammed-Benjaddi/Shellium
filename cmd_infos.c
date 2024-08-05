@@ -84,8 +84,9 @@ char *get_output_redirection_file(char **args)
       {
         free(out_file);
         out_file = ft_strdup(args[i + 1]);
-        fd = open(out_file, O_CREAT | O_WRONLY);
-        close(fd);
+        //must create a file
+        // fd = open(out_file, O_CREAT | O_WRONLY);
+        // close(fd);
       }
     }
     i++;
@@ -111,8 +112,9 @@ char *get_append_to_file(char **args)
       {
         free(file);
         file = ft_strdup(args[i + 1]);
-        fd = open(file, O_CREAT | O_WRONLY);
-        close(fd);
+        // must create a file
+        // fd = open(file, O_CREAT | O_WRONLY);
+        // close(fd);
       }
     }
     i++;
