@@ -10,6 +10,8 @@ char  *get_path(char *cmd)
   i = 0;
   path = ft_strdup(getenv("PATH"));
   all_paths = ft_split(path, ':');
+  if(!all_paths)
+    return NULL;
   free(path);
   path = NULL;
   while (all_paths[i])
@@ -17,13 +19,15 @@ char  *get_path(char *cmd)
     command = ft_strjoin(all_paths[i], "/");
     path = ft_strjoin(command, cmd);
     free(command);
+    command = NULL;
     if(access(path, X_OK) == 0)
     {
-      // ft_free(all_paths);
+      ft_free(all_paths);
       // free(command);
       return path;
     }
     free(path);
+    path = NULL;
     i++;
   }
   return NULL;
@@ -46,6 +50,14 @@ char *get_input_redirection_file(char **args)
       {
         free(in_file);
         in_file = ft_strdup(args[i + 1]);
+        // i++;
+        // while(args[i])
+        // {
+        //   if(ft_strcmp(args[i], "<"))
+        //   {
+
+        //   }
+        // }
       }
     }
     else if(!ft_strcmp(args[i], ">>") || !ft_strcmp(args[i], ">"))
@@ -121,3 +133,14 @@ char *get_append_to_file(char **args)
   }
   return file;
 }
+
+// char *get_herdoc_delimiter(char **args)
+// {
+//   int i;
+
+//   i = 0;
+//   while()
+//   {
+
+//   }
+// }

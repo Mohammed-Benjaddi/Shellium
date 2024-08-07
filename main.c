@@ -17,9 +17,11 @@ int main(int ac, char **av, char **env)
     add_history(read);
     ft_lexer(read, &head);
     // get_path(head);
-    free(read);
+    // free(read);
+    // read = NULL;
     print_list(head);
     ft_lstclear(&head);
+    // system("leaks minishell");
   }
   return 0;
 }

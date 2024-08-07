@@ -14,10 +14,7 @@ int find_pipe_index(char *str)
   while (str[i])
   {
     if(str[i] == PIPE)
-    {
-      // printf("%si: %d%s\n", RED, i, NC);
       return i;
-    }
     else if(str[i] == DOUBLE_QUOTE)
     {
       i++;

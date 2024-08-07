@@ -26,18 +26,18 @@
 # define WHITE "\x1b[37m"
 
 typedef struct s_command_line {
-char *cmd; // The command name (e.g., "echo", "ls")
-char *full_path; // The full path to the command (e.g., "/bin/echo", "/bin
-char **args; // Array of arguments including the command
-int  arg_count; // Number of arguments
-char *in_file; // For input redirection (<)
-char *out_file; // For output redirection (>)
-char *append_file; // For append redirection (>>)
-// char *append_from_file; // For append redirection (>>)
-char *heredoc_delimiter; // For heredoc (<<)
-char *heredoc_content; // Content of heredoc
-int   pipe; // 1 if this command pipes to next, 0 otherwise
-struct s_command_line *next; // Pointer to next command in pipeline
+  char *cmd; // The command name (e.g., "echo", "ls")
+  char *full_path; // The full path to the command (e.g., "/bin/echo", "/bin
+  char **args; // Array of arguments including the command
+  int  arg_count; // Number of arguments
+  char *in_file; // For input redirection (<)
+  char *out_file; // For output redirection (>)
+  char *append_file; // For append redirection (>>)
+  // char *append_from_file; // For append redirection (>>)
+  char *heredoc_delimiter; // For heredoc (<<)
+  char *heredoc_content; // Content of heredoc
+  int   pipe; // 1 if this command pipes to next, 0 otherwise
+  struct s_command_line *next; // Pointer to next command in pipeline
 } t_cmd;
 
 // typedef struct s_shell

@@ -26,10 +26,25 @@ char **ft_args_dup(char **args, int args_count)
 	return result;
 }
 
+bool check_args(char **args)
+{
+	int i;
+
+	i = 0;
+	if(!args)
+		return false;
+	while(args[i])
+	{
+		if(!args[i + 1] && is_not_valid_symbol(args))
+	}
+}
+
 t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 {
 	t_cmd	*new_node;
 
+	if(!check_args(args))
+		throw_error("Something went wrong with arguments");
 	new_node = malloc(sizeof(t_cmd));
 	if (!new_node)
 		return (NULL);
@@ -40,6 +55,7 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	new_node->in_file = get_input_redirection_file(new_node->args);
 	new_node->out_file = get_output_redirection_file(new_node->args);
 	new_node->append_file = get_append_to_file(new_node->args);
+	// new_node->heredoc_delimiter = get_herdoc_delimiter(new_node->args);
 	new_node->heredoc_delimiter = NULL;
 	new_node->heredoc_content = NULL;
 	new_node->pipe = pipe;
@@ -84,6 +100,12 @@ void    ft_lstclear(t_cmd **lst)
 		current = (*lst)->next;
 		ft_free((*lst)->args);
 		free((*lst)->cmd);
+		free((*lst)->in_file);
+		free((*lst)->out_file);
+		free((*lst)->heredoc_content);
+		free((*lst)->heredoc_delimiter);
+		free((*lst)->full_path);
+		free((*lst)->append_file);
 		free(*lst);
 		*lst = NULL;
 		*lst = current;

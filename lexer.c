@@ -187,6 +187,7 @@ void ft_lexer(char *command, t_cmd **head)
   t_lexer lexer;
 
   lexer.i = 0;
+  lexer.args = NULL;
   lexer.length = ft_strlen(command);
   fix_cmd(command);
   while(lexer.i < lexer.length)
@@ -223,5 +224,9 @@ void ft_lexer(char *command, t_cmd **head)
       create_cmd(head, lexer.args, lexer.words, lexer.pipe);
     }
     lexer.i++;
+    // if(lexer.args != NULL)
+    //   ft_free(lexer.args);
   }
+  free(command);
+  command = NULL;
 }
