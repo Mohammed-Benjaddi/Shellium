@@ -24,8 +24,6 @@ char *get_str_in_quotes(char *command, int *i, char c)
 
   *i += 1;
   len = ft_strchr(command + *i, c);
-  // printf("%slen: %d%s\n", CYAN, len, NC);
-  
   if(len == -1)
   {
     if(c == SINGLE_QUOTE)
@@ -37,7 +35,6 @@ char *get_str_in_quotes(char *command, int *i, char c)
   buffer = ft_substr(command + *i, 0, len);
   *i += len;
   buffer = find_and_remove(buffer, c);
-  // printf("%sbuffer: %s%s\n", GREEN, buffer, NC);
   return buffer;
 }
 
@@ -107,7 +104,6 @@ bool is_pipe_after(char *str)
 
 void skip_str_inside_quote(char *cmd, int *i, char c)
 {
-  printf("cmd ---> %c\n", c);
   while(cmd[*i] && cmd[*i] != c)
     *i += 1;
 }
@@ -128,22 +124,18 @@ size_t reds_counter(char *cmd)
   counter = 0;
   while(cmd[i] && i < ft_strlen(cmd))
   {
-    // printf("---> %c\n", cmd[i]);
     if(cmd[i] == SINGLE_QUOTE || cmd[i] == DOUBLE_QUOTE)
     {
       i++;
-      // printf("%s quotes here %s\n", BLUE, NC);
       skip_str_inside_quote(cmd, &i, cmd[i - 1]);
     }
     if(cmd[i] == IN_RED || cmd[i] == OUT_RED)
     {
       counter++;
-      printf("%s---> %d <---%s\n", GREEN, i, NC);
       skip_reds(cmd, &i, cmd[i]);
     }
     i++;
   }
-  printf("----> counter: %zu\n", counter);
   return counter * 2;
 }
 
@@ -165,19 +157,6 @@ char *fix_cmd(char *cmd)
     line[j++] = cmd[i++];
   }
   line[j] = '\0';
-  printf("+++++++++ %s\n", line);
-  // reds_counter(cmd);
-  // while (cmd[i])
-  // {
-  //   if(cmd[i] == SINGLE_QUOTE || cmd[i] == DOUBLE_QUOTE)
-  //   {
-  //     i++;
-  //     skip_str_inside_quote(cmd, &i, cmd[i]);
-  //   }
-  //   if(cmd[i] == IN_RED || cmd[i] == OUT_RED)
-  //     printf("---> %c <---\n", cmd[i]);
-  //   i++;
-  // }
   free(cmd);
   return line;
 }

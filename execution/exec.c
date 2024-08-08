@@ -289,7 +289,6 @@ void execution(t_all *all, char *envp[])
         pids[i] = fork();
         if (pids[i] == 0)
         {
-
             reset_signal_handlers();
             redirect_in_out_to_pipe(n_pipes, i, x, &pr_fd);
             redirections_set(all);
@@ -303,19 +302,15 @@ void execution(t_all *all, char *envp[])
         pr_fd = dup(x[0]);
         close(x[1]);
         close(x[0]);
-       i++;
-       all->cmd = all->cmd->next ;
-       
+        i++;
+        all->cmd = all->cmd->next;
     }
     close(pr_fd);
-     
     for (i = 0; i < n_pipes; i++)
     {
         int status;
             waitpid(pids[i], &status, 0);
     }
-    
-
     // return (0);
 }
 

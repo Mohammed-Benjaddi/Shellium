@@ -36,7 +36,6 @@ static size_t count_valid_args(char **args)
 		counter++;
 		i++;
 	}
-	printf("length allocated ----> %zu\n", counter);
 	return counter;
 }
 
