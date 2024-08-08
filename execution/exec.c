@@ -312,7 +312,7 @@ void execution(t_all *all, char *envp[])
     for (i = 0; i < n_pipes; i++)
     {
         int status;
-        waitpid(pids[i], &status, 0);
+            waitpid(pids[i], &status, 0);
     }
     
 

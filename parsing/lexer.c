@@ -222,7 +222,7 @@ void ft_lexer(char *command, t_all **all)
     {
       if(is_pipe_after(command + lexer.i))
         lexer.pipe = 1;
-      create_cmd(&head, lexer.args, lexer.words, lexer.pipe);
+      create_cmd(&(*all)->cmd, lexer.args, lexer.words, lexer.pipe);
     }
     lexer.i++;
     // if(lexer.args != NULL)
