@@ -1,26 +1,22 @@
-CC = cc
-CFLAGS = #-Wall -Wextra -Werror
+CC = cc 
+CFLAGS = -fsanitize=address -g #-Wall -Wextra -Werror 
+CFILES = execute_builtins.c unset_vars.c export_list.c  ft_heredoc.c utils.c ft_export.c exec.c
+LIBS = 
+SFLAG = -lreadline
+OFILES = $(CFILES:.c=.o)
 
-HEADER = -I ./include/
+PROG_NAME = mini
+all : $(PROG_NAME)
+#lib/libreadline.a
+$(PROG_NAME) : $(OFILES) 
+	$(CC) $(CFLAGS) $(OFILES) -o $(PROG_NAME) -lreadline  -L  /.brew/Cellar/readline/8.2.10/lib  -I /.brew/Cellar/readline/8.2.10/include
 
-NAME = minishell
+%.o: %.c mini.h
+	$(CC) $(CFLAGS)  -c $< -o $@
+clean: 
+	rm -f $(OFILES) $(OBFILES) 
+	
+fclean: clean 
+	 rm -f $(OFILES) $(PROG_NAME) 
 
-SRCS = ./parsing/main.c ./parsing/ft_libc1.c ./parsing/ft_split.c \
- 			./parsing/ft_list.c ./parsing/lexer.c ./parsing/utils_1.c ./parsing/cmd_infos.c
-OBJS = ${SRCS:.c=.o}
-
-all: $(NAME)
-
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(HEADER) $(OBJS) -lreadline -o $(NAME)
-
-%.o: %.c minishell.h
-	$(CC) $(CFLAGS) $(HEADER) -c $< -o $@
-
-clean:
-	rm -f $(OBJS)
-
-fclean: clean
-	rm -rf $(NAME)
-
-re: fclean all
+re: fclean all 
