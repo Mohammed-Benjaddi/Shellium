@@ -11,40 +11,48 @@
 char **ft_args_dup(char **args, int args_count)
 {
 	int i;
+	int j;
 	char **result;
 
 	i = 0;
+	j = 0;
 	result = malloc(sizeof(char *) * args_count + 1);
 	if(!result)
 		return NULL;
 	while (args[i])
 	{
-		result[i] = ft_strdup(args[i]);
+		if(!ft_strcmp(args[i], ">"))
+			i += 2;
+		if(!args[i])
+			break;
+		if(!ft_strcmp(args[i], ">"))
+			continue;
+		result[j++] = ft_strdup(args[i]);
 		i++;
 	}
-	result[i] = NULL;
+	result[j] = NULL;
 	return result;
 }
 
-bool check_args(char **args)
-{
-	int i;
+// bool check_args(char **args)
+// {
+// 	int i;
 
-	i = 0;
-	if(!args)
-		return false;
-	while(args[i])
-	{
-		if(!args[i + 1] && is_not_valid_symbol(args))
-	}
-}
+// 	i = 0;
+// 	if(!args)
+// 		return false;
+// 	while(args[i])
+// 	{
+// 		if(!args[i + 1] && is_not_valid_symbol(args))
+// 	}
+// }
 
 t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 {
 	t_cmd	*new_node;
 
-	if(!check_args(args))
-		throw_error("Something went wrong with arguments");
+	// if(!check_args(args))
+		// throw_error("Something went wrong with arguments");
 	new_node = malloc(sizeof(t_cmd));
 	if (!new_node)
 		return (NULL);
@@ -52,9 +60,9 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	new_node->full_path = get_path(new_node->cmd);
 	new_node->arg_count = args_nbr;
 	new_node->args = ft_args_dup(args, args_nbr);
-	new_node->in_file = get_input_redirection_file(new_node->args);
-	new_node->out_file = get_output_redirection_file(new_node->args);
-	new_node->append_file = get_append_to_file(new_node->args);
+	new_node->in_file = get_input_redirection_file(args);
+	new_node->out_file = get_output_redirection_file(args);
+	new_node->append_file = get_append_to_file(args);
 	// new_node->heredoc_delimiter = get_herdoc_delimiter(new_node->args);
 	new_node->heredoc_delimiter = NULL;
 	new_node->heredoc_content = NULL;
