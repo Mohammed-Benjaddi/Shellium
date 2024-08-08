@@ -1,4 +1,4 @@
-#include "mini.h"
+#include "minishell.h"
 
 t_exp *exp_getlast(t_exp *exp)
 {

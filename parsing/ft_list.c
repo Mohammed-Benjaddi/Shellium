@@ -8,7 +8,39 @@
 //   shell->state = NORMAL;
 // }
 
-char **ft_args_dup(char **args, int args_count)
+static bool is_redirection(char *str)
+{
+	if(!ft_strcmp(str, ">"))
+		return true;
+	else if(!ft_strcmp(str, ">>"))
+		return true;
+	else if(!ft_strcmp(str, "<"))
+		return true;
+	else
+		return false;
+}
+
+static size_t count_valid_args(char **args)
+{
+	size_t i;
+	size_t counter;
+
+	i = 0;
+	counter = 0;
+	while(args[i])
+	{
+		while(args[i] && is_redirection(args[i]))
+			i += 2;
+		if(!args[i])
+			break;
+		counter++;
+		i++;
+	}
+	printf("length allocated ----> %zu\n", counter);
+	return counter;
+}
+
+char **ft_args_dup(char **args)
 {
 	int i;
 	int j;
@@ -16,17 +48,15 @@ char **ft_args_dup(char **args, int args_count)
 
 	i = 0;
 	j = 0;
-	result = malloc(sizeof(char *) * args_count + 1);
+	result = malloc(sizeof(char *) * count_valid_args(args) + 1);
 	if(!result)
 		return NULL;
 	while (args[i])
 	{
-		if(!ft_strcmp(args[i], ">"))
+		while(args[i] && is_redirection(args[i]))
 			i += 2;
 		if(!args[i])
 			break;
-		if(!ft_strcmp(args[i], ">"))
-			continue;
 		result[j++] = ft_strdup(args[i]);
 		i++;
 	}
@@ -59,7 +89,7 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	new_node->cmd = ft_strdup(args[0]);
 	new_node->full_path = get_path(new_node->cmd);
 	new_node->arg_count = args_nbr;
-	new_node->args = ft_args_dup(args, args_nbr);
+	new_node->args = ft_args_dup(args);
 	new_node->in_file = get_input_redirection_file(args);
 	new_node->out_file = get_output_redirection_file(args);
 	new_node->append_file = get_append_to_file(args);
@@ -68,6 +98,7 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	new_node->heredoc_content = NULL;
 	new_node->pipe = pipe;
 	new_node->next = NULL;
+	// ft_free(args);
 	return (new_node);
 }
 

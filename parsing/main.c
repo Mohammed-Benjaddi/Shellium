@@ -2,12 +2,12 @@
 
 int main(int ac, char **av, char **env)
 {
-   // t_shell *shell;
-  t_cmd *head;
+  t_all *all;
 
+  all = malloc(sizeof(t_all));
+  all->cmd = malloc(sizeof(t_cmd));
   // ft_init(shell);
   using_history();
-  head = NULL;
   while(1)
   {
     printf("%s-> %s", GREEN, NC);
@@ -15,11 +15,15 @@ int main(int ac, char **av, char **env)
     if(!read)
       continue;
     add_history(read);
-    ft_lexer(read, &head);
+    ft_lexer(read, &all);
+
+    print_list(head);
+    exit(1);
+    execution(all, env);
+
     // get_path(head);
     // free(read);
     // read = NULL;
-    print_list(head);
     ft_lstclear(&head);
     // system("leaks minishell");
   }

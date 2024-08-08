@@ -147,7 +147,7 @@ size_t reds_counter(char *cmd)
   return counter * 2;
 }
 
-void fix_cmd(char *cmd)
+char *fix_cmd(char *cmd)
 {
   int i;
   int j;
@@ -178,18 +178,19 @@ void fix_cmd(char *cmd)
   //     printf("---> %c <---\n", cmd[i]);
   //   i++;
   // }
-  
-  // return line;
+  free(cmd);
+  return line;
 }
 
-void ft_lexer(char *command, t_cmd **head)
+void ft_lexer(char *command, t_all **all)
 {
   t_lexer lexer;
+  // t_cmd *head = (*all)->cmd;
 
   lexer.i = 0;
   lexer.args = NULL;
   lexer.length = ft_strlen(command);
-  fix_cmd(command);
+  command = fix_cmd(command);
   while(lexer.i < lexer.length)
   {
     lexer.j = 0;
@@ -221,7 +222,7 @@ void ft_lexer(char *command, t_cmd **head)
     {
       if(is_pipe_after(command + lexer.i))
         lexer.pipe = 1;
-      create_cmd(head, lexer.args, lexer.words, lexer.pipe);
+      create_cmd(&head, lexer.args, lexer.words, lexer.pipe);
     }
     lexer.i++;
     // if(lexer.args != NULL)

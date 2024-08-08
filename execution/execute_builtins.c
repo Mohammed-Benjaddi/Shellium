@@ -1,6 +1,6 @@
 
 
-#include "mini.h"
+#include "minishell.h"
 
 void print_exp_list(t_all *all, int pipe[2])
 {

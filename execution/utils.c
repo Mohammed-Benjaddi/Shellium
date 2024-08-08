@@ -1,4 +1,4 @@
-#include "mini.h"
+#include "minishell.h"
 
 void ft_write(char *str, int fd)
 {

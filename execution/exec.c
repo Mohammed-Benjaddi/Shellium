@@ -1,4 +1,4 @@
-#include "mini.h"
+#include "minishell.h"
 
 t_cmd *list_new() {
     t_cmd *new_cmd = (t_cmd *)malloc(sizeof(t_cmd));
@@ -21,84 +21,86 @@ t_cmd *list_new() {
     
     return new_cmd;
 }
-t_cmd* make(t_all *all, char **envp) {
-    t_cmd *cmd = list_new(); // For "echo hello > file"
-    t_cmd *cmd1 = list_new(); // For "grep < file.c"
-    t_cmd *cmd2 = list_new(); // For "grep < file.c"
-    t_cmd *cmd3 = list_new(); // For "ls"
-    t_env *f;
-    // = create_env_list(envp);
-    // t_env *qq = f;
+
+// t_cmd* make(t_all *all, char **envp) {
+//     t_cmd *cmd = list_new(); // For "echo hello > file"
+//     t_cmd *cmd1 = list_new(); // For "grep < file.c"
+//     t_cmd *cmd2 = list_new(); // For "grep < file.c"
+//     t_cmd *cmd3 = list_new(); // For "ls"
+//     t_env *f;
+//     // = create_env_list(envp);
+//     // t_env *qq = f;
     
-    // while (qq != NULL)
-    // {
-    //     write(2, qq->line, ft_strlen(qq->line));
-    //     write(2, "\n", 1);
-    //     qq = qq->next;
-    // }
+//     // while (qq != NULL)
+//     // {
+//     //     write(2, qq->line, ft_strlen(qq->line));
+//     //     write(2, "\n", 1);
+//     //     qq = qq->next;
+//     // }
     
     
-    cmd->cmd = strdup("mini");
-    cmd->full_path = strdup("/Users/ael-krid/cursus/minishell/mini"); 
-    cmd->args = (char **)malloc(sizeof(char *) * 3);
-    cmd->arg_count = 1;
-    //cmd->args[0] = strdup("echo");
-    cmd->args[0] = "mini";//strdup("aaaa");
-   // cmd->args[1] = strdup("helol\nnoen");
-    //cmd->args[1] = strdup("dd");
-    cmd->args[1] = NULL;//strdup("__a=helloworld");
+//     cmd->cmd = strdup("mini");
+//     cmd->full_path = strdup("/Users/ael-krid/cursus/minishell/mini"); 
+//     cmd->args = (char **)malloc(sizeof(char *) * 3);
+//     cmd->arg_count = 1;
+//     //cmd->args[0] = strdup("echo");
+//     cmd->args[0] = "mini";//strdup("aaaa");
+//    // cmd->args[1] = strdup("helol\nnoen");
+//     //cmd->args[1] = strdup("dd");
+//     cmd->args[1] = NULL;//strdup("__a=helloworld");
 
-    // cmd->args[3] = strdup("me\"=ggg");
-    // cmd->args[4] = strdup("mess=aag");
-    cmd->in_file = NULL;
-    cmd->out_file = "aa";//"rett";
-    cmd->append_file = NULL;
-    cmd->heredoc_delimiter = NULL;//"s";
-    cmd->heredoc_content = NULL;
-    cmd->pipe = 1; 
-    all->env = f;
+//     // cmd->args[3] = strdup("me\"=ggg");
+//     // cmd->args[4] = strdup("mess=aag");
+//     cmd->in_file = NULL;
+//     cmd->out_file = "aa";//"rett";
+//     cmd->append_file = NULL;
+//     cmd->heredoc_delimiter = NULL;//"s";
+//     cmd->heredoc_content = NULL;
+//     cmd->pipe = 1; 
+//     all->env = f;
 
-    // Command 1: echo hello > file
-    cmd2->cmd = strdup("grep");
-    cmd2->full_path = strdup("/usr/bin/grep"); 
-    cmd2->args = (char **)malloc(sizeof(char *) * 3);
-    cmd2->arg_count = 2;
-    cmd2->args[0] = strdup("grep");
-    cmd2->args[1] = strdup("Zone");// strdup("2");
-    cmd2->args[2] = NULL;// strdup("2");
+//     // Command 1: echo hello > file
+//     cmd2->cmd = strdup("grep");
+//     cmd2->full_path = strdup("/usr/bin/grep"); 
+//     cmd2->args = (char **)malloc(sizeof(char *) * 3);
+//     cmd2->arg_count = 2;
+//     cmd2->args[0] = strdup("grep");
+//     cmd2->args[1] = strdup("Zone");// strdup("2");
+//     cmd2->args[2] = NULL;// strdup("2");
 
-    //cmd2->args[1] = NULL;//strdup("\\b\\w{3,}\\b");
-    cmd2->env = f;
-    cmd2->in_file = NULL;
-    cmd2->out_file = NULL;//strdup("doneee"); //strdup("file");
-    cmd2->append_file = NULL;
-    cmd2->heredoc_delimiter = NULL;
-    cmd2->heredoc_content = NULL;
-    cmd2->pipe = 0; // Pipes to next command
+//     //cmd2->args[1] = NULL;//strdup("\\b\\w{3,}\\b");
+//     cmd2->env = f;
+//     cmd2->in_file = NULL;
+//     cmd2->out_file = NULL;//strdup("doneee"); //strdup("file");
+//     cmd2->append_file = NULL;
+//     cmd2->heredoc_delimiter = NULL;
+//     cmd2->heredoc_content = NULL;
+//     cmd2->pipe = 0; // Pipes to next command
 
-    // Command 2: grep < file.c
-    cmd3->cmd = strdup("sort");
-    cmd3->full_path = strdup("/usr/bin/sort"); 
-    cmd3->args = (char **)malloc(sizeof(char *) * 2);
-    cmd3->arg_count = 1;
-    cmd3->args[0] = strdup("sort");
-    cmd3->args[1] = NULL;//strdup("N");
-    cmd3->in_file = NULL;//strdup("exec.c");
-    cmd3->out_file = NULL;
-    cmd3->append_file = NULL;
-    cmd3->heredoc_delimiter = NULL;
-    cmd3->heredoc_content = NULL;
-    cmd3->pipe = 0; // Pipes to next command
-   // cmd3->env = f;
+//     // Command 2: grep < file.c
+//     cmd3->cmd = strdup("sort");
+//     cmd3->full_path = strdup("/usr/bin/sort"); 
+//     cmd3->args = (char **)malloc(sizeof(char *) * 2);
+//     cmd3->arg_count = 1;
+//     cmd3->args[0] = strdup("sort");
+//     cmd3->args[1] = NULL;//strdup("N");
+//     cmd3->in_file = NULL;//strdup("exec.c");
+//     cmd3->out_file = NULL;
+//     cmd3->append_file = NULL;
+//     cmd3->heredoc_delimiter = NULL;
+//     cmd3->heredoc_content = NULL;
+//     cmd3->pipe = 0; // Pipes to next command
+//    // cmd3->env = f;
 
-    cmd->next = cmd2;
-    cmd2->next = cmd3;
-    cmd3->next = NULL;
-    all->cmd = cmd;
+//     cmd->next = cmd2;
+//     cmd2->next = cmd3;
+//     cmd3->next = NULL;
+//     all->cmd = cmd;
     
 
-    return all->cmd;
-}
+//     return all->cmd;
+// }
+
 void redirections_set(t_all *all) 
 {
     int fd;
@@ -241,23 +243,24 @@ void redirect_in_out_to_pipe(int n_pipes, int index, int pipe[],int *pr_fd)
         close(pipe[1]);
     }
 }
-int main(int argc, char **argv, char *envp[])
+
+void execution(t_all *all, char *envp[])
 {
     int t;
     char *line;
     t_cmd *f;
-    t_all *all;
+    // t_all *all;
     int i = 0;
 
-    all = (t_all *) malloc(sizeof(t_all));
-    if (!all)
-        exit(1);
+    // all = (t_all *) malloc(sizeof(t_all));
+    // if (!all)
+    //     exit(1);
     // all->exp = NULL;
     // all->env = NULL;
 
     
 //    all->cmd = 
-    make(all, envp);
+    // make(all, envp);
     set_lists(all, envp);
     
 
@@ -313,7 +316,7 @@ int main(int argc, char **argv, char *envp[])
     }
     
 
-    return (0);
+    // return (0);
 }
 
 

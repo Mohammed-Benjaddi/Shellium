@@ -9,6 +9,10 @@
 #include <stdbool.h>
 #include <string.h>
 #include <fcntl.h>
+#include <string.h>
+#include <signal.h>
+#include <errno.h>
+
 
 #define SINGLE_QUOTE '\''
 #define DOUBLE_QUOTE '\"'
@@ -41,14 +45,6 @@ typedef struct s_command_line {
   struct s_command_line *next; // Pointer to next command in pipeline
 } t_cmd;
 
-// typedef struct s_shell
-// {
-//   t_cmd *head;
-//   int     size;
-//   t_state state;
-//   int nums_of_pipes;
-// } t_shell;
-
 typedef struct s_lexer
 {
   int i;
@@ -60,6 +56,27 @@ typedef struct s_lexer
   size_t length;
   int pipe;
 } t_lexer;
+
+typedef struct s_env{
+  char *variable;
+  char *value;
+  struct s_env *next;
+  struct s_env *prev;
+} t_env;
+
+typedef struct s_exp{
+  char *variable;
+  char *value;
+  struct s_exp *prev;
+  struct s_exp *next;
+} t_exp;
+
+typedef struct s_all
+{
+   t_cmd    *cmd; // our parsing struct
+   t_env      *env; // environment variables list
+   t_exp     *exp; // exported variables list
+} t_all;
 
 // libc functions
 char *ft_strdup(char *str);
@@ -81,7 +98,7 @@ void	ft_lstadd_back(t_cmd **lst, t_cmd *new);
 void    ft_lstclear(t_cmd **lst);
 
 // ft_lexer.c
-void ft_lexer(char *command, t_cmd **head);
+void ft_lexer(char *command, t_all **all);
 bool is_symbol(char c);
 
 // utils_1.c
@@ -99,5 +116,35 @@ char *get_input_redirection_file(char **args);
 char *get_output_redirection_file(char **args);
 // char *get_append_from_file(char **args);
 char *get_append_to_file(char **args);
+
+
+
+// ----------------------------------------------
+
+void    exec_piped_built_ins(t_all *all, int pipes[2]);
+void    heredoc_check(t_all *all);
+t_exp   *new_exp_(t_env *env);
+int     spliter_index(char *str);
+t_exp   *exp_new(char *new_line);// not used 
+void    exp_addback(t_exp    *head, t_exp    *new);
+t_exp   *set_export_list(t_all *all, char **env);
+void    identifier_error(char *indentifer);
+void    ft_write(char *str, int fd);
+void    change_dir(t_all *all, char *new_dir);
+void    ft_pwd(t_all *all);
+void    parse_indetifier(t_all *all, char *str);
+void    unset_env(t_all *all);
+void    unset_exp(t_all *all);
+void    env_addback(t_env *head, t_env *new);
+char    *ft_strjoin(char *s1, char *s2);
+t_env   *env_new(char *new_line);
+t_env   *env_getlast(t_env *env);
+t_env   *create_env_list(char **env);
+size_t	ft_strlen(char *s);
+void    ft_echo(char **str, int fd);
+char    *heredoc(char *heredoc_str, int fd);
+void execution(t_all *all, char *envp[]);
+int match_word(char *neadle, char *str);
+
 
 #endif
