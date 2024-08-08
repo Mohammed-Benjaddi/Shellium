@@ -6,6 +6,7 @@ int main(int ac, char **av, char **env)
 
   all = malloc(sizeof(t_all));
   all->cmd = NULL;
+  all->nums_of_pipes = 1;
   // ft_init(shell);
   using_history();
   while(1)
@@ -19,6 +20,7 @@ int main(int ac, char **av, char **env)
 
     print_list(all->cmd);
     // exit(1);
+    // all->nums_of_pipes = cmds_counter(all->cmd);
     execution(all, env);
 
     // get_path(head);

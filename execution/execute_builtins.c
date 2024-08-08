@@ -50,6 +50,7 @@ void exec_piped_built_ins(t_all *all, int pipes[2])
     i = 0;
     if (match_word(all->cmd->cmd, "echo"))
         {
+
             // need to loop and echo all args
             if (all->cmd->pipe == 1)
                 ft_echo(all->cmd->args+1, STDOUT_FILENO);// need to loop and echo all args

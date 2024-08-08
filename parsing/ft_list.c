@@ -87,6 +87,7 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	if (!new_node)
 		return (NULL);
 	new_node->cmd = ft_strdup(args[0]);
+	// printf();
 	new_node->full_path = get_path(new_node->cmd);
 	new_node->arg_count = args_nbr;
 	new_node->args = ft_args_dup(args);

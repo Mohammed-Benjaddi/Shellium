@@ -8,6 +8,7 @@ char  *get_path(char *cmd)
   char **all_paths;
   
   i = 0;
+  printf("full path ===============> %s\n", cmd);
   path = ft_strdup(getenv("PATH"));
   all_paths = ft_split(path, ':');
   if(!all_paths)

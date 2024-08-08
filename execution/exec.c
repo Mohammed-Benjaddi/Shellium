@@ -246,9 +246,9 @@ void redirect_in_out_to_pipe(int n_pipes, int index, int pipe[],int *pr_fd)
 
 void execution(t_all *all, char *envp[])
 {
-    int t;
+    // int t;
     char *line;
-    t_cmd *f;
+    // t_cmd *f;
     // t_all *all;
     int i = 0;
 
@@ -262,7 +262,6 @@ void execution(t_all *all, char *envp[])
 //    all->cmd = 
     // make(all, envp);
     set_lists(all, envp);
-    
 
    // t_env *ff = create_env_list(envp);
     
@@ -272,10 +271,10 @@ void execution(t_all *all, char *envp[])
     int pr_fd;
    // char *envp[] = {NULL};
     int dd;
-    int n_pipes = 2;
+    int n_pipes = all->nums_of_pipes;
     int j = 1;
     int s = 0;
-    //setup_signal_handlers();
+    // setup_signal_handlers();
     heredoc_check(all);
    
     if (exec_built_ins(all))
@@ -290,6 +289,7 @@ void execution(t_all *all, char *envp[])
         pids[i] = fork();
         if (pids[i] == 0)
         {
+
             reset_signal_handlers();
             redirect_in_out_to_pipe(n_pipes, i, x, &pr_fd);
             redirections_set(all);
