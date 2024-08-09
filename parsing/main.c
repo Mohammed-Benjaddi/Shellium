@@ -34,7 +34,7 @@ int main(int ac, char **av, char **env)
       continue;
     print_list(all->cmd);
     all->nums_of_pipes = pipe_counter(all->cmd);
-    printf("there is %zu pipes\n", all->nums_of_pipes);
+    // printf("there is %zu pipes\n", all->nums_of_pipes);
     // all->nums_of_pipes = cmds_counter(all->cmd);
     execution(all, env);
 

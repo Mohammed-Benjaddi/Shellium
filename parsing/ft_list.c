@@ -47,7 +47,7 @@ char **ft_args_dup(char **args)
 
 	i = 0;
 	j = 0;
-	result = malloc(sizeof(char *) * count_valid_args(args) + 1);
+	result = malloc(sizeof(char *) * (count_valid_args(args) + 1));
 	if(!result)
 		return NULL;
 	while (args[i])

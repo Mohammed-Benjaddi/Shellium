@@ -262,7 +262,7 @@ void execution(t_all *all, char *envp[])
 //    all->cmd = 
     // make(all, envp);
     set_lists(all, envp);
-
+    printf("------> %s\n", all->cmd->heredoc_delimiter);
    // t_env *ff = create_env_list(envp);
     
 

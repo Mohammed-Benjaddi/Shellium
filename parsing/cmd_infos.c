@@ -89,7 +89,7 @@ char *get_output_redirection_file(char **args)
         free(out_file);
         out_file = ft_strdup(args[i + 1]);
         //must create a file
-        fd = open(out_file, O_CREAT | O_WRONLY);
+        fd = open(out_file, O_CREAT | O_RDWR);
         close(fd);
       }
     }
@@ -117,8 +117,8 @@ char *get_append_to_file(char **args)
         free(file);
         file = ft_strdup(args[i + 1]);
         // must create a file
-        // fd = open(file, O_CREAT | O_WRONLY);
-        // close(fd);
+        fd = open(file, O_CREAT | O_RDWR);
+        close(fd);
       }
     }
     i++;
@@ -126,13 +126,30 @@ char *get_append_to_file(char **args)
   return file;
 }
 
-// char *get_herdoc_delimiter(char **args)
-// {
-//   int i;
+char *get_herdoc_delemiter(char **args)
+{
+  int i;
+  int fd;
+  char *file;
 
-//   i = 0;
-//   while()
-//   {
-
-//   }
-// }
+  i = 0;
+  file = NULL;
+  while(args[i])
+  {
+    if(!ft_strcmp(args[i], "<<"))
+    {
+      if(!args[i + 1])
+        throw_error("syntax error near unexpected token `newline'");
+      else
+      {
+        free(file);
+        file = ft_strdup(args[i + 1]);
+        // must create a file
+        // fd = open(file, O_CREAT | O_RDWR);
+        // close(fd);
+      }
+    }
+    i++;
+  }
+  return file;
+}

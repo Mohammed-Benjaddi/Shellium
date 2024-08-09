@@ -118,15 +118,13 @@ char *get_output_redirection_file(char **args);
 // char *get_append_from_file(char **args);
 char *get_append_to_file(char **args);
 
-
-
 // ----------------------------------------------
 
 void    exec_piped_built_ins(t_all *all, int pipes[2]);
 void    heredoc_check(t_all *all);
 t_exp   *new_exp_(t_env *env);
 int     spliter_index(char *str);
-t_exp   *exp_new(char *new_line);// not used 
+t_exp   *exp_new(char *new_line);// not used
 void    exp_addback(t_exp    *head, t_exp    *new);
 t_exp   *set_export_list(t_all *all, char **env);
 void    identifier_error(char *indentifer);
@@ -146,6 +144,5 @@ void    ft_echo(char **str, int fd);
 char    *heredoc(char *heredoc_str, int fd);
 void execution(t_all *all, char *envp[]);
 int match_word(char *neadle, char *str);
-
 
 #endif
