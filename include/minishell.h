@@ -73,10 +73,10 @@ typedef struct s_exp{
 
 typedef struct s_all
 {
-   t_cmd    *cmd; // our parsing struct
-   t_env      *env; // environment variables list
-   t_exp     *exp; // exported variables list
-   size_t     nums_of_pipes;
+  t_cmd    *cmd; // our parsing struct
+  t_env      *env; // environment variables list
+  t_exp     *exp; // exported variables list
+  size_t     nums_of_pipes;
 } t_all;
 
 // libc functions
@@ -99,7 +99,7 @@ void	ft_lstadd_back(t_cmd **lst, t_cmd *new);
 void    ft_lstclear(t_cmd **lst);
 
 // ft_lexer.c
-void ft_lexer(char *command, t_all **all);
+int ft_lexer(char *command, t_all **all);
 bool is_symbol(char c);
 
 // utils_1.c

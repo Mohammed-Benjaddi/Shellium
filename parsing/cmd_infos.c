@@ -50,29 +50,21 @@ char *get_input_redirection_file(char **args)
       {
         free(in_file);
         in_file = ft_strdup(args[i + 1]);
-        // i++;
-        // while(args[i])
-        // {
-        //   if(ft_strcmp(args[i], "<"))
-        //   {
-
-        //   }
-        // }
       }
     }
-    else if(!ft_strcmp(args[i], ">>") || !ft_strcmp(args[i], ">"))
-    {
-      if(!args[i - 1])
-        throw_error("syntax error near unexpected token `newline'");
-      else if (i == 1)
-        return NULL;
-      else
-      {
-        free(in_file);
-        in_file = ft_strdup(args[i - 1]);
-        return in_file;
-      }
-    }
+    // else if(!ft_strcmp(args[i], ">>") || !ft_strcmp(args[i], ">"))
+    // {
+    //   if(!args[i - 1])
+    //     throw_error("syntax error near unexpected token `newline'");
+    //   else if (i == 1)
+    //     return NULL;
+    //   else
+    //   {
+    //     free(in_file);
+    //     in_file = ft_strdup(args[i - 1]);
+    //     return in_file;
+    //   }
+    // }
     i++;
   }
   return in_file;

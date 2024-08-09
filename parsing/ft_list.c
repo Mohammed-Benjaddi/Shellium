@@ -85,19 +85,17 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	new_node = malloc(sizeof(t_cmd));
 	if (!new_node)
 		return (NULL);
-	new_node->cmd = ft_strdup(args[0]);
-	// printf();
-	new_node->full_path = get_path(new_node->cmd);
 	new_node->arg_count = args_nbr;
 	new_node->args = ft_args_dup(args);
 	new_node->in_file = get_input_redirection_file(args);
 	new_node->out_file = get_output_redirection_file(args);
 	new_node->append_file = get_append_to_file(args);
-	// new_node->heredoc_delimiter = get_herdoc_delimiter(new_node->args);
 	new_node->heredoc_delimiter = NULL;
 	new_node->heredoc_content = NULL;
 	new_node->pipe = pipe;
 	new_node->next = NULL;
+	new_node->cmd = ft_strdup(new_node->args[0]);
+	new_node->full_path = get_path(new_node->cmd);
 	// ft_free(args);
 	return (new_node);
 }

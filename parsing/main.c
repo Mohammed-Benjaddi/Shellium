@@ -27,17 +27,16 @@ int main(int ac, char **av, char **env)
   {
     printf("%s-> %s", GREEN, NC);
     char *read = readline("minishell > ");
-    if(!read)
+    if(!read || !ft_strlen(read))
       continue;
     add_history(read);
-    ft_lexer(read, &all);
-
+    if(!ft_lexer(read, &all))
+      continue;
     print_list(all->cmd);
     all->nums_of_pipes = pipe_counter(all->cmd);
     printf("there is %zu pipes\n", all->nums_of_pipes);
-    // exit(1);
     // all->nums_of_pipes = cmds_counter(all->cmd);
-    // execution(all, env);
+    execution(all, env);
 
     // get_path(head);
     // free(read);
