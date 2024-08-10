@@ -13,13 +13,14 @@
 #include <signal.h>
 #include <errno.h>
 
-
 #define SINGLE_QUOTE '\''
 #define DOUBLE_QUOTE '\"'
 #define PIPE '|'
 #define SPACE ' '
 #define IN_RED '<'
 #define OUT_RED '>'
+#define VAR_SIGN '$'
+#define BACK_SLASH '\\'
 
 # define NC "\e[0m"
 # define YELLOW "\e[1;33m"
@@ -76,7 +77,7 @@ typedef struct s_all
   t_cmd    *cmd; // our parsing struct
   t_env      *env; // environment variables list
   t_exp     *exp; // exported variables list
-  size_t     nums_of_pipes;
+  size_t     nums_of_cmds;
 } t_all;
 
 // libc functions

@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 
-size_t pipe_counter(t_cmd *cmd)
+size_t count_commands(t_cmd *cmd)
 {
   size_t counter;
 
@@ -20,7 +20,7 @@ int main(int ac, char **av, char **env)
 
   all = malloc(sizeof(t_all));
   all->cmd = NULL;
-  // all->nums_of_pipes = 1;
+  // all->nums_of_cmds = 1;
   // ft_init(shell);
   using_history();
   while(1)
@@ -33,10 +33,11 @@ int main(int ac, char **av, char **env)
     if(!ft_lexer(read, &all))
       continue;
     print_list(all->cmd);
-    all->nums_of_pipes = pipe_counter(all->cmd);
-    // printf("there is %zu pipes\n", all->nums_of_pipes);
-    // all->nums_of_pipes = cmds_counter(all->cmd);
-    execution(all, env);
+    all->nums_of_cmds = count_commands(all->cmd);
+    printf("nums of pipes: %zu\n", all->nums_of_cmds);
+    // printf("there is %zu pipes\n", all->nums_of_cmds);
+    // all->nums_of_cmds = cmds_counter(all->cmd);
+    // execution(all, env);
 
     // get_path(head);
     // free(read);

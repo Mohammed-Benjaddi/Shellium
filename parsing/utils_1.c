@@ -102,6 +102,7 @@ void print_list(t_cmd *head)
     printf("%s %s %s", RED, head->in_file, NC);
     printf("%s %s %s", RED, head->out_file, NC);
     printf("%s %s %s", RED, head->append_file, NC);
+    printf("%s %d %s", GREEN, head->pipe, NC);
     head = head->next;
     printf("\n");
   }

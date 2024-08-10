@@ -271,7 +271,7 @@ void execution(t_all *all, char *envp[])
     int pr_fd;
    // char *envp[] = {NULL};
     int dd;
-    int n_pipes = all->nums_of_pipes;
+    int n_pipes = all->nums_of_cmds;
     int j = 1;
     int s = 0;
     // setup_signal_handlers();

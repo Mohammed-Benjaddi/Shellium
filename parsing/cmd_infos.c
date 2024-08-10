@@ -14,6 +14,7 @@ char  *get_path(char *cmd)
     return NULL;
   free(path);
   path = NULL;
+  // all_paths = NULL;
   while (all_paths[i])
   {
     command = ft_strjoin(all_paths[i], "/");
@@ -26,6 +27,7 @@ char  *get_path(char *cmd)
       // free(command);
       return path;
     }
+    // ft_free(all_paths);
     free(path);
     path = NULL;
     i++;
@@ -89,7 +91,7 @@ char *get_output_redirection_file(char **args)
         free(out_file);
         out_file = ft_strdup(args[i + 1]);
         //must create a file
-        fd = open(out_file, O_CREAT | O_RDWR);
+        fd = open(out_file, O_CREAT | O_RDWR, 0777);
         close(fd);
       }
     }

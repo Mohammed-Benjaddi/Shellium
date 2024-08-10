@@ -73,6 +73,12 @@ void create_cmd(t_cmd **head, char **args, int words, int is_pipe)
   t_cmd *cmd;
 
   cmd = ft_lstnew(args, words, is_pipe);
+  if(!cmd)
+  {
+    printf("%scommand not found%s\n", RED, NC);
+    ft_free(args);
+    return;
+  }
   ft_lstadd_back(head, cmd);
   ft_free(args);
 }
