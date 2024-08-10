@@ -262,7 +262,7 @@ void execution(t_all *all, char *envp[])
 //    all->cmd = 
     // make(all, envp);
     set_lists(all, envp);
-
+    printf("------> %s\n", all->cmd->heredoc_delimiter);
    // t_env *ff = create_env_list(envp);
     
 
@@ -271,7 +271,7 @@ void execution(t_all *all, char *envp[])
     int pr_fd;
    // char *envp[] = {NULL};
     int dd;
-    int n_pipes = all->nums_of_pipes;
+    int n_pipes = all->nums_of_cmds;
     int j = 1;
     int s = 0;
     // setup_signal_handlers();
@@ -289,7 +289,6 @@ void execution(t_all *all, char *envp[])
         pids[i] = fork();
         if (pids[i] == 0)
         {
-
             reset_signal_handlers();
             redirect_in_out_to_pipe(n_pipes, i, x, &pr_fd);
             redirections_set(all);
@@ -303,19 +302,15 @@ void execution(t_all *all, char *envp[])
         pr_fd = dup(x[0]);
         close(x[1]);
         close(x[0]);
-       i++;
-       all->cmd = all->cmd->next ;
-       
+        i++;
+        all->cmd = all->cmd->next;
     }
     close(pr_fd);
-     
     for (i = 0; i < n_pipes; i++)
     {
         int status;
             waitpid(pids[i], &status, 0);
     }
-    
-
     // return (0);
 }
 

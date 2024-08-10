@@ -24,8 +24,6 @@ char *get_str_in_quotes(char *command, int *i, char c)
 
   *i += 1;
   len = ft_strchr(command + *i, c);
-  // printf("%slen: %d%s\n", CYAN, len, NC);
-  
   if(len == -1)
   {
     if(c == SINGLE_QUOTE)
@@ -37,7 +35,6 @@ char *get_str_in_quotes(char *command, int *i, char c)
   buffer = ft_substr(command + *i, 0, len);
   *i += len;
   buffer = find_and_remove(buffer, c);
-  // printf("%sbuffer: %s%s\n", GREEN, buffer, NC);
   return buffer;
 }
 
@@ -76,6 +73,12 @@ void create_cmd(t_cmd **head, char **args, int words, int is_pipe)
   t_cmd *cmd;
 
   cmd = ft_lstnew(args, words, is_pipe);
+  if(!cmd)
+  {
+    printf("%scommand not found%s\n", RED, NC);
+    ft_free(args);
+    return;
+  }
   ft_lstadd_back(head, cmd);
   ft_free(args);
 }
@@ -84,12 +87,12 @@ char **allocate_args(char *command, int *pipe_idx, int *words, int i)
 {
   char **args;
 
-  *pipe_idx = find_pipe_index(command + i); // i = 20
+  *pipe_idx = find_pipe_index(command + i);
   if(*pipe_idx == -1)
     *pipe_idx = ft_strlen(command);
   *words = args_counter(command + i, *pipe_idx);
-  args = malloc(sizeof(char *) * *words + 1);
-
+  args = (char **)malloc(sizeof(char *) * (*words + 1));
+  printf("%s ===> %d%s\n", CYAN, *words, NC);
   return args;
 }
 
@@ -107,7 +110,6 @@ bool is_pipe_after(char *str)
 
 void skip_str_inside_quote(char *cmd, int *i, char c)
 {
-  printf("cmd ---> %c\n", c);
   while(cmd[*i] && cmd[*i] != c)
     *i += 1;
 }
@@ -128,22 +130,18 @@ size_t reds_counter(char *cmd)
   counter = 0;
   while(cmd[i] && i < ft_strlen(cmd))
   {
-    // printf("---> %c\n", cmd[i]);
     if(cmd[i] == SINGLE_QUOTE || cmd[i] == DOUBLE_QUOTE)
     {
       i++;
-      // printf("%s quotes here %s\n", BLUE, NC);
       skip_str_inside_quote(cmd, &i, cmd[i - 1]);
     }
     if(cmd[i] == IN_RED || cmd[i] == OUT_RED)
     {
       counter++;
-      printf("%s---> %d <---%s\n", GREEN, i, NC);
       skip_reds(cmd, &i, cmd[i]);
     }
     i++;
   }
-  printf("----> counter: %zu\n", counter);
   return counter * 2;
 }
 
@@ -158,31 +156,30 @@ char *fix_cmd(char *cmd)
   line = malloc(sizeof(char) * ft_strlen(cmd) + reds_counter(cmd) + 1);
   while (cmd[i])
   {
-    if((cmd[i] == IN_RED || cmd[i] == OUT_RED) && (cmd[i - 1] != IN_RED || cmd[i - 1] != OUT_RED))
+    if((cmd[i] == IN_RED || cmd[i] == OUT_RED) && (i > 0 && (cmd[i - 1] != IN_RED || cmd[i - 1] != OUT_RED)))
       line[j++] = ' ';
-    else if ((cmd[i - 1] == IN_RED || cmd[i - 1] == OUT_RED) && cmd[i] != SPACE)
+    else if (i > 0 && (cmd[i - 1] == IN_RED || cmd[i - 1] == OUT_RED) && cmd[i] != SPACE)
       line[j++] = ' ';
     line[j++] = cmd[i++];
   }
   line[j] = '\0';
-  printf("+++++++++ %s\n", line);
-  // reds_counter(cmd);
-  // while (cmd[i])
-  // {
-  //   if(cmd[i] == SINGLE_QUOTE || cmd[i] == DOUBLE_QUOTE)
-  //   {
-  //     i++;
-  //     skip_str_inside_quote(cmd, &i, cmd[i]);
-  //   }
-  //   if(cmd[i] == IN_RED || cmd[i] == OUT_RED)
-  //     printf("---> %c <---\n", cmd[i]);
-  //   i++;
-  // }
   free(cmd);
   return line;
 }
 
-void ft_lexer(char *command, t_all **all)
+bool full_of_spaces(char *buffer)
+{
+  size_t i;
+
+  i = 0;
+  while(buffer[i] && ft_isspace(buffer[i]))
+    i++;
+  if(i == ft_strlen(buffer))
+    return true;
+  return false;
+}
+
+int ft_lexer(char *command, t_all **all)
 {
   t_lexer lexer;
   // t_cmd *head = (*all)->cmd;
@@ -197,9 +194,13 @@ void ft_lexer(char *command, t_all **all)
     lexer.pipe = 0;
     while (command[lexer.i] && ft_isspace(command[lexer.i]))
       lexer.i++;
+    if(!ft_strlen(command + lexer.i))
+      return 0;
+    // allocate_args(command, &lexer.pipe_idx, &lexer.words, lexer.i);
+    // lexer.args = malloc(sizeof(char *) )
     lexer.args = allocate_args(command, &lexer.pipe_idx, &lexer.words, lexer.i);
     if(!lexer.args)
-      return;
+      return 0;
     while(command[lexer.i] && lexer.j < lexer.words)
     {
       while (command[lexer.i] && ft_isspace(command[lexer.i]))
@@ -210,13 +211,14 @@ void ft_lexer(char *command, t_all **all)
         lexer.buffer = get_str_in_quotes(command, &lexer.i, DOUBLE_QUOTE);
       else
         lexer.buffer = get_str_without_quotes(command, &lexer.i);
-      if(lexer.buffer == NULL)
-        return;
+      if(lexer.buffer == NULL || full_of_spaces(lexer.buffer))
+        return 0;
       if(!ft_strlen(lexer.buffer))
         break;
       lexer.args[lexer.j] = lexer.buffer;
       lexer.j++;
     }
+    printf("j --> %d\n", lexer.j);
     lexer.args[lexer.j] = NULL;
     if(lexer.words)
     {
@@ -230,4 +232,5 @@ void ft_lexer(char *command, t_all **all)
   }
   free(command);
   command = NULL;
+  return 1;
 }
