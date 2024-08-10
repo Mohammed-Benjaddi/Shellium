@@ -137,6 +137,10 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	new_node->full_path = get_path(new_node->cmd);
 	if(!new_node->full_path)
 	{
+		if(!ft_strcmp(new_node->cmd, "exit"))
+			exit(0);
+		else if(!ft_strcmp(new_node->cmd, "export"))
+			return new_node;
 		free_cmd(new_node);
 		return NULL;
 	}

@@ -37,7 +37,7 @@ int main(int ac, char **av, char **env)
     printf("nums of pipes: %zu\n", all->nums_of_cmds);
     // printf("there is %zu pipes\n", all->nums_of_cmds);
     // all->nums_of_cmds = cmds_counter(all->cmd);
-    // execution(&all, env);
+    execution(&all, env);
     // get_path(head);
     // free(read);
     // read = NULL;

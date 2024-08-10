@@ -3,7 +3,7 @@
 void throw_error(char *msg)
 {
   printf("%sError: %s%s\n", RED, msg, NC);
-  // exit(1);
+  exit(1);
 }
 
 int find_pipe_index(char *str)
