@@ -92,7 +92,7 @@ char *heredoc(char *heredoc_str, int fd)
     full_str[0] = 0;
     while (1)
     {
-        input = readline(">");
+        input = readline(">>");
         if (!match_word( input, heredoc_str))
             {
                 full_str = ft_strjoin(full_str, input);
@@ -110,6 +110,8 @@ void heredoc_check(t_all *all)
     doc = all->cmd;
     while (doc != NULL)
     {
+        // if(doc->heredoc_delimiter == NULL)
+        //     exit(1);
         if (doc->heredoc_delimiter != NULL)
                 doc->heredoc_content = heredoc(doc->heredoc_delimiter, 1);
         doc = doc->next;

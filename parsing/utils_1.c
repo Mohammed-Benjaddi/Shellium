@@ -108,12 +108,18 @@ void print_list(t_cmd *head)
       printf("%s{ %s } %s", YELLOW, head->args[i], NC);
       i++;
     }
+    
+    
     // printf("  %sis there a pipe: %d%s\n", CYAN, head->pipe, NC);
     printf("%s %s %s", CYAN, head->full_path, NC);
-    printf("%s %s %s", RED, head->in_file, NC);
-    printf("%s %s %s", RED, head->out_file, NC);
-    // printf("%s %s %s", RED, head->i, NC);
+    printf("%s |%s| %s", RED, head->in_file, NC);
+    printf("%s ~%s %s", RED, head->out_file, NC);
+    printf("%s !!%s!! %s", RED, head->heredoc_delimiter, NC);
+
     printf("%s %s %s", RED, head->append_file, NC);
+    
+    
+
     head = head->next;
     printf("\n");
   }

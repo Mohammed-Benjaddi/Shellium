@@ -77,6 +77,7 @@ typedef struct s_all
    t_env      *env; // environment variables list
    t_exp     *exp; // exported variables list
    size_t     nums_of_pipes;
+   char       *path;
 } t_all;
 
 // libc functions
@@ -144,7 +145,7 @@ t_env   *create_env_list(char **env);
 size_t	ft_strlen(char *s);
 void    ft_echo(char **str, int fd);
 char    *heredoc(char *heredoc_str, int fd);
-void execution(t_all *all, char *envp[]);
+void execution(t_all **all, char *envp[]);
 int match_word(char *neadle, char *str);
 
 

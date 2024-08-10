@@ -112,10 +112,9 @@ void redirections_set(t_all *all)
         close(fd);
     }
     if (all->cmd->out_file) {
-        if (all->cmd->append_file)
-            fd = open(all->cmd->out_file,O_WRONLY | O_CREAT | O_APPEND, 0644);
-        else
-            fd = open(all->cmd->out_file,O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        // if (all->cmd->append_file)
+        //     fd = open(all->cmd->out_file,O_WRONLY | O_CREAT | O_APPEND, 0644);
+        fd = open(all->cmd->out_file,O_WRONLY | O_CREAT | O_TRUNC, 0644);
         if (fd == -1)
             exit(1);
         dup2(fd, STDOUT_FILENO);
@@ -138,7 +137,7 @@ void heredoc_pipe(t_all *all)
     {
         close(p[0]);
         redirections_set(all);
-        all->cmd->heredoc_content = heredoc(all->cmd->heredoc_delimiter, 1);
+        //all->cmd->heredoc_content = heredoc(all->cmd->heredoc_delimiter, 1);
         write(p[1], all->cmd->heredoc_content, ft_strlen(all->cmd->heredoc_content));
         close(p[1]);
         exit(1);
@@ -153,8 +152,8 @@ void signal_handler(int signo) {
         {
             printf("\n");
             rl_on_new_line();
-           // rl_replace_line("", 0);// fix compiling 
-            //rl_redisplay();
+            // rl_replace_line("", 0);// fix compiling 
+            rl_redisplay();
             }
     if (signo == SIGQUIT)
         {
@@ -227,8 +226,26 @@ int exec_built_ins(t_all *all)
 
 void set_lists(t_all *all, char **env)
 {
-    all->env = create_env_list(env);
-    all->exp = set_export_list(all, env);
+    int i;
+    char **envp;
+
+    i = 0;
+    while (env[i])
+        i++
+        ;
+    envp = (char **) malloc(sizeof(char *) * i);
+    if (!envp)
+        exit(1);
+    envp[i]  = NULL;
+    
+    i = 0;
+    while (env[i])
+    {
+        envp[i] = strdup(env[i]);
+        i++;
+    }
+    all->env = create_env_list(envp);
+    all->exp = set_export_list(all, envp);
 }
 void redirect_in_out_to_pipe(int n_pipes, int index, int pipe[],int *pr_fd)
 {
@@ -244,39 +261,38 @@ void redirect_in_out_to_pipe(int n_pipes, int index, int pipe[],int *pr_fd)
     }
 }
 
-void execution(t_all *all, char *envp[])
+void execution(t_all **alll, char *envpp[])
 {
     // int t;
     char *line;
+    
+    
     // t_cmd *f;
-    // t_all *all;
+    t_all *all;
+    t_cmd *cmd_;
+    char *full;
     int i = 0;
-
-    // all = (t_all *) malloc(sizeof(t_all));
-    // if (!all)
-    //     exit(1);
-    // all->exp = NULL;
-    // all->env = NULL;
-
+    all = *alll;
+    full = all->cmd->full_path;
+    cmd_ = all->cmd;
     
+   
 //    all->cmd = 
-    // make(all, envp);
-    set_lists(all, envp);
-
-   // t_env *ff = create_env_list(envp);
+   // make(all, envp);
+    set_lists(all, envpp);
     
-
+   // t_env *ff = create_env_list(envp);
     //usepipe();
     int x[2];
     int pr_fd;
    // char *envp[] = {NULL};
     int dd;
-    int n_pipes = all->nums_of_pipes;
+    int n_pipes = 1;//all->nums_of_pipes;
     int j = 1;
     int s = 0;
-    // setup_signal_handlers();
+   // setup_signal_handlers();
+    
     heredoc_check(all);
-   
     if (exec_built_ins(all))
         {
             n_pipes--;
@@ -291,12 +307,23 @@ void execution(t_all *all, char *envp[])
         {
 
             reset_signal_handlers();
+            // if (i != 0)
+            // {
+            //     dup2(pr_fd, STDIN_FILENO);  
+            //     close(pr_fd);
+            // }
+            // if (i < n_pipes -1)
+            // {
+            //     dup2(x[1],STDOUT_FILENO);
+            //     close(x[1]);
+            // }
             redirect_in_out_to_pipe(n_pipes, i, x, &pr_fd);
             redirections_set(all);
             heredoc_pipe(all);
             exec_piped_built_ins(all, x);
-            if (execve(all->cmd->full_path, all->cmd->args, envp) == -1)
+            if (execve(all->cmd->full_path, all->cmd->args, envpp) == -1)
                 ft_write(strerror(errno), 2);
+            exit(1);
         }
         if (i !=0 )
             close(pr_fd);
@@ -308,14 +335,17 @@ void execution(t_all *all, char *envp[])
        
     }
     close(pr_fd);
-     
     for (i = 0; i < n_pipes; i++)
     {
         int status;
-            waitpid(pids[i], &status, 0);
+        waitpid(pids[i], &status, 0);
     }
+    all = *alll;
+    all->cmd = cmd_;
     
-
+    
+    //all->cmd->full_path = full;
+    
     // return (0);
 }
 
