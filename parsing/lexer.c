@@ -226,9 +226,12 @@ int ft_lexer(char *command, t_all **all)
         lexer.pipe = 1;
       create_cmd(&(*all)->cmd, lexer.args, lexer.words, lexer.pipe);
     }
+    else
+      ft_free(lexer.args);
+      // printf("%s ---> <--- %s\n", GREEN, NC);
     lexer.i++;
     // if(lexer.args != NULL)
-    //   ft_free(lexer.args);
+      // ft_free(lexer.args);
   }
   free(command);
   command = NULL;

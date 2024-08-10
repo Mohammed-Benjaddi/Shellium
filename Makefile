@@ -1,9 +1,5 @@
 CC = cc
-<<<<<<< HEAD
-CFLAGS =# -fsanitize=address -g #-Wall -Wextra -Werror
-=======
 CFLAGS = #-fsanitize=address -g #-Wall -Wextra -Werror
->>>>>>> simo
 
 HEADER = -I ./include/
 

@@ -39,30 +39,37 @@ static size_t count_valid_args(char **args)
 	return counter;
 }
 
-// char *check_arg(char *arg)
-// {
-// 	size_t i;
+void check_arg(char *arg)
+{
+	size_t i;
 
-// 	i = 0;
-// 	while(arg[i])
-// 	{
-// 		if((arg[i] == BACK_SLASH && arg[i + 1] == VAR_SIGN) || arg[i] && arg[i] == VAR_SIGN)
-// 		{
-
-// 		}
-// 	}
-// }
+	i = 0;
+	while(arg[i])
+	{
+		if(arg[i] && arg[i] == BACK_SLASH && arg[i + 1] == VAR_SIGN)
+		{
+			printf("---------> backslash detected\n");
+			i += 2;
+			continue;
+		}
+		else if(arg[i] && arg[i] == VAR_SIGN)
+		{
+			printf("---------> variable detected\n");
+		}
+		i++;
+	}
+}
 
 char **ft_args_dup(char **args)
 {
 	int i;
 	int j;
 	char **result;
-	char arg;
+	char *arg;
 
 	i = 0;
 	j = 0;
-	// arg = NULL;
+	arg = NULL;
 	result = malloc(sizeof(char *) * (count_valid_args(args) + 1));
 	if(!result)
 		return NULL;
@@ -73,6 +80,7 @@ char **ft_args_dup(char **args)
 		if(!args[i])
 			break;
 		// arg = check_arg(args[i]);
+		check_arg(args[i]);
 		result[j++] = ft_strdup(args[i]);
 		i++;
 	}

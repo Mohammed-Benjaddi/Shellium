@@ -27,11 +27,11 @@ char  *get_path(char *cmd)
       // free(command);
       return path;
     }
-    // ft_free(all_paths);
     free(path);
     path = NULL;
     i++;
   }
+  ft_free(all_paths);
   return NULL;
 }
 
@@ -91,12 +91,7 @@ char *get_output_redirection_file(char **args)
         free(out_file);
         out_file = ft_strdup(args[i + 1]);
         //must create a file
-<<<<<<< HEAD
-        //fd = open(out_file, O_CREAT | O_RDWR );
-        fd = open(out_file,O_WRONLY | O_CREAT | O_APPEND, 0644);
-=======
         fd = open(out_file, O_CREAT | O_RDWR, 0777);
->>>>>>> simo
         close(fd);
       }
     }
@@ -124,21 +119,16 @@ char *get_append_to_file(char **args)
         free(file);
         file = ft_strdup(args[i + 1]);
         // must create a file
-<<<<<<< HEAD
         fd = open(file, O_CREAT | O_WRONLY);
           close(fd);
-=======
         fd = open(file, O_CREAT | O_RDWR);
         close(fd);
->>>>>>> simo
       }
     }
     i++;
   }
   return file;
 }
-<<<<<<< HEAD
-=======
 
 char *get_herdoc_delemiter(char **args)
 {
@@ -167,4 +157,3 @@ char *get_herdoc_delemiter(char **args)
   }
   return file;
 }
->>>>>>> simo

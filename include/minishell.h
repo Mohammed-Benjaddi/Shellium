@@ -74,18 +74,10 @@ typedef struct s_exp{
 
 typedef struct s_all
 {
-<<<<<<< HEAD
-   t_cmd    *cmd; // our parsing struct
-   t_env      *env; // environment variables list
-   t_exp     *exp; // exported variables list
-   size_t     nums_of_pipes;
-   char       *path;
-=======
   t_cmd    *cmd; // our parsing struct
   t_env      *env; // environment variables list
   t_exp     *exp; // exported variables list
   size_t     nums_of_cmds;
->>>>>>> simo
 } t_all;
 
 // libc functions
