@@ -13,13 +13,14 @@
 #include <signal.h>
 #include <errno.h>
 
-
 #define SINGLE_QUOTE '\''
 #define DOUBLE_QUOTE '\"'
 #define PIPE '|'
 #define SPACE ' '
 #define IN_RED '<'
 #define OUT_RED '>'
+#define VAR_SIGN '$'
+#define BACK_SLASH '\\'
 
 # define NC "\e[0m"
 # define YELLOW "\e[1;33m"
@@ -73,11 +74,18 @@ typedef struct s_exp{
 
 typedef struct s_all
 {
+<<<<<<< HEAD
    t_cmd    *cmd; // our parsing struct
    t_env      *env; // environment variables list
    t_exp     *exp; // exported variables list
    size_t     nums_of_pipes;
    char       *path;
+=======
+  t_cmd    *cmd; // our parsing struct
+  t_env      *env; // environment variables list
+  t_exp     *exp; // exported variables list
+  size_t     nums_of_cmds;
+>>>>>>> simo
 } t_all;
 
 // libc functions
@@ -100,7 +108,7 @@ void	ft_lstadd_back(t_cmd **lst, t_cmd *new);
 void    ft_lstclear(t_cmd **lst);
 
 // ft_lexer.c
-void ft_lexer(char *command, t_all **all);
+int ft_lexer(char *command, t_all **all);
 bool is_symbol(char c);
 
 // utils_1.c
@@ -119,15 +127,13 @@ char *get_output_redirection_file(char **args);
 // char *get_append_from_file(char **args);
 char *get_append_to_file(char **args);
 
-
-
 // ----------------------------------------------
 
 void    exec_piped_built_ins(t_all *all, int pipes[2]);
 void    heredoc_check(t_all *all);
 t_exp   *new_exp_(t_env *env);
 int     spliter_index(char *str);
-t_exp   *exp_new(char *new_line);// not used 
+t_exp   *exp_new(char *new_line);// not used
 void    exp_addback(t_exp    *head, t_exp    *new);
 t_exp   *set_export_list(t_all *all, char **env);
 void    identifier_error(char *indentifer);
@@ -147,6 +153,5 @@ void    ft_echo(char **str, int fd);
 char    *heredoc(char *heredoc_str, int fd);
 void execution(t_all **all, char *envp[]);
 int match_word(char *neadle, char *str);
-
 
 #endif

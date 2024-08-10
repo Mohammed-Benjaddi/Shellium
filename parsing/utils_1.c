@@ -51,7 +51,6 @@ size_t args_counter(char *str, int len)
       i++;
     if (str[i] && str[i] != SPACE && s_quote == 0 && d_quote == 0 && i < len)
       words++;
-    // while (str[i] && str[i] != SPACE && str[i] != IN_RED && str[i] != OUT_RED && i < len)
     while (str[i] && str[i] != SPACE && i < len)
     {
       if (str[i] == SINGLE_QUOTE)
@@ -62,18 +61,9 @@ size_t args_counter(char *str, int len)
         s_quote = 0;
       if (d_quote == 2)
         d_quote = 0;
-      // if((str[i] == IN_RED || str[i] == OUT_RED) && s_quote == 0 && d_quote == 0)
-      // {
-      //   words++;
-      //   skip_reds(str, &i, str[i]);
-      //   i++;
-      //   break;
-      // }
       i++;
     }
   }
-
-  printf("words ==> %zu\n", words);
   return words;
 }
 
@@ -108,6 +98,7 @@ void print_list(t_cmd *head)
       printf("%s{ %s } %s", YELLOW, head->args[i], NC);
       i++;
     }
+<<<<<<< HEAD
     
     
     // printf("  %sis there a pipe: %d%s\n", CYAN, head->pipe, NC);
@@ -120,6 +111,13 @@ void print_list(t_cmd *head)
     
     
 
+=======
+    printf("%s %s %s", CYAN, head->full_path, NC);
+    printf("%s %s %s", RED, head->in_file, NC);
+    printf("%s %s %s", RED, head->out_file, NC);
+    printf("%s %s %s", RED, head->append_file, NC);
+    printf("%s %d %s", GREEN, head->pipe, NC);
+>>>>>>> simo
     head = head->next;
     printf("\n");
   }
@@ -148,10 +146,8 @@ void skip_reds(char *str, int *i, char c)
   char redirection;
 
   counter = 0;
-  printf("%s----- %s -----%s\n", RED, str, NC);
   while(str[*i] && str[*i] == c)
   {
-    printf("%s==> %c <==%s\n", CYAN, str[*i], NC);
     counter++;
     *i += 1;
     if(counter > 2)
@@ -173,21 +169,17 @@ char *find_and_remove(char *str, char c)
   i = 0;
   j = 0;
   len = ft_strlen(str) - nums_of_chars(str, c) + 1;
-  // printf("%sbefore: %s --> %zu%s\n", RED, str, len, NC);
   res = (char *)malloc(sizeof(char) * len);
   while(str[i])
   {
     if(str[i] != c)
     {
       res[j] = str[i];
-      // printf("%s%c%s", YELLOW, str[i], NC);
       j++;
     }
     i++;
   }
   res[j] = '\0';
-  // printf("\n");
-  // printf("%safter: %s --> %zu%s\n", GREEN, res, ft_strlen(res), NC);
   free(str);
   return res;
 }

@@ -278,8 +278,15 @@ void execution(t_all **alll, char *envpp[])
     
    
 //    all->cmd = 
+<<<<<<< HEAD
    // make(all, envp);
     set_lists(all, envpp);
+=======
+    // make(all, envp);
+    set_lists(all, envp);
+    printf("------> %s\n", all->cmd->heredoc_delimiter);
+   // t_env *ff = create_env_list(envp);
+>>>>>>> simo
     
    // t_env *ff = create_env_list(envp);
     //usepipe();
@@ -287,7 +294,11 @@ void execution(t_all **alll, char *envpp[])
     int pr_fd;
    // char *envp[] = {NULL};
     int dd;
+<<<<<<< HEAD
     int n_pipes = 1;//all->nums_of_pipes;
+=======
+    int n_pipes = all->nums_of_cmds;
+>>>>>>> simo
     int j = 1;
     int s = 0;
    // setup_signal_handlers();
@@ -305,7 +316,6 @@ void execution(t_all **alll, char *envpp[])
         pids[i] = fork();
         if (pids[i] == 0)
         {
-
             reset_signal_handlers();
             // if (i != 0)
             // {
@@ -330,9 +340,8 @@ void execution(t_all **alll, char *envpp[])
         pr_fd = dup(x[0]);
         close(x[1]);
         close(x[0]);
-       i++;
-       all->cmd = all->cmd->next ;
-       
+        i++;
+        all->cmd = all->cmd->next;
     }
     close(pr_fd);
     for (i = 0; i < n_pipes; i++)
@@ -340,12 +349,15 @@ void execution(t_all **alll, char *envpp[])
         int status;
         waitpid(pids[i], &status, 0);
     }
+<<<<<<< HEAD
     all = *alll;
     all->cmd = cmd_;
     
     
     //all->cmd->full_path = full;
     
+=======
+>>>>>>> simo
     // return (0);
 }
 
