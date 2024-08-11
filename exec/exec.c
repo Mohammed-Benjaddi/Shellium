@@ -89,45 +89,45 @@ void reset_signal_handlers() {
 };
 
 
-int exec_built_ins(t_all *all)
-{
-    int i;
-    int exec;
+// int exec_built_ins(t_all *all)
+// {
+//     int i;
+//     int exec;
 
-    exec = 0;
-    i = 1;
+//     exec = 0;
+//     i = 1;
     
-    if (match_word(all->cmd->cmd, "export") && all->cmd->args[1] != NULL)
-    {
-        while (all->cmd->args[i])
-        {
-            parse_indetifier(all, all->cmd->args[i]);
-            i++;
-        }
-        exec++;
-    }
-    if (match_word(all->cmd->cmd, "unset")) 
-    {
-        if (all->cmd->args[1] != NULL)
-            unset_env(all);
-        exec++;
-    }  
+//     if (match_word(all->cmd->cmd, "export") && all->cmd->args[1] != NULL)
+//     {
+//         while (all->cmd->args[i])
+//         {
+//             parse_indetifier(all, all->cmd->args[i]);
+//             i++;
+//         }
+//         exec++;
+//     }
+//     if (match_word(all->cmd->cmd, "unset")) 
+//     {
+//         if (all->cmd->args[1] != NULL)
+//             unset_env(all);
+//         exec++;
+//     }  
 
-    if (match_word(all->cmd->cmd, "exit") && i == 0)
-        {
-            exit(0);
-            exec++;
-        }
-    if (match_word(all->cmd->cmd, "cd") )
-        {
-            if (!all->cmd->pipe)
-                change_dir(all, all->cmd->args[1]);
-            exec++;
-        }
-    if (exec)
-        return (1);
-    return (0);
-}
+//     if (match_word(all->cmd->cmd, "exit") && i == 0)
+//         {
+//             exit(0);
+//             exec++;
+//         }
+//     if (match_word(all->cmd->cmd, "cd") )
+//         {
+//             if (!all->cmd->pipe)
+//                 change_dir(all, all->cmd->args[1]);
+//             exec++;
+//         }
+//     if (exec)
+//         return (1);
+//     return (0);
+// }
 
 void set_lists(t_all *all, char **env)
 {

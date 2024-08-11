@@ -30,6 +30,7 @@ void ft_echo(char **str, int fd)
     }
     while (str[i])
     {
+        ft_write(str[i], fd);
         if (str[i+1] != NULL)
             ft_write(" ", fd);
         i++;
