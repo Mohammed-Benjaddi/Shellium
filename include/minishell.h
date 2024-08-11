@@ -120,7 +120,8 @@ char *get_output_redirection_file(char **args);
 char *get_append_to_file(char **args);
 
 // ----------------------------------------------
-
+void    setup_signal_handlers();
+void    set_lists(t_all *all, char **env);
 void    exec_piped_built_ins(t_all *all, int pipes[2]);
 void    heredoc_check(t_all *all);
 t_exp   *new_exp_(t_env *env);
@@ -143,7 +144,7 @@ t_env   *create_env_list(char **env);
 size_t	ft_strlen(char *s);
 void    ft_echo(char **str, int fd);
 char    *heredoc(char *heredoc_str, int fd);
-void execution(t_all *all, char *envp[]);
+void execution(t_all **all, char *envp[]);
 int match_word(char *neadle, char *str);
 
 #endif
