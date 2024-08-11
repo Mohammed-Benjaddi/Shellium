@@ -56,7 +56,14 @@ void signal_handler(int signo) {
             }
     if (signo == SIGQUIT)
         {
-            printf("\n");
+            rl_on_new_line();
+            //exit(1);
+            // rl_on_new_line();
+        }
+    if (signo == SIGTSTP)
+        {
+            rl_on_new_line();
+            //exit(1);
             // rl_on_new_line();
         }
 }
@@ -69,7 +76,7 @@ void setup_signal_handlers()
 
     sigaction(SIGINT, &sa, NULL);
 
-    sigaction(SIGTSTP, &sa, NULL);
+     sigaction(SIGTSTP, &sa, NULL);
     sigaction(SIGQUIT, &sa, NULL);
 }
 
@@ -77,7 +84,7 @@ void setup_signal_handlers()
 
 void reset_signal_handlers() {
     signal(SIGINT, SIG_DFL);
-    // signal(SIGQUIT, SIG_DFL);
+     signal(SIGQUIT, SIG_DFL);
     // signal(SIGTSTP, SIG_DFL);
 };
 
