@@ -279,8 +279,8 @@ void execution(t_all **alll, char *envpp[])
    
 //    all->cmd = 
     // make(all, envp);
-    set_lists(all, envpp);
-    printf("------> %s\n", all->cmd->heredoc_delimiter);
+    // set_lists(all, envpp);
+    // printf("------> %s\n", all->cmd->heredoc_delimiter[0]);
    // t_env *ff = create_env_list(envp);
     
    // t_env *ff = create_env_list(envp);
@@ -294,7 +294,7 @@ void execution(t_all **alll, char *envpp[])
     int s = 0;
    // setup_signal_handlers();
     
-    heredoc_check(all);
+    // heredoc_check(all);
     if (exec_built_ins(all))
         {
             n_pipes--;

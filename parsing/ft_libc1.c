@@ -5,6 +5,7 @@ size_t ft_strlen(char *str)
   int i;
 
   i = 0;
+	// printf("here\n");
   if(!str)
     return (i);
   while (str[i])

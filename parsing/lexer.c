@@ -92,7 +92,7 @@ char **allocate_args(char *command, int *pipe_idx, int *words, int i)
     *pipe_idx = ft_strlen(command);
   *words = args_counter(command + i, *pipe_idx);
   args = (char **)malloc(sizeof(char *) * (*words + 1));
-  printf("%s ===> %d%s\n", CYAN, *words, NC);
+  // printf("%s ===> %d%s\n", CYAN, *words, NC);
   return args;
 }
 
@@ -218,7 +218,7 @@ int ft_lexer(char *command, t_all **all)
       lexer.args[lexer.j] = lexer.buffer;
       lexer.j++;
     }
-    printf("j --> %d\n", lexer.j);
+    // printf("j --> %d\n", lexer.j);
     lexer.args[lexer.j] = NULL;
     if(lexer.words)
     {

@@ -70,38 +70,38 @@ void add_to_env(t_all *all, char *new_dir)
         exit(1);
     //more checks here for SEGV
     write(2, new_dir, strlen(new_dir));
-     while (tmp != NULL)
-     {
-        if ( ft_strlen(tmp->variable) > 2 &&
-         tmp->variable[0] == 'P' && tmp->variable[1] == 'W' && tmp->variable[2] == 'D')
-         {
-            if (tmp->next != NULL)
-            {
-                 tmp2 = tmp->prev;
-                // tmp->prev->next = tmp2;
-                // tmp2->prev = tmp->prev;
+    while (tmp != NULL)
+    {
+    if ( ft_strlen(tmp->variable) > 2 &&
+        tmp->variable[0] == 'P' && tmp->variable[1] == 'W' && tmp->variable[2] == 'D')
+        {
+        if (tmp->next != NULL)
+        {
+                tmp2 = tmp->prev;
+            // tmp->prev->next = tmp2;
+            // tmp2->prev = tmp->prev;
 
-                tmp->prev->next = tmp->next;
-                tmp->next->prev = tmp->prev->next;
-                env_addback(tmp2, env_new(new_dir));
-                write(2, all->env->value, ft_strlen(all->env->value));
+            tmp->prev->next = tmp->next;
+            tmp->next->prev = tmp->prev->next;
+            env_addback(tmp2, env_new(new_dir));
+            write(2, all->env->value, ft_strlen(all->env->value));
 
-                 all->env = tmp2;
-                free(tmp);
-                return ;
-            }
-            tmp->prev->next = NULL;
-            env_addback(tmp, env_new(new_dir));
-             //write(2, tmp->value, ft_strlen(tmp->value));
-
-             all->env = tmp;
+                all->env = tmp2;
             free(tmp);
-
             return ;
-         }
-        tmp = tmp->next;
-     }
-     all->env = tmp;
+        }
+        tmp->prev->next = NULL;
+        env_addback(tmp, env_new(new_dir));
+            //write(2, tmp->value, ft_strlen(tmp->value));
+
+            all->env = tmp;
+        free(tmp);
+
+        return ;
+        }
+    tmp = tmp->next;
+    }
+    all->env = tmp;
     //  printf("hello\n\n");
     // t_env *ff = all->env;
     // while (ff != NULL)
@@ -137,9 +137,9 @@ t_env *env_new(char *new_line)
     new = (t_env *) malloc(sizeof(t_env));
     if (!new)
         exit(1);
-    new->variable = strdup(new_line);
+    new->variable = ft_strdup(new_line);
     if (*(new_line+index))
-        new->value = strdup(new_line+index);
+        new->value = ft_strdup(new_line+index);
     else
         new->value = NULL;//strdup(new_line+i);
     new->next = NULL;
@@ -230,7 +230,7 @@ t_env *create_env_list(char **envp_)
         //last = env_getlast(head);
         i++;
     }
-    printf("\t#s##n>|\n\n\n\n\n" );
+    // printf("\t#s##n>|\n\n\n\n\n" );
     i = 1;
     //  while (envp[i] != NULL)
     // {
