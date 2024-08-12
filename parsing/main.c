@@ -13,6 +13,7 @@ size_t count_commands(t_cmd *cmd)
   return counter;
 }
 
+// mon, 7:59
 int main(int ac, char **av, char **env)
 {
   t_all *all;
