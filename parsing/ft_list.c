@@ -39,30 +39,16 @@ static size_t count_valid_args(char **args)
 	return counter;
 }
 
-// char *check_arg(char *arg)
-// {
-// 	size_t i;
-
-// 	i = 0;
-// 	while(arg[i])
-// 	{
-// 		if((arg[i] == BACK_SLASH && arg[i + 1] == VAR_SIGN) || arg[i] && arg[i] == VAR_SIGN)
-// 		{
-
-// 		}
-// 	}
-// }
-
 char **ft_args_dup(char **args)
 {
 	int i;
 	int j;
 	char **result;
-	char arg;
+	char *arg;
 
 	i = 0;
 	j = 0;
-	// arg = NULL;
+	arg = NULL;
 	result = malloc(sizeof(char *) * (count_valid_args(args) + 1));
 	if(!result)
 		return NULL;
@@ -129,6 +115,10 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	new_node->full_path = get_path(new_node->cmd);
 	if(!new_node->full_path)
 	{
+		if(!ft_strcmp(new_node->cmd, "exit"))
+			exit(0);
+		else if(!ft_strcmp(new_node->cmd, "export"))
+			return new_node;
 		free_cmd(new_node);
 		return NULL;
 	}

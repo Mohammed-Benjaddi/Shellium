@@ -40,7 +40,7 @@ typedef struct s_command_line {
   char *out_file; // For output redirection (>)
   char *append_file; // For append redirection (>>)
   // char *append_from_file; // For append redirection (>>)
-  char *heredoc_delimiter; // For heredoc (<<)
+  char **heredoc_delimiter; // For heredoc (<<)
   char *heredoc_content; // Content of heredoc
   int   pipe; // 1 if this command pipes to next, 0 otherwise
   struct s_command_line *next; // Pointer to next command in pipeline
@@ -119,6 +119,13 @@ char *get_output_redirection_file(char **args);
 // char *get_append_from_file(char **args);
 char *get_append_to_file(char **args);
 
+
+
+
+// variables.c
+void check_args(t_all *all, t_cmd *cmd);
+
+
 // ----------------------------------------------
 
 void    exec_piped_built_ins(t_all *all, int pipes[2]);
@@ -143,7 +150,8 @@ t_env   *create_env_list(char **env);
 size_t	ft_strlen(char *s);
 void    ft_echo(char **str, int fd);
 char    *heredoc(char *heredoc_str, int fd);
-void execution(t_all **all, char *envp[]);
-int match_word(char *neadle, char *str);
+void    execution(t_all **all, char *envp[]);
+int     match_word(char *neadle, char *str);
+void    set_lists(t_all *all, char **env);
 
 #endif
