@@ -113,7 +113,7 @@ void heredoc_check(t_all *all)
         // if(doc->heredoc_delimiter == NULL)
         //     exit(1);
         if (doc->heredoc_delimiter != NULL)
-                doc->heredoc_content = heredoc(doc->heredoc_delimiter[0], 1);
+                doc->heredoc_content = heredoc(doc->heredoc_delimiter, 1);
         doc = doc->next;
     }
 }

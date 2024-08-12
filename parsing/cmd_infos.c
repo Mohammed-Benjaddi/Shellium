@@ -27,11 +27,11 @@ char  *get_path(char *cmd)
       // free(command);
       return path;
     }
+    // ft_free(all_paths);
     free(path);
     path = NULL;
     i++;
   }
-  ft_free(all_paths);
   return NULL;
 }
 
@@ -119,8 +119,6 @@ char *get_append_to_file(char **args)
         free(file);
         file = ft_strdup(args[i + 1]);
         // must create a file
-        fd = open(file, O_CREAT | O_WRONLY);
-          close(fd);
         fd = open(file, O_CREAT | O_RDWR);
         close(fd);
       }

@@ -3,7 +3,7 @@
 void throw_error(char *msg)
 {
   printf("%sError: %s%s\n", RED, msg, NC);
-  exit(1);
+  // exit(1);
 }
 
 int find_pipe_index(char *str)
@@ -104,6 +104,7 @@ void print_list(t_cmd *head)
     printf("%s %s %s", RED, head->append_file, NC);
     printf("%s %d %s", GREEN, head->pipe, NC);
     head = head->next;
+    printf("\n");
   }
   printf("\n-----------------------------\n");
 }
