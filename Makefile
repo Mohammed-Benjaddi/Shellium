@@ -6,7 +6,8 @@ HEADER = -I ./include/
 NAME = minishell
 
 PARSING_SRCS = ./parsing/main.c ./parsing/ft_libc1.c ./parsing/ft_split.c \
-								./parsing/ft_list.c ./parsing/lexer.c ./parsing/utils_1.c ./parsing/cmd_infos.c
+								./parsing/ft_list.c ./parsing/lexer.c ./parsing/utils_1.c ./parsing/cmd_infos.c \
+								./parsing/variables.c
 PARSING_OBJS = ${PARSING_SRCS:.c=.o}
 
 EXEC_SRCS = ./execution/execute_builtins.c ./execution/unset_vars.c \

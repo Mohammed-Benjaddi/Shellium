@@ -119,6 +119,13 @@ char *get_output_redirection_file(char **args);
 // char *get_append_from_file(char **args);
 char *get_append_to_file(char **args);
 
+
+
+
+// variables.c
+void check_args(t_all *all, t_cmd *cmd);
+
+
 // ----------------------------------------------
 
 void    exec_piped_built_ins(t_all *all, int pipes[2]);

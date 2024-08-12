@@ -275,8 +275,6 @@ void execution(t_all **alll, char *envpp[])
     all = *alll;
     full = all->cmd->full_path;
     cmd_ = all->cmd;
-    
-   
 //    all->cmd = 
     // make(all, envp);
     // set_lists(all, envpp);
