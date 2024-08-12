@@ -162,6 +162,7 @@ void	ft_lstadd_back(t_cmd **cmd, t_cmd *new)
 	current->next = new;
 }
 
+
 void    ft_lstclear(t_cmd **lst)
 {
 	t_cmd  *current;

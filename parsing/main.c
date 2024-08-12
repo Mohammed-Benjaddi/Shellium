@@ -28,7 +28,6 @@ int main(int ac, char **av, char **env)
 
   while(1)
   {
-    printf("%s-> %s", GREEN, NC);
     char *read = readline("minishell > ");
     if(!read || !ft_strlen(read))
       continue;
@@ -43,7 +42,7 @@ int main(int ac, char **av, char **env)
      execution(&all, env);
   
     // get_path(head);
-    // free(read);
+    //free(read);
     // read = NULL;
     ft_lstclear(&all->cmd);
     

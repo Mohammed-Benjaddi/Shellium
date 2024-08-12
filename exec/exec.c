@@ -56,17 +56,20 @@ void signal_handler(int signo) {
             }
     if (signo == SIGQUIT)
         {
-            rl_on_new_line();
-            //exit(1);
+            rl_redisplay();
+
+            //rl_on_new_line();
             // rl_on_new_line();
         }
     if (signo == SIGTSTP)
         {
+        
             rl_on_new_line();
             //exit(1);
             // rl_on_new_line();
         }
 }
+
 void setup_signal_handlers() 
 {
     struct sigaction sa;
@@ -193,7 +196,7 @@ void execution(t_all **alll, char *envpp[])
     int n_pipes = all->nums_of_cmds;
     int j = 1;
     int s = 0;
-    setup_signal_handlers();
+   // setup_signal_handlers();
 
     heredoc_check(all);
     if (exec_built_ins(all))
