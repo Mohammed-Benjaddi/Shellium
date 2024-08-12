@@ -24,6 +24,7 @@ char *get_str_in_quotes(char *command, int *i, char c)
 
   *i += 1;
   len = ft_strchr(command + *i, c);
+  printf("inside quotes ------> %s\n", command + *i);
   if(len == -1)
   {
     if(c == SINGLE_QUOTE)
@@ -60,7 +61,7 @@ char *get_str_without_quotes(char *command, int *i)
 
   len = find_len(command + *i, false);
   buffer = ft_substr(command, *i, len);
-
+  printf("without quotes ------> %s\n", command + *i);
   if(str_has_quotes(buffer, DOUBLE_QUOTE))
     buffer = find_and_remove(buffer, DOUBLE_QUOTE);
   else if(str_has_quotes(buffer, SINGLE_QUOTE))
