@@ -34,6 +34,7 @@ char *get_str_in_quotes(char *command, int *i, char c)
   }
   buffer = ft_substr(command + *i, 0, len);
   *i += len;
+  printf("\t\t\t\t\t --------> %s\n", buffer);
   buffer = find_and_remove(buffer, c);
   return buffer;
 }
@@ -221,6 +222,7 @@ int ft_lexer(char *command, t_all **all)
         break;
       lexer.args[lexer.j] = lexer.buffer;
       lexer.j++;
+      printf("\t\t\t\t\t\tlexer buffer: %s\n", lexer.buffer);
     }
     // printf("j --> %d\n", lexer.j);
     lexer.args[lexer.j] = NULL;

@@ -22,16 +22,19 @@ char *get_variable(t_all *all, char *str)
   // return var;
 }
 
-size_t get_varibale_len(char *str)
+size_t get_variable_len(char *str, t_all *all)
 {
-  size_t i;
+  size_t len;
+  char *var;
+  // t_env *env;
 
-  i = 0;
   if(!str)
-    return i;
-  while (str[i] && str[i] != VAR_SIGN)
-    i++;
-  return i;
+    return 0;
+  printf("getting variable value: %s\n", str);
+  var = get_variable(all, str);
+  len = ft_strlen(var);
+  free(var);
+  return len;
 }
 
 size_t ft_strlen_var(char *str)
@@ -41,6 +44,7 @@ size_t ft_strlen_var(char *str)
   i = 0;
   if(!str)
     return i;
+  // printf("noooooo\n");
   while(str[i])
   {
     if(str[i] == VAR_SIGN)
@@ -66,6 +70,33 @@ size_t count_vars(char *str)
   return counter;
 }
 
+size_t len_of_var(char *str)
+{
+  size_t i;
+  size_t len;
+
+  i = 0;
+  len = 0;
+  if(!str)
+    return len;
+  while (str[i])
+  {
+    if(str[i] == VAR_SIGN)
+    {
+      i++;
+      break;
+    }
+    i++;
+  }
+  while(str[i] && str[i] != VAR_SIGN)
+  {
+    len++;
+    i++;
+  }
+  printf("%s length returned: %zu%s\n", RED, len, NC);
+  return len;
+}
+
 char *find_variable(char *str, t_all *all)
 {
   size_t i;
@@ -73,18 +104,28 @@ char *find_variable(char *str, t_all *all)
   size_t len;
   char *fixed_arg;
   char *var;
+  size_t nums_of_vars;
 
   i = 0;
   j = 0;
-  // printf("==> str len: %zu\n", ft_strlen_var(str));
-  printf("==> nums of vars: %zu\n", count_vars(str));
-  len = ft_strlen_var(str) + get_varibale_len(str + ft_strlen_var(str) + 2);
-  while(i < count_vars(str))
-  {
+  len = 0;
+  nums_of_vars = count_vars(str);
+  // printf("==> str len: %zu\n", ft_strlen_var(str) + get_variable_len(str + ft_strlen_var(str) + 1, all));
+  // printf("==> nums of vars: %zu\n", count_vars(str));
 
+  // len = ft_strlen_var(str) + get_variable_len(str + ft_strlen_var(str) + 2);
+  while(i < nums_of_vars)
+  {
+    len += ft_strlen_var(str) + get_variable_len(str + ft_strlen_var(str) + 1, all);
+    j += len_of_var(str + j);
+    printf("-----> %zu ----- %zu\n", j, len);
+    i++;
   }
+  
+  printf("%slen: %zu%s\n", MAGENTA, len, NC);
+
   fixed_arg = malloc(len + 1);
-  printf("length allocated ---> %zu\n", len);
+  // printf("length allocated ---> %zu\n", len);
 
 
   // while(str[i])
@@ -121,7 +162,8 @@ void check_args(t_all *all, t_cmd *cmd)
     {
       if(is_var(cmd->args[i]))
       {
-        // printf("%s----------------> variable detected%s\n", GREEN, NC);
+        printf("%s----------------> variable detected%s\n", GREEN, NC);
+        // return;
         cmd->args[i] = find_variable(cmd->args[i], all);
       }
       i++;
