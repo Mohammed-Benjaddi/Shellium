@@ -212,29 +212,7 @@ char *find_variable(char *str)
 //   return  var
 // }
 
-char *handle_variables(char *str)
-{
-  size_t i;
-  char **vars;
-  char *var;
-  char *result;
 
-  i = 0;
-  vars = ft_split(str, '$');
-  result = NULL;
-  if(!str)
-    return NULL;
-  while (vars[i])
-  {
-    printf("var ---> %s\n", vars[i]);
-    // var = get_variable(vars[i]);
-    result = ft_strjoin(result, vars[i]);
-    i++;
-  }
-  printf("result: %s\n", result);
-
-  return result;
-}
 
 char *find_and_remove(char *str, char c)
 {
@@ -245,14 +223,14 @@ char *find_and_remove(char *str, char c)
 
   i = 0;
   j = 0;
-  if(c == DOUBLE_QUOTE && get_vars_length(str) > 0)
-  {
-    printf("%sis there a variable %s%s\n", RED, str, NC);
-    str = handle_variables(str);
-  }
+  // if(c == DOUBLE_QUOTE && get_vars_length(str) > 0)
+  // {
+  //   printf("%sis there a variable %s%s\n", RED, str, NC);
+  //   str = handle_variables(str);
+  // }
   // printf("---> after fixing\n");
   len = ft_strlen(str) - nums_of_chars(str, c) + 1;
-  printf("after fixing: %zu\n", len);
+  printf("after fixing: %s\n", str);
 
   res = (char *)malloc(sizeof(char) * len);
   while(str[i])

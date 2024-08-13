@@ -17,10 +17,61 @@ int find_len(char *str, bool inside_quotes)
   return ft_strlen(str);
 }
 
-char *get_str_in_quotes(char *command, int *i, char c)
+char *get_var_value(char *str, t_env *env)
+{
+  printf("%sstr to compare ---> %s%s\n", CYAN, str, NC);
+  while(env)
+  {
+    if(!ft_strcmp(str, env->variable))
+    {
+      free(str);
+      return ft_strdup(env->value);
+    }
+    env = env->next;
+  }
+  free(str);
+  return NULL;
+}
+
+char *handle_variables(char *str, t_env *env, size_t length)
+{
+  size_t i;
+  char **vars;
+  char *var;
+  char *result;
+  // char *rest;
+
+  printf("===> +length: %zu\n", length);
+  i = 0;
+  vars = ft_split(str, '$');
+  result = NULL;
+  if(!str)
+  {
+    printf("%s-------> NULL <----------%s\n", GREEN, NC);
+    return NULL;
+  }
+  while (vars[i])
+  {
+    printf("var ---> %s\n", vars[i]);
+    vars[i] = find_and_remove(vars[i], DOUBLE_QUOTE);
+    // rest = ft_substr()
+    vars[i] = get_var_value(vars[i], env);
+    // var = get_variable(vars[i]);
+    result = ft_strjoin(result, vars[i]);
+    i++;
+  }
+  printf("result: %s\n", result);
+
+  free(str);
+  str = NULL;
+  return result;
+}
+
+char *get_str_in_quotes(char *command, int *i, char c, t_env *env)
 {
   int len;
   char *buffer;
+  char *rest;
 
   *i += 1;
   len = ft_strchr(command + *i, c);
@@ -36,6 +87,33 @@ char *get_str_in_quotes(char *command, int *i, char c)
   buffer = ft_substr(command + *i, 0, len);
   *i += len;
   // printf("--------> %s\n", buffer);
+  if(c == DOUBLE_QUOTE && get_vars_length(buffer) > 0)
+  {
+    printf("%sis there a variable %s%s\n", RED, buffer, NC);
+    rest = ft_strdup(buffer + get_vars_length(buffer) + 1);
+    // if(!ft_strlen(rest))
+    // {
+    //   printf("rest of buffer ---> %zu\n", ft_strlen(rest));
+    //   free(rest);
+    // }
+    buffer = ft_substr(buffer, 0, get_vars_length(buffer));
+    buffer = handle_variables(buffer, env, get_vars_length(buffer));
+    // if(!buffer)
+    // {
+    //   throw_error("Something went wrong");
+    //   exit(1);
+    // }
+    if(!ft_strlen(rest))
+    {
+      printf("rest of buffer ---> %zu\n", ft_strlen(rest));
+      free(rest);
+    }
+    else
+    {
+      buffer = ft_strjoin(buffer, rest);
+    }
+  }
+
   buffer = find_and_remove(buffer, c);
   return buffer;
 }
@@ -212,9 +290,9 @@ int ft_lexer(char *command, t_all **all)
       while (command[lexer.i] && ft_isspace(command[lexer.i]))
         lexer.i++;
       if(command[lexer.i] == '\'')
-        lexer.buffer = get_str_in_quotes(command, &lexer.i, SINGLE_QUOTE);
+        lexer.buffer = get_str_in_quotes(command, &lexer.i, SINGLE_QUOTE, NULL);
       else if(command[lexer.i] == '\"')
-        lexer.buffer = get_str_in_quotes(command, &lexer.i, DOUBLE_QUOTE);
+        lexer.buffer = get_str_in_quotes(command, &lexer.i, DOUBLE_QUOTE, (*all)->env);
       else
         lexer.buffer = get_str_without_quotes(command, &lexer.i);
       if(lexer.buffer == NULL || full_of_spaces(lexer.buffer))
