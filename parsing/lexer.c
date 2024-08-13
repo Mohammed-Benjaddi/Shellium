@@ -24,7 +24,7 @@ char *get_str_in_quotes(char *command, int *i, char c)
 
   *i += 1;
   len = ft_strchr(command + *i, c);
-  printf("inside quotes ------> %s\n", command + *i);
+  // printf("inside quotes ------> %s\n", command + *i);
   if(len == -1)
   {
     if(c == SINGLE_QUOTE)
@@ -35,7 +35,7 @@ char *get_str_in_quotes(char *command, int *i, char c)
   }
   buffer = ft_substr(command + *i, 0, len);
   *i += len;
-  printf("\t\t\t\t\t --------> %s\n", buffer);
+  // printf("--------> %s\n", buffer);
   buffer = find_and_remove(buffer, c);
   return buffer;
 }
@@ -61,7 +61,7 @@ char *get_str_without_quotes(char *command, int *i)
 
   len = find_len(command + *i, false);
   buffer = ft_substr(command, *i, len);
-  printf("without quotes ------> %s\n", command + *i);
+  // printf("without quotes ------> %s\n", command + *i);
   if(str_has_quotes(buffer, DOUBLE_QUOTE))
     buffer = find_and_remove(buffer, DOUBLE_QUOTE);
   else if(str_has_quotes(buffer, SINGLE_QUOTE))
@@ -223,7 +223,7 @@ int ft_lexer(char *command, t_all **all)
         break;
       lexer.args[lexer.j] = lexer.buffer;
       lexer.j++;
-      printf("\t\t\t\t\t\tlexer buffer: %s\n", lexer.buffer);
+      // printf("\t\t\t\t\t\tlexer buffer: %s\n", lexer.buffer);
     }
     // printf("j --> %d\n", lexer.j);
     lexer.args[lexer.j] = NULL;

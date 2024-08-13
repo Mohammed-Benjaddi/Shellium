@@ -230,13 +230,15 @@ void set_lists(t_all *all, char **env)
     char **envp;
 
     i = 0;
+    if(!env)
+        return;
     while (env[i])
-        i++
-        ;
+        i++;
     envp = (char **) malloc(sizeof(char *) * i);
     if (!envp)
         exit(1);
-    envp[i]  = NULL;
+    
+    // envp[i]  = NULL;
     
     i = 0;
     while (env[i])
@@ -244,8 +246,11 @@ void set_lists(t_all *all, char **env)
         envp[i] = strdup(env[i]);
         i++;
     }
+    envp[i] = NULL;
+
     all->env = create_env_list(envp);
     all->exp = set_export_list(all, envp);
+    
 }
 void redirect_in_out_to_pipe(int n_pipes, int index, int pipe[],int *pr_fd)
 {

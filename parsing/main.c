@@ -23,7 +23,10 @@ int main(int ac, char **av, char **env)
   // all->nums_of_cmds = 1;
   // ft_init(shell);
   using_history();
+  // printf("========\n");
+
   set_lists(all, env);
+
   while(1)
   {
     printf("%s-> %s", GREEN, NC);
@@ -31,6 +34,7 @@ int main(int ac, char **av, char **env)
     if(!read || !ft_strlen(read))
       continue;
     add_history(read);
+    // set_lists(all, env);
     if(!ft_lexer(read, &all))
       continue;
     // check_args(all, all->cmd);
