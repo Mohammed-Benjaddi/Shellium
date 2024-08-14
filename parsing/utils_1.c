@@ -100,7 +100,7 @@ void print_list(t_cmd *head)
     }
     printf("%s %s %s", CYAN, head->full_path, NC);
     printf("%s %s %s", RED, head->in_file, NC);
-    printf("%s %s %s", RED, head->out_file, NC);
+    printf("%s %s %s", GREEN, head->out_file, NC);
     printf("%s %s %s", RED, head->append_file, NC);
     printf("%s %d %s", GREEN, head->pipe, NC);
     head = head->next;
@@ -144,6 +144,77 @@ void skip_reds(char *str, int *i, char c)
     throw_error("parse error");
 }
 
+size_t get_vars_length(char *str)
+{
+  size_t i;
+  size_t length;
+
+  i = 0;
+  length = 0;
+  if(!str)
+    return length;
+  while(str[i])
+  {
+    while(str[i] && ft_isspace(str[i]))
+        i++;
+    if(str[i] == VAR_SIGN && str[i - 1] != BACK_SLASH)
+    {
+      while(str[i] && str[i] != DOUBLE_QUOTE)
+      {
+        i++;
+        length++;
+      }
+    }
+    i++;
+  }
+  return length;
+}
+
+char *find_variable(char *str)
+{
+  size_t i;
+  size_t j;
+  char *vars;
+
+  i = 0;
+  j = 0;
+  if(!str)
+    return NULL;
+  // printf("%slength of variable is %zu%s\n", MAGENTA, , NC);
+  vars = malloc(sizeof(char) * (get_vars_length(str) + 1));
+  while(str[i])
+  {
+    while(str[i] && ft_isspace(str[i]))
+        i++;
+    if(str[i] == VAR_SIGN && str[i - 1] != BACK_SLASH)
+    {
+      while(str[i] && str[i] != DOUBLE_QUOTE)
+      {
+        vars[j++] = str[i];
+        i++;
+      }
+    }
+    i++;
+  }
+  printf("%sall vars: %s%s\n", YELLOW, vars, NC);
+  return vars;
+}
+
+// char *get_variable(char *str)
+// {
+//   size_t i;
+//   char var;
+
+//   i = 0;
+//   while()
+//   {
+
+//   }
+//   return  var
+// }
+
+
+
 char *find_and_remove(char *str, char c)
 {
   int i;
@@ -153,7 +224,15 @@ char *find_and_remove(char *str, char c)
 
   i = 0;
   j = 0;
+  // if(c == DOUBLE_QUOTE && get_vars_length(str) > 0)
+  // {
+  //   printf("%sis there a variable %s%s\n", RED, str, NC);
+  //   str = handle_variables(str);
+  // }
+  // printf("---> after fixing\n");
   len = ft_strlen(str) - nums_of_chars(str, c) + 1;
+  printf("after fixing: %s\n", str);
+
   res = (char *)malloc(sizeof(char) * len);
   while(str[i])
   {

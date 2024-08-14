@@ -196,22 +196,28 @@ int get_sign_index(char *line)
     }
     return (index);
 }
-t_env *create_env_list(char **envp_)
+t_env *create_env_list(char **envp)
 {
     int i;
     t_env *head;
-    char **envp;
+    // char **envp;
     t_env *last;
     i = 1;
-    envp = envp_;
+    // envp = envp_;
     head = env_new(envp[0]);
 
+    // printf();
     while (envp[i] != NULL)
     {
         env_addback(head,env_new(envp[i]));
+
         //last = env_getlast(head);
         i++;
     }
+    
+    // printf("-----------------\n");
+
+    // printf("\t#s##n>|\n\n\n\n\n" );
     i = 1;
     //  while (envp[i] != NULL)
     // {

@@ -119,8 +119,10 @@ char *get_append_to_file(char **args)
         free(file);
         file = ft_strdup(args[i + 1]);
         // must create a file
-        fd = open(file, O_CREAT | O_RDWR);
-        close(fd);
+        fd = open(file, O_CREAT | O_WRONLY);
+          close(fd);
+        // fd = open(file, O_CREAT | O_RDWR);
+        // close(fd);
       }
     }
     i++;
