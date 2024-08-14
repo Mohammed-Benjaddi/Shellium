@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-
 size_t count_commands(t_cmd *cmd)
 {
   size_t counter;
@@ -25,13 +24,16 @@ int main(int ac, char **av, char **env)
   // ft_init(shell);
   using_history();
   // printf("========\n");
-
+setup_signal_handlers() ;
   set_lists(all, env);
 
   while(1)
   {
     char *read = readline("minishell > ");
-    if(!read || !ft_strlen(read))
+    if(!read)
+      exit(0);
+    
+    if (!ft_strlen(read))
       continue;
     add_history(read);
     // set_lists(all, env);
@@ -39,17 +41,8 @@ int main(int ac, char **av, char **env)
       continue;
     print_list(all->cmd);
     all->nums_of_cmds = count_commands(all->cmd);
-    // printf("there is %zu pipes\n", all->nums_of_cmds);
-    // all->nums_of_cmds = cmds_counter(all->cmd);
-     
-     execution(&all, env);
-  
-    // get_path(head);
-    //free(read);
-    // read = NULL;
+    execution(&all, env);
     ft_lstclear(&all->cmd);
-    
-    // system("leaks minishell");
   }
   return 0;
 }
