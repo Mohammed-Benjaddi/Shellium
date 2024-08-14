@@ -7,7 +7,6 @@ void ft_write(char *str, int fd)
         return ;
     if (write(fd, str, ft_strlen(str)) == -1)
         {
-            //error
             write(2, "error\n", 7);
             exit(1);
         }
@@ -19,12 +18,13 @@ void ft_echo(char **str, int fd)
 
     flag = 0;
     i = 0;
+
     if (*str == NULL)
-        exit(1);
+        ft_write("\n", fd);
     if (match_word("-n", *str))
         {
             if (str[1] == NULL)
-                exit(1);
+                return ;
             flag = 1;
             i++;
     }
@@ -51,62 +51,9 @@ void ft_pwd(t_all *all)
         write(2,"error\n", 6);
         exit(1);
     }
-    // if (all->cmd->pipe == 1)
-    //     {
-    //         ft_write(ret,STDOUT_FILENO );
-    //         ft_write("\n", STDOUT_FILENO);
-    //     }
-    // else    
-        ft_write(ret, STDOUT_FILENO);
-
+    ft_write(ret, STDOUT_FILENO);
 }
-void add_to_env(t_all *all, char *new_dir)
-{
-    t_env *tmp;
-    t_env *tmp2;
-    t_all *al;
 
-    tmp = all->env;
-    if (new_dir == NULL)
-        exit(1);
-    //more checks here for SEGV
-     while (tmp != NULL)
-     {
-        if ( ft_strlen(tmp->variable) > 2 &&
-         tmp->variable[0] == 'P' && tmp->variable[1] == 'W' && tmp->variable[2] == 'D')
-         {
-            if (tmp->next != NULL)
-            {
-                tmp->value = ft_strdup(new_dir);
-                return;
-            }
-            al->env->prev->next = NULL;
-            env_addback(al->env, env_new(new_dir));
-             //write(2, tmp->value, ft_strlen(tmp->value));
-
-            // all->env = tmp;
-            ////free(tmp);
-
-            return ;
-         }
-        tmp = tmp->next;
-     }
-     
-}
-void change_dir(t_all *all, char *new_dir)
-{
-    char buff[1024];
-    if (all->cmd->pipe || chdir(new_dir) == -1) 
-        {
-            ft_write( "bash: cd: ", 2);
-            ft_write(new_dir, 2);
-            ft_write(": No such file or directory\n", 2);
-            exit(1);
-        }
-    add_to_env(all, getcwd(buff, 1024));
-    
-
-}
 t_env *env_new(char *new_line)
 {
     t_env *new;
@@ -119,7 +66,7 @@ t_env *env_new(char *new_line)
     
     new = (t_env *) malloc(sizeof(t_env));
     if (!new)
-        exit(1);
+        return (NULL);
     new->variable = strdup(new_line);
     if (*(new_line+index))
         new->value = strdup(new_line+index);
@@ -201,26 +148,19 @@ t_env *create_env_list(char **envp_)
     int i;
     t_env *head;
     char **envp;
-    t_env *last;
+    t_env *new;
     i = 1;
     envp = envp_;
     head = env_new(envp[0]);
 
     while (envp[i] != NULL)
     {
-        env_addback(head,env_new(envp[i]));
-        //last = env_getlast(head);
+        new = env_new(envp[i]);
+        if (new == NULL)
+            return (NULL);
+        env_addback(head,new);
         i++;
     }
-    i = 1;
-    //  while (envp[i] != NULL)
-    // {
-    //  //   printf("\t{{{{%s}}}}\n", envp[i]);
-    //     //env_addback(head,env_new(envp[i]));
-    //     //last = env_getlast(head);
-    //     i++;
-    // }
-   
     return (head);
 }
 // int main(int argc, char **argv, c har *envp[])
