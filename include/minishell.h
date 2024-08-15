@@ -128,6 +128,9 @@ char *get_append_to_file(char **args);
 
 
 // ----------------------------------------------
+void    heredoc_pipe(t_all *all);
+void    redirect_in_out_to_pipe(int n_pipes, int index, int pipe[],int *pr_fd, t_all *all);
+void    redirections_set(t_all *all);
 void    change_dir(t_all *all, char *new_dir);
 void    reset_signal_handlers() ;
 void    signal_handler(int signo);
@@ -144,7 +147,7 @@ t_exp   *new_exp_(t_env *env);
 int     spliter_index(char *str);
 t_exp   *exp_new(char *new_line);// not used
 void    exp_addback(t_exp    *head, t_exp    *);
-t_exp   *set_export_list(t_all *all, char **env);
+t_exp   *set_export_list(t_all *all);
 void    identifier_error(char *indentifer);
 void    ft_write(char *str, int fd);
 void    change_dir(t_all *all, char *new_dir);

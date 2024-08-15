@@ -31,8 +31,10 @@ setup_signal_handlers() ;
   {
     char *read = readline("minishell > ");
     if(!read)
-      exit(0);
-    
+      {
+        env_exp_lists_clear(all);
+        exit(0);
+      }
     if (!ft_strlen(read))
       continue;
     add_history(read);
