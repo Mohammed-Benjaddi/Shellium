@@ -107,6 +107,19 @@ void free_cmd(t_cmd *cmd)
 	cmd = NULL;
 }
 
+bool is_builtin(char *cmd)
+{
+	if(!ft_strcmp(cmd, "export"))
+		return true;
+	else if(!ft_strcmp(cmd, "unset"))
+		return true;
+	// else if(!ft_strcmp(cmd, "unset"))
+	// 	return true;
+	// else if(!ft_strcmp(cmd, "unset"))
+	// 	return true;
+	return false;
+}
+
 t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 {
 	t_cmd	*new_node;
@@ -129,6 +142,14 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	new_node->full_path = get_path(new_node->cmd);
 	if(!new_node->full_path)
 	{
+<<<<<<< HEAD
+=======
+		if(!ft_strcmp(new_node->cmd, "exit"))
+			exit(0);
+		// if(!is_builtin(new_node->cmd) && !is_path(new_node->cmd))
+		if(is_builtin(new_node->cmd))
+			return new_node;
+>>>>>>> 4db389a0f3949117358367c43f5d39639dad3870
 		free_cmd(new_node);
 		return NULL;
 	}

@@ -34,7 +34,7 @@ int main(int ac, char **av, char **env)
     if(!read || !ft_strlen(read))
       continue;
     add_history(read);
-    // set_lists(all, env);
+    // set_lists(all, env);/
     if(!ft_lexer(read, &all))
       continue;
     print_list(all->cmd);

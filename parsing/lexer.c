@@ -17,11 +17,43 @@ int find_len(char *str, bool inside_quotes)
   return ft_strlen(str);
 }
 
+char *ft_strtok(char *str)
+{
+  size_t i;
+  size_t j;
+  size_t len;
+  char *result;
+
+  i = 0;
+  j = 0;
+  len = ft_strlen(str);
+  printf("len : %zu\n", len);
+  if(!str)
+    return NULL;
+  while(str[i] && ft_isspace(str[i]))
+    i++;
+  while(str[len - 1] && ft_isspace(str[len - 1]))
+    len--;
+  result = malloc((len - i) + 1);
+  while(i < len)
+    result[j++] = str[i++];
+  result[j] = '\0';
+  printf("%sft_strtok:%s---> %zu%s\n", MAGENTA, result, ft_strlen(result), NC);
+  free(str);
+  return result;
+}
+
 char *get_var_value(char *str, t_env *env)
 {
-  printf("%sstr to compare ---> %s%s\n", CYAN, str, NC);
+  // printf("%sstr to compare ---> %c%s\n", CYAN, str[4], NC);
+  str = ft_strtok(str);
+  if(str[4] == ' ')
+    printf("space\n");
+  else if(str[4] == '\0')
+    printf("backslash\n");
   while(env)
   {
+    // printf("%s ---> variable : %s%s\n", RED, env->variable, NC);
     if(!ft_strcmp(str, env->variable))
     {
       free(str);
@@ -30,6 +62,7 @@ char *get_var_value(char *str, t_env *env)
     env = env->next;
   }
   free(str);
+  printf("this will return null\n");
   return NULL;
 }
 
@@ -56,11 +89,12 @@ char *handle_variables(char *str, t_env *env, size_t length)
     vars[i] = find_and_remove(vars[i], DOUBLE_QUOTE);
     // rest = ft_substr()
     vars[i] = get_var_value(vars[i], env);
+    printf("after getting value: %s\n", vars[i]);
     // var = get_variable(vars[i]);
     result = ft_strjoin(result, vars[i]);
+    printf("result: %s\n", result);
     i++;
   }
-  printf("result: %s\n", result);
 
   free(str);
   str = NULL;
@@ -72,10 +106,10 @@ char *get_str_in_quotes(char *command, int *i, char c, t_env *env)
   int len;
   char *buffer;
   char *rest;
+  char *var_value;
 
   *i += 1;
   len = ft_strchr(command + *i, c);
-  // printf("inside quotes ------> %s\n", command + *i);
   if(len == -1)
   {
     if(c == SINGLE_QUOTE)
@@ -86,35 +120,25 @@ char *get_str_in_quotes(char *command, int *i, char c, t_env *env)
   }
   buffer = ft_substr(command + *i, 0, len);
   *i += len;
-  // printf("--------> %s\n", buffer);
   if(c == DOUBLE_QUOTE && get_vars_length(buffer) > 0)
   {
-    printf("%sis there a variable %s%s\n", RED, buffer, NC);
-    rest = ft_strdup(buffer + get_vars_length(buffer) + 1);
-    // if(!ft_strlen(rest))
-    // {
-    //   printf("rest of buffer ---> %zu\n", ft_strlen(rest));
-    //   free(rest);
-    // }
-    buffer = ft_substr(buffer, 0, get_vars_length(buffer));
-    buffer = handle_variables(buffer, env, get_vars_length(buffer));
-    // if(!buffer)
-    // {
-    //   throw_error("Something went wrong");
-    //   exit(1);
-    // }
-    if(!ft_strlen(rest))
-    {
-      printf("rest of buffer ---> %zu\n", ft_strlen(rest));
-      free(rest);
-    }
-    else
-    {
-      buffer = ft_strjoin(buffer, rest);
-    }
+      printf("---------> buffer : %s\n", buffer);
+      printf("%sis there a variable %s%s\n", RED, buffer, NC);
+      // rest = ft_strdup(buffer + get_vars_length(buffer) + 1);
+      // printf("rest of buffer ---> %s\n", rest);
+      var_value = ft_substr(buffer, 0, get_vars_length(buffer));
+      buffer = handle_variables(buffer, env, get_vars_length(buffer));
+      
+      // if(!ft_strlen(rest))
+      // {
+      //   printf("len is zero\n");
+      //   free(rest);
+      // }
   }
 
+  printf("%sbefore find and remove%s\n", YELLOW, NC);
   buffer = find_and_remove(buffer, c);
+  printf("%safter find and remove%s\n", YELLOW, NC);
   return buffer;
 }
 
