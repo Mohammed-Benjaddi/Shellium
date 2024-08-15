@@ -72,6 +72,7 @@ char *get_str_in_quotes(char *command, int *i, char c, t_env *env)
   int len;
   char *buffer;
   char *rest;
+  char *var_value;
 
   *i += 1;
   len = ft_strchr(command + *i, c);
@@ -89,28 +90,27 @@ char *get_str_in_quotes(char *command, int *i, char c, t_env *env)
   // printf("--------> %s\n", buffer);
   if(c == DOUBLE_QUOTE && get_vars_length(buffer) > 0)
   {
-    printf("%sis there a variable %s%s\n", RED, buffer, NC);
-    rest = ft_strdup(buffer + get_vars_length(buffer) + 1);
-    // if(!ft_strlen(rest))
-    // {
-    //   printf("rest of buffer ---> %zu\n", ft_strlen(rest));
-    //   free(rest);
-    // }
-    buffer = ft_substr(buffer, 0, get_vars_length(buffer));
-    buffer = handle_variables(buffer, env, get_vars_length(buffer));
-    // if(!buffer)
-    // {
-    //   throw_error("Something went wrong");
-    //   exit(1);
-    // }
-    if(!ft_strlen(rest))
+    int j = 0;
+    while(j != 3)
     {
-      printf("rest of buffer ---> %zu\n", ft_strlen(rest));
-      free(rest);
-    }
-    else
-    {
-      buffer = ft_strjoin(buffer, rest);
+      printf("---------> buffer : %s\n", buffer);
+      printf("%sis there a variable %s%s\n", RED, buffer, NC);
+      rest = ft_strdup(buffer + get_vars_length(buffer) + 1);
+      printf("rest of buffer ---> %s\n", rest);
+      var_value = ft_substr(buffer, 0, get_vars_length(buffer));
+      buffer = handle_variables(buffer, env, get_vars_length(buffer));
+      if(!ft_strlen(rest))
+      {
+        printf("len is zero\n");
+        free(rest);
+        break;
+      }
+      else
+      {
+        printf("buffer before: %s\n", buffer);
+        buffer = ft_strjoin(buffer, rest);
+      }
+      j++;
     }
   }
 

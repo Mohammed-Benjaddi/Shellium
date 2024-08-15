@@ -163,6 +163,7 @@ size_t get_vars_length(char *str)
         i++;
         length++;
       }
+      break;
     }
     i++;
   }
