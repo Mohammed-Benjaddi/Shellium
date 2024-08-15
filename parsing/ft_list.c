@@ -93,6 +93,18 @@ void free_cmd(t_cmd *cmd)
 	cmd = NULL;
 }
 
+bool is_builtin(char *cmd)
+{
+	if(!ft_strcmp(cmd, "export"))
+		return true;
+	else if(!ft_strcmp(cmd, "unset"))
+		return true;
+	// else if(!ft_strcmp(cmd, "unset"))
+	// 	return true;
+	// else if(!ft_strcmp(cmd, "unset"))
+	// 	return true;
+}
+
 t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 {
 	t_cmd	*new_node;
@@ -117,7 +129,8 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	{
 		if(!ft_strcmp(new_node->cmd, "exit"))
 			exit(0);
-		else if(!ft_strcmp(new_node->cmd, "export"))
+		// if(!is_builtin(new_node->cmd) && !is_path(new_node->cmd))
+		if(is_builtin(new_node->cmd))
 			return new_node;
 		free_cmd(new_node);
 		return NULL;

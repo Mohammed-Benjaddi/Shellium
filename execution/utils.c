@@ -64,52 +64,34 @@ void add_to_env(t_all *all, char *new_dir)
 {
     t_env *tmp;
     t_env *tmp2;
-    t_cmd *tmp_to_del;
+    t_all *al;
+
     tmp = all->env;
     if (new_dir == NULL)
         exit(1);
     //more checks here for SEGV
-    write(2, new_dir, strlen(new_dir));
-    while (tmp != NULL)
-    {
-    if ( ft_strlen(tmp->variable) > 2 &&
-        tmp->variable[0] == 'P' && tmp->variable[1] == 'W' && tmp->variable[2] == 'D')
-        {
-        if (tmp->next != NULL)
-        {
-                tmp2 = tmp->prev;
-            // tmp->prev->next = tmp2;
-            // tmp2->prev = tmp->prev;
+     while (tmp != NULL)
+     {
+        if ( ft_strlen(tmp->variable) > 2 &&
+         tmp->variable[0] == 'P' && tmp->variable[1] == 'W' && tmp->variable[2] == 'D')
+         {
+            if (tmp->next != NULL)
+            {
+                tmp->value = ft_strdup(new_dir);
+                return;
+            }
+            al->env->prev->next = NULL;
+            env_addback(al->env, env_new(new_dir));
+             //write(2, tmp->value, ft_strlen(tmp->value));
 
-            tmp->prev->next = tmp->next;
-            tmp->next->prev = tmp->prev->next;
-            env_addback(tmp2, env_new(new_dir));
-            write(2, all->env->value, ft_strlen(all->env->value));
+            // all->env = tmp;
+            ////free(tmp);
 
-                all->env = tmp2;
-            free(tmp);
             return ;
-        }
-        tmp->prev->next = NULL;
-        env_addback(tmp, env_new(new_dir));
-            //write(2, tmp->value, ft_strlen(tmp->value));
-
-            all->env = tmp;
-        free(tmp);
-
-        return ;
-        }
-    tmp = tmp->next;
-    }
-    all->env = tmp;
-    //  printf("hello\n\n");
-    // t_env *ff = all->env;
-    // while (ff != NULL)
-    // {
-    //     write(2, ff->value, ft_strlen(ff->value));
-    //     write(2, "\n", 1);
-    //     ff = ff->next;
-    // }
+         }
+        tmp = tmp->next;
+     }
+     
 }
 void change_dir(t_all *all, char *new_dir)
 {
@@ -122,6 +104,8 @@ void change_dir(t_all *all, char *new_dir)
             exit(1);
         }
     add_to_env(all, getcwd(buff, 1024));
+    
+
 }
 t_env *env_new(char *new_line)
 {
@@ -129,7 +113,6 @@ t_env *env_new(char *new_line)
     int index;
     // if (new_line == NULL)
     //     return NULL;
-
     index = spliter_index(new_line);
         //printf("|s@%s~~|\n\n", new_line+i);
     //else
@@ -137,9 +120,9 @@ t_env *env_new(char *new_line)
     new = (t_env *) malloc(sizeof(t_env));
     if (!new)
         exit(1);
-    new->variable = ft_strdup(new_line);
+    new->variable = strdup(new_line);
     if (*(new_line+index))
-        new->value = ft_strdup(new_line+index);
+        new->value = strdup(new_line+index);
     else
         new->value = NULL;//strdup(new_line+i);
     new->next = NULL;
@@ -184,7 +167,6 @@ void env_addback(t_env *head, t_env *new)
     t_env *tmp;
     if(new == NULL)
         write(2 ,"\n&&\n\n\n", 6);
-        
         // write(2 ,new->value, 10);
         // write(2 ,"\n\n", 2);
 
@@ -214,28 +196,22 @@ int get_sign_index(char *line)
     }
     return (index);
 }
-t_env *create_env_list(char **envp)
+t_env *create_env_list(char **envp_)
 {
     int i;
     t_env *head;
-    // char **envp;
+    char **envp;
     t_env *last;
     i = 1;
-    // envp = envp_;
+    envp = envp_;
     head = env_new(envp[0]);
 
-    // printf();
     while (envp[i] != NULL)
     {
         env_addback(head,env_new(envp[i]));
-
         //last = env_getlast(head);
         i++;
     }
-    
-    // printf("-----------------\n");
-
-    // printf("\t#s##n>|\n\n\n\n\n" );
     i = 1;
     //  while (envp[i] != NULL)
     // {
