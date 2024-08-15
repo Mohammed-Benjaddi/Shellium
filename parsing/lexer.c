@@ -30,6 +30,7 @@ char *get_var_value(char *str, t_env *env)
     env = env->next;
   }
   free(str);
+  printf("this will return null\n");
   return NULL;
 }
 
@@ -58,9 +59,9 @@ char *handle_variables(char *str, t_env *env, size_t length)
     vars[i] = get_var_value(vars[i], env);
     // var = get_variable(vars[i]);
     result = ft_strjoin(result, vars[i]);
+    printf("result: %s\n", result);
     i++;
   }
-  printf("result: %s\n", result);
 
   free(str);
   str = NULL;
@@ -76,7 +77,6 @@ char *get_str_in_quotes(char *command, int *i, char c, t_env *env)
 
   *i += 1;
   len = ft_strchr(command + *i, c);
-  // printf("inside quotes ------> %s\n", command + *i);
   if(len == -1)
   {
     if(c == SINGLE_QUOTE)
@@ -87,31 +87,19 @@ char *get_str_in_quotes(char *command, int *i, char c, t_env *env)
   }
   buffer = ft_substr(command + *i, 0, len);
   *i += len;
-  // printf("--------> %s\n", buffer);
   if(c == DOUBLE_QUOTE && get_vars_length(buffer) > 0)
   {
-    int j = 0;
-    while(j != 3)
-    {
       printf("---------> buffer : %s\n", buffer);
       printf("%sis there a variable %s%s\n", RED, buffer, NC);
-      rest = ft_strdup(buffer + get_vars_length(buffer) + 1);
-      printf("rest of buffer ---> %s\n", rest);
+      // rest = ft_strdup(buffer + get_vars_length(buffer) + 1);
+      // printf("rest of buffer ---> %s\n", rest);
       var_value = ft_substr(buffer, 0, get_vars_length(buffer));
       buffer = handle_variables(buffer, env, get_vars_length(buffer));
-      if(!ft_strlen(rest))
-      {
-        printf("len is zero\n");
-        free(rest);
-        break;
-      }
-      else
-      {
-        printf("buffer before: %s\n", buffer);
-        buffer = ft_strjoin(buffer, rest);
-      }
-      j++;
-    }
+      // if(!ft_strlen(rest))
+      // {
+      //   printf("len is zero\n");
+      //   free(rest);
+      // }
   }
 
   buffer = find_and_remove(buffer, c);

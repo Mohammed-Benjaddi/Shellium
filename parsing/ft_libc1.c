@@ -64,6 +64,8 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
+	printf("s1: %s\n", s1);
+	printf("s2: %s\n", s2);
 	if(!s1)
 		return ft_strdup(s2);
 	res = (char *)malloc(s1_len + s2_len + 1);
