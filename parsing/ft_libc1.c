@@ -5,6 +5,7 @@ size_t ft_strlen(char *str)
   int i;
 
   i = 0;
+	// printf("here\n");
   if(!str)
     return (i);
   while (str[i])
@@ -169,7 +170,7 @@ int ft_strchr(char *str, char c)
 		// if(!in_quotes && is_symbol(str[i]))
 		if(!in_quotes && (str[i] == SPACE || str[i] == PIPE))
 		{
-			printf("-------> here\n");
+			// printf("-------> here\n");
 			return i;
 		}
 		if(str[i] == c)

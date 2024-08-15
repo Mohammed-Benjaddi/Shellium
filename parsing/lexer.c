@@ -95,7 +95,6 @@ char *handle_variables(char *str, t_env *env, size_t length)
     printf("result: %s\n", result);
     i++;
   }
-
   free(str);
   str = NULL;
   return result;
@@ -127,6 +126,7 @@ char *get_str_in_quotes(char *command, int *i, char c, t_env *env)
       // rest = ft_strdup(buffer + get_vars_length(buffer) + 1);
       // printf("rest of buffer ---> %s\n", rest);
       var_value = ft_substr(buffer, 0, get_vars_length(buffer));
+      printf("%s before handle variable: %s%s\n", CYAN, var_value, NC);
       buffer = handle_variables(buffer, env, get_vars_length(buffer));
       
       // if(!ft_strlen(rest))
@@ -172,7 +172,7 @@ char *get_str_without_quotes(char *command, int *i)
   return buffer;
 }
 
-void create_cmd(t_cmd **head, char **args, int words, int is_pipe)
+int create_cmd(t_cmd **head, char **args, int words, int is_pipe)
 {
   t_cmd *cmd;
 
@@ -181,10 +181,11 @@ void create_cmd(t_cmd **head, char **args, int words, int is_pipe)
   {
     printf("%scommand not found%s\n", RED, NC);
     ft_free(args);
-    return;
+    return 0;
   }
   ft_lstadd_back(head, cmd);
   ft_free(args);
+  return 1;
 }
 
 char **allocate_args(char *command, int *pipe_idx, int *words, int i)
@@ -196,7 +197,10 @@ char **allocate_args(char *command, int *pipe_idx, int *words, int i)
     *pipe_idx = ft_strlen(command);
   *words = args_counter(command + i, *pipe_idx);
   args = (char **)malloc(sizeof(char *) * (*words + 1));
-  printf("%s ===> %d%s\n", CYAN, *words, NC);
+  // printf("words ------> %d\n", *words);
+  if(!args)
+    return NULL;
+  // printf("%s ===> %d%s\n", CYAN, *words, NC);
   return args;
 }
 
@@ -323,17 +327,21 @@ int ft_lexer(char *command, t_all **all)
       lexer.j++;
       // printf("\t\t\t\t\t\tlexer buffer: %s\n", lexer.buffer);
     }
-    printf("j --> %d\n", lexer.j);
+    // printf("j --> %d\n", lexer.j);
     lexer.args[lexer.j] = NULL;
     if(lexer.words)
     {
       if(is_pipe_after(command + lexer.i))
         lexer.pipe = 1;
-      create_cmd(&(*all)->cmd, lexer.args, lexer.words, lexer.pipe);
+      if (!create_cmd(&(*all)->cmd, lexer.args, lexer.words, lexer.pipe))
+        return 0;
     }
+    else
+      ft_free(lexer.args);
+      // printf("%s ---> <--- %s\n", GREEN, NC);
     lexer.i++;
     // if(lexer.args != NULL)
-    //   ft_free(lexer.args);
+      // ft_free(lexer.args);
   }
   free(command);
   command = NULL;

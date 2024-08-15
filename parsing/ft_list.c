@@ -8,16 +8,18 @@
 //   shell->state = NORMAL;
 // }
 
-static bool is_redirection(char *str)
+static int is_redirection(char *str, char *next)
 {
-	if(!ft_strcmp(str, ">"))
-		return true;
-	else if(!ft_strcmp(str, ">>"))
-		return true;
-	else if(!ft_strcmp(str, "<"))
-		return true;
+	if(!ft_strcmp(str, ">") && ft_strcmp(next, ">"))
+		return 2;
+	else if(!ft_strcmp(str, ">") && !ft_strcmp(next, ">"))
+		return 3;
+	else if(!ft_strcmp(str, "<") && ft_strcmp(next, "<"))
+		return 2;
+	else if(!ft_strcmp(str, "<") && !ft_strcmp(next, "<"))
+		return 2;
 	else
-		return false;
+		return 0;
 }
 
 static size_t count_valid_args(char **args)
@@ -29,8 +31,8 @@ static size_t count_valid_args(char **args)
 	counter = 0;
 	while(args[i])
 	{
-		while(args[i] && is_redirection(args[i]))
-			i += 2;
+		while(args[i] && is_redirection(args[i], args[i + 1]))
+			i += is_redirection(args[i], args[i + 1]);
 		if(!args[i])
 			break;
 		counter++;
@@ -39,37 +41,23 @@ static size_t count_valid_args(char **args)
 	return counter;
 }
 
-// char *check_arg(char *arg)
-// {
-// 	size_t i;
-
-// 	i = 0;
-// 	while(arg[i])
-// 	{
-// 		if((arg[i] == BACK_SLASH && arg[i + 1] == VAR_SIGN) || arg[i] && arg[i] == VAR_SIGN)
-// 		{
-
-// 		}
-// 	}
-// }
-
 char **ft_args_dup(char **args)
 {
 	int i;
 	int j;
 	char **result;
-	char arg;
+	char *arg;
 
 	i = 0;
 	j = 0;
-	// arg = NULL;
+	arg = NULL;
 	result = malloc(sizeof(char *) * (count_valid_args(args) + 1));
 	if(!result)
 		return NULL;
 	while (args[i])
 	{
-		while(args[i] && is_redirection(args[i]))
-			i += 2;
+		while(args[i] && is_redirection(args[i], args[i + 1]))
+			i += is_redirection(args[i], args[i + 1]);
 		if(!args[i])
 			break;
 		// arg = check_arg(args[i]);
@@ -142,14 +130,11 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	new_node->full_path = get_path(new_node->cmd);
 	if(!new_node->full_path)
 	{
-<<<<<<< HEAD
-=======
 		if(!ft_strcmp(new_node->cmd, "exit"))
 			exit(0);
 		// if(!is_builtin(new_node->cmd) && !is_path(new_node->cmd))
 		if(is_builtin(new_node->cmd))
 			return new_node;
->>>>>>> 4db389a0f3949117358367c43f5d39639dad3870
 		free_cmd(new_node);
 		return NULL;
 	}
@@ -182,7 +167,6 @@ void	ft_lstadd_back(t_cmd **cmd, t_cmd *new)
 		current = current->next;
 	current->next = new;
 }
-
 
 void    ft_lstclear(t_cmd **lst)
 {
