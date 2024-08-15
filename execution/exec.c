@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char **cln_env(t_all *all, char **env)
+char **n_env(t_all *all, char **env)
 {
     int i;
     char **envp;
@@ -60,8 +60,8 @@ void wait_ps(pid_t *pids, t_all *all)
         waitpid(pids[i], &status, 0);
         i++;
     }
-
 }
+
 void execution(t_all **alll, char *envpp[])
 {
     t_all *all;
