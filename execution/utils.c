@@ -18,7 +18,6 @@ void ft_echo(char **str, int fd)
 
     flag = 0;
     i = 0;
-
     if (*str == NULL)
         ft_write("\n", fd);
     if (match_word("-n", *str))

@@ -13,7 +13,6 @@ size_t count_commands(t_cmd *cmd)
   return counter;
 }
 
-// mon, 7:59
 int main(int ac, char **av, char **env)
 {
   t_all *all;
@@ -23,9 +22,13 @@ int main(int ac, char **av, char **env)
   // all->nums_of_cmds = 1;
   // ft_init(shell);
   using_history();
+
   // printf("========\n");
 setup_signal_handlers() ;
+
+
   set_lists(all, env);
+  setup_signal_handlers();
 
   while(1)
   {
@@ -38,7 +41,6 @@ setup_signal_handlers() ;
     if (!ft_strlen(read))
       continue;
     add_history(read);
-    // set_lists(all, env);
     if(!ft_lexer(read, &all))
       continue;
     print_list(all->cmd);

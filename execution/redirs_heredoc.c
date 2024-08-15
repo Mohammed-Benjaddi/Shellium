@@ -15,12 +15,14 @@ void redirections_set(t_all *all)
     if (all->cmd->out_file || all->cmd->append_file) 
     {
         if (all->cmd->append_file)
-            fd = open(all->cmd->out_file, O_APPEND, 0644);
+            fd = open(all->cmd->append_file,O_CREAT | O_RDWR |  O_APPEND, 0777);
         else
             fd = open(all->cmd->out_file,O_WRONLY | O_CREAT | O_TRUNC, 0644);
         if (fd == -1)
+           {
             ft_error(all);
-        if (dup2(fd, STDOUT_FILENO))
+           }
+        if (dup2(fd, STDOUT_FILENO) < 0)
             ft_error(all);
         close(fd);
     }

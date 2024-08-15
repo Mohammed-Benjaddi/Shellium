@@ -17,11 +17,43 @@ int find_len(char *str, bool inside_quotes)
   return ft_strlen(str);
 }
 
+char *ft_strtok(char *str)
+{
+  size_t i;
+  size_t j;
+  size_t len;
+  char *result;
+
+  i = 0;
+  j = 0;
+  len = ft_strlen(str);
+  printf("len : %zu\n", len);
+  if(!str)
+    return NULL;
+  while(str[i] && ft_isspace(str[i]))
+    i++;
+  while(str[len - 1] && ft_isspace(str[len - 1]))
+    len--;
+  result = malloc((len - i) + 1);
+  while(i < len)
+    result[j++] = str[i++];
+  result[j] = '\0';
+  printf("%sft_strtok:%s---> %zu%s\n", MAGENTA, result, ft_strlen(result), NC);
+  free(str);
+  return result;
+}
+
 char *get_var_value(char *str, t_env *env)
 {
-  printf("%sstr to compare ---> %s%s\n", CYAN, str, NC);
+  // printf("%sstr to compare ---> %c%s\n", CYAN, str[4], NC);
+  str = ft_strtok(str);
+  if(str[4] == ' ')
+    printf("space\n");
+  else if(str[4] == '\0')
+    printf("backslash\n");
   while(env)
   {
+    // printf("%s ---> variable : %s%s\n", RED, env->variable, NC);
     if(!ft_strcmp(str, env->variable))
     {
       free(str);
@@ -30,6 +62,7 @@ char *get_var_value(char *str, t_env *env)
     env = env->next;
   }
   free(str);
+  printf("this will return null\n");
   return NULL;
 }
 
@@ -56,12 +89,12 @@ char *handle_variables(char *str, t_env *env, size_t length)
     vars[i] = find_and_remove(vars[i], DOUBLE_QUOTE);
     // rest = ft_substr()
     vars[i] = get_var_value(vars[i], env);
+    printf("after getting value: %s\n", vars[i]);
     // var = get_variable(vars[i]);
     result = ft_strjoin(result, vars[i]);
+    printf("result: %s\n", result);
     i++;
   }
-  printf("result: %s\n", result);
-
   free(str);
   str = NULL;
   return result;
@@ -72,10 +105,10 @@ char *get_str_in_quotes(char *command, int *i, char c, t_env *env)
   int len;
   char *buffer;
   char *rest;
+  char *var_value;
 
   *i += 1;
   len = ft_strchr(command + *i, c);
-  // printf("inside quotes ------> %s\n", command + *i);
   if(len == -1)
   {
     if(c == SINGLE_QUOTE)
@@ -86,35 +119,26 @@ char *get_str_in_quotes(char *command, int *i, char c, t_env *env)
   }
   buffer = ft_substr(command + *i, 0, len);
   *i += len;
-  // printf("--------> %s\n", buffer);
   if(c == DOUBLE_QUOTE && get_vars_length(buffer) > 0)
   {
-    printf("%sis there a variable %s%s\n", RED, buffer, NC);
-    rest = ft_strdup(buffer + get_vars_length(buffer) + 1);
-    // if(!ft_strlen(rest))
-    // {
-    //   printf("rest of buffer ---> %zu\n", ft_strlen(rest));
-    //   free(rest);
-    // }
-    buffer = ft_substr(buffer, 0, get_vars_length(buffer));
-    buffer = handle_variables(buffer, env, get_vars_length(buffer));
-    // if(!buffer)
-    // {
-    //   throw_error("Something went wrong");
-    //   exit(1);
-    // }
-    if(!ft_strlen(rest))
-    {
-      printf("rest of buffer ---> %zu\n", ft_strlen(rest));
-      free(rest);
-    }
-    else
-    {
-      buffer = ft_strjoin(buffer, rest);
-    }
+      printf("---------> buffer : %s\n", buffer);
+      printf("%sis there a variable %s%s\n", RED, buffer, NC);
+      // rest = ft_strdup(buffer + get_vars_length(buffer) + 1);
+      // printf("rest of buffer ---> %s\n", rest);
+      var_value = ft_substr(buffer, 0, get_vars_length(buffer));
+      printf("%s before handle variable: %s%s\n", CYAN, var_value, NC);
+      buffer = handle_variables(buffer, env, get_vars_length(buffer));
+      
+      // if(!ft_strlen(rest))
+      // {
+      //   printf("len is zero\n");
+      //   free(rest);
+      // }
   }
 
+  printf("%sbefore find and remove%s\n", YELLOW, NC);
   buffer = find_and_remove(buffer, c);
+  printf("%safter find and remove%s\n", YELLOW, NC);
   return buffer;
 }
 
@@ -148,7 +172,7 @@ char *get_str_without_quotes(char *command, int *i)
   return buffer;
 }
 
-void create_cmd(t_cmd **head, char **args, int words, int is_pipe)
+int create_cmd(t_cmd **head, char **args, int words, int is_pipe)
 {
   t_cmd *cmd;
 
@@ -157,10 +181,11 @@ void create_cmd(t_cmd **head, char **args, int words, int is_pipe)
   {
     printf("%scommand not found%s\n", RED, NC);
     ft_free(args);
-    return;
+    return 0;
   }
   ft_lstadd_back(head, cmd);
   ft_free(args);
+  return 1;
 }
 
 char **allocate_args(char *command, int *pipe_idx, int *words, int i)
@@ -172,7 +197,10 @@ char **allocate_args(char *command, int *pipe_idx, int *words, int i)
     *pipe_idx = ft_strlen(command);
   *words = args_counter(command + i, *pipe_idx);
   args = (char **)malloc(sizeof(char *) * (*words + 1));
-  printf("%s ===> %d%s\n", CYAN, *words, NC);
+  // printf("words ------> %d\n", *words);
+  if(!args)
+    return NULL;
+  // printf("%s ===> %d%s\n", CYAN, *words, NC);
   return args;
 }
 
@@ -299,17 +327,21 @@ int ft_lexer(char *command, t_all **all)
       lexer.j++;
       // printf("\t\t\t\t\t\tlexer buffer: %s\n", lexer.buffer);
     }
-    printf("j --> %d\n", lexer.j);
+    // printf("j --> %d\n", lexer.j);
     lexer.args[lexer.j] = NULL;
     if(lexer.words)
     {
       if(is_pipe_after(command + lexer.i))
         lexer.pipe = 1;
-      create_cmd(&(*all)->cmd, lexer.args, lexer.words, lexer.pipe);
+      if (!create_cmd(&(*all)->cmd, lexer.args, lexer.words, lexer.pipe))
+        return 0;
     }
+    else
+      ft_free(lexer.args);
+      // printf("%s ---> <--- %s\n", GREEN, NC);
     lexer.i++;
     // if(lexer.args != NULL)
-    //   ft_free(lexer.args);
+      // ft_free(lexer.args);
   }
   free(command);
   command = NULL;

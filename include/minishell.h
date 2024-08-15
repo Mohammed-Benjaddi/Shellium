@@ -120,13 +120,6 @@ char *get_output_redirection_file(char **args);
 // char *get_append_from_file(char **args);
 char *get_append_to_file(char **args);
 
-
-
-
-// variables.c
-// void check_args(t_all *all, t_cmd *cmd);
-
-
 // ----------------------------------------------
 void    heredoc_pipe(t_all *all);
 void    redirect_in_out_to_pipe(int n_pipes, int index, int pipe[],int *pr_fd, t_all *all);

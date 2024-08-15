@@ -3,7 +3,7 @@
 void throw_error(char *msg)
 {
   printf("%sError: %s%s\n", RED, msg, NC);
-  // exit(1);
+  exit(1);
 }
 
 int find_pipe_index(char *str)
@@ -104,7 +104,6 @@ void print_list(t_cmd *head)
     printf("%s %s %s", RED, head->append_file, NC);
     printf("%s %d %s", GREEN, head->pipe, NC);
     head = head->next;
-    printf("\n");
   }
   printf("\n-----------------------------\n");
 }
@@ -116,6 +115,8 @@ size_t nums_of_chars(char *str, char c)
 
   i = 0;
   counter = 0;
+  if(!str)
+    return counter;
   while(str[i])
   {
     if(str[i] == c)
@@ -159,11 +160,12 @@ size_t get_vars_length(char *str)
         i++;
     if(str[i] == VAR_SIGN && str[i - 1] != BACK_SLASH)
     {
-      while(str[i] && str[i] != DOUBLE_QUOTE)
+      while(str[i] && str[i] != DOUBLE_QUOTE && str[i] != PIPE)
       {
         i++;
         length++;
       }
+      break;
     }
     i++;
   }
@@ -232,7 +234,8 @@ char *find_and_remove(char *str, char c)
   // printf("---> after fixing\n");
   len = ft_strlen(str) - nums_of_chars(str, c) + 1;
   printf("after fixing: %s\n", str);
-
+  if(!str)
+    return NULL;
   res = (char *)malloc(sizeof(char) * len);
   while(str[i])
   {
