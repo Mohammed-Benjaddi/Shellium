@@ -115,6 +115,8 @@ size_t nums_of_chars(char *str, char c)
 
   i = 0;
   counter = 0;
+  if(!str)
+    return counter;
   while(str[i])
   {
     if(str[i] == c)
@@ -232,7 +234,8 @@ char *find_and_remove(char *str, char c)
   // printf("---> after fixing\n");
   len = ft_strlen(str) - nums_of_chars(str, c) + 1;
   printf("after fixing: %s\n", str);
-
+  if(!str)
+    return NULL;
   res = (char *)malloc(sizeof(char) * len);
   while(str[i])
   {

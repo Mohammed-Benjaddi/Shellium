@@ -40,7 +40,7 @@ typedef struct s_command_line {
   char *out_file; // For output redirection (>)
   char *append_file; // For append redirection (>>)
   // char *append_from_file; // For append redirection (>>)
-  char *heredoc_delimiter; // For heredoc (<<)
+  char *heredoc_delimiter; // For heredoc (<<) [abcd, 0123]
   char *heredoc_content; // Content of heredoc
   int   pipe; // 1 if this command pipes to next, 0 otherwise
   struct s_command_line *next; // Pointer to next command in pipeline

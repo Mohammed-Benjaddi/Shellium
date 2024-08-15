@@ -199,10 +199,10 @@ void execution(t_all **alll, char *envpp[])
 
     heredoc_check(all);
     if (exec_built_ins(all))
-        {
-            n_pipes--;
-            all->cmd = all->cmd->next;
-        }
+    {
+        n_pipes--;
+        all->cmd = all->cmd->next;
+    }
     pid_t pids[n_pipes];
     while (i < n_pipes)
     {
