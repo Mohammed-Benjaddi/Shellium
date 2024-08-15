@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char **cln_env(t_all *all, char **env)
+char **n_env(t_all *all, char **env)
 {
     int i;
     char **envp;
