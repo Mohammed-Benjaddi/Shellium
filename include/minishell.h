@@ -111,6 +111,7 @@ void ft_free(char **args);
 void print_list(t_cmd *head);
 char *find_and_remove(char *str, char c);
 void skip_reds(char *str, int *i, char c);
+size_t get_vars_length(char *str);
 
 // cmd_infos.c
 char *get_path(char *cmd);

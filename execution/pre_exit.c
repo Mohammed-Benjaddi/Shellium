@@ -41,6 +41,7 @@ void exit_way(t_all *all)
 }
 void ft_error(t_all *all)
 {
+	
     ft_write(strerror(errno), 2);
     write(2, "\n", 1);
     exit_way(all);

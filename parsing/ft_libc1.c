@@ -5,6 +5,7 @@ size_t ft_strlen(char *str)
   int i;
 
   i = 0;
+	// printf("here\n");
   if(!str)
     return (i);
   while (str[i])
@@ -63,6 +64,14 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
+	// printf("s1: %s\n", s1);
+	// printf("s2: %s\n", s2);
+	if(!s1 && s2)
+		return ft_strdup(s2);
+	else if(!s2 && s1)
+		return ft_strdup(s1);
+	else if (!s1 && !s2)
+		return NULL;
 	res = (char *)malloc(s1_len + s2_len + 1);
 	if (!res)
 		return (NULL);
@@ -161,7 +170,7 @@ int ft_strchr(char *str, char c)
 		// if(!in_quotes && is_symbol(str[i]))
 		if(!in_quotes && (str[i] == SPACE || str[i] == PIPE))
 		{
-			printf("-------> here\n");
+			// printf("-------> here\n");
 			return i;
 		}
 		if(str[i] == c)
