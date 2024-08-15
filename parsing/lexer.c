@@ -95,7 +95,6 @@ char *handle_variables(char *str, t_env *env, size_t length)
     printf("result: %s\n", result);
     i++;
   }
-
   free(str);
   str = NULL;
   return result;
@@ -127,6 +126,7 @@ char *get_str_in_quotes(char *command, int *i, char c, t_env *env)
       // rest = ft_strdup(buffer + get_vars_length(buffer) + 1);
       // printf("rest of buffer ---> %s\n", rest);
       var_value = ft_substr(buffer, 0, get_vars_length(buffer));
+      printf("%s before handle variable: %s%s\n", CYAN, var_value, NC);
       buffer = handle_variables(buffer, env, get_vars_length(buffer));
       
       // if(!ft_strlen(rest))

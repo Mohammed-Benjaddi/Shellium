@@ -88,6 +88,8 @@ char *get_output_redirection_file(char **args)
         throw_error("syntax error near unexpected token `newline'");
       else
       {
+        if(!ft_strcmp(args[i + 1], ">"))
+          return NULL;
         free(out_file);
         out_file = ft_strdup(args[i + 1]);
         //must create a file
@@ -108,10 +110,14 @@ char *get_append_to_file(char **args)
 
   i = 0;
   file = NULL;
+  
   while(args[i])
   {
-    if(!ft_strcmp(args[i], ">>"))
+    // printf("args[i] --> %s\n", args[i]);
+    if(!ft_strcmp(args[i], ">") && !ft_strcmp(args[i + 1], ">"))
     {
+      i++;
+      printf("%s ------> append detected%s\n", RED, NC);
       if(!args[i + 1])
         throw_error("syntax error near unexpected token `newline'");
       else
@@ -119,7 +125,7 @@ char *get_append_to_file(char **args)
         free(file);
         file = ft_strdup(args[i + 1]);
         // must create a file
-        fd = open(file, O_CREAT | O_WRONLY);
+        fd = open(file, O_CREAT | O_RDWR);
           close(fd);
         // fd = open(file, O_CREAT | O_RDWR);
         // close(fd);

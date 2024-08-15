@@ -160,7 +160,7 @@ size_t get_vars_length(char *str)
         i++;
     if(str[i] == VAR_SIGN && str[i - 1] != BACK_SLASH)
     {
-      while(str[i] && str[i] != DOUBLE_QUOTE)
+      while(str[i] && str[i] != DOUBLE_QUOTE && str[i] != PIPE)
       {
         i++;
         length++;

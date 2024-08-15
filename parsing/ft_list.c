@@ -8,16 +8,18 @@
 //   shell->state = NORMAL;
 // }
 
-static bool is_redirection(char *str)
+static int is_redirection(char *str, char *next)
 {
-	if(!ft_strcmp(str, ">"))
-		return true;
-	else if(!ft_strcmp(str, ">>"))
-		return true;
-	else if(!ft_strcmp(str, "<"))
-		return true;
+	if(!ft_strcmp(str, ">") && ft_strcmp(next, ">"))
+		return 2;
+	else if(!ft_strcmp(str, ">") && !ft_strcmp(next, ">"))
+		return 3;
+	else if(!ft_strcmp(str, "<") && ft_strcmp(next, "<"))
+		return 2;
+	else if(!ft_strcmp(str, "<") && !ft_strcmp(next, "<"))
+		return 2;
 	else
-		return false;
+		return 0;
 }
 
 static size_t count_valid_args(char **args)
@@ -29,8 +31,8 @@ static size_t count_valid_args(char **args)
 	counter = 0;
 	while(args[i])
 	{
-		while(args[i] && is_redirection(args[i]))
-			i += 2;
+		while(args[i] && is_redirection(args[i], args[i + 1]))
+			i += is_redirection(args[i], args[i + 1]);
 		if(!args[i])
 			break;
 		counter++;
@@ -54,8 +56,8 @@ char **ft_args_dup(char **args)
 		return NULL;
 	while (args[i])
 	{
-		while(args[i] && is_redirection(args[i]))
-			i += 2;
+		while(args[i] && is_redirection(args[i], args[i + 1]))
+			i += is_redirection(args[i], args[i + 1]);
 		if(!args[i])
 			break;
 		// arg = check_arg(args[i]);
