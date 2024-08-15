@@ -103,6 +103,7 @@ bool is_builtin(char *cmd)
 	// 	return true;
 	// else if(!ft_strcmp(cmd, "unset"))
 	// 	return true;
+	return false;
 }
 
 t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)

@@ -51,7 +51,7 @@ void signal_handler(int signo) {
         {
              printf("\n");
             rl_on_new_line();
-             rl_replace_line("", 0);// fix compiling 
+            //  rl_replace_line("", 0);// fix compiling 
             rl_redisplay();
             }
     if (signo == SIGQUIT)
@@ -139,9 +139,8 @@ void set_lists(t_all *all, char **env)
 
     i = 0;
     while (env[i])
-        i++
-        ;
-    envp = (char **) malloc(sizeof(char *) * i);
+        i++;
+    envp = (char **) malloc(sizeof(char *) * i + 1);
     if (!envp)
         exit(1);
     envp[i]  = NULL;
