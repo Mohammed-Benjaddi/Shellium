@@ -13,7 +13,6 @@ size_t count_commands(t_cmd *cmd)
   return counter;
 }
 
-// mon, 7:59
 int main(int ac, char **av, char **env)
 {
   t_all *all;
@@ -23,32 +22,26 @@ int main(int ac, char **av, char **env)
   // all->nums_of_cmds = 1;
   // ft_init(shell);
   using_history();
-  // printf("========\n");
-
   set_lists(all, env);
+  setup_signal_handlers();
 
   while(1)
   {
-    printf("%s-> %s", GREEN, NC);
     char *read = readline("minishell > ");
-    if(!read || !ft_strlen(read))
+    if(!read)
+      {
+        env_exp_lists_clear(all);
+        exit(0);
+      }
+    if (!ft_strlen(read))
       continue;
     add_history(read);
-    // set_lists(all, env);/
     if(!ft_lexer(read, &all))
       continue;
-    // check_args(all, all->cmd);
     print_list(all->cmd);
     all->nums_of_cmds = count_commands(all->cmd);
-    // printf("nums of pipes: %zu\n", all->nums_of_cmds);
-    // printf("there is %zu pipes\n", all->nums_of_cmds);
-    // all->nums_of_cmds = cmds_counter(all->cmd);
     execution(&all, env);
-    // get_path(head);
-    // free(read);
-    // read = NULL;
     ft_lstclear(&all->cmd);
-    // system("leaks minishell");
   }
   return 0;
 }

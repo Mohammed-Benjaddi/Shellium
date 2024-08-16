@@ -17,88 +17,7 @@ int find_len(char *str, bool inside_quotes)
   return ft_strlen(str);
 }
 
-char *ft_strtok(char *str)
-{
-  size_t i;
-  size_t j;
-  size_t len;
-  char *result;
 
-  i = 0;
-  j = 0;
-  len = ft_strlen(str);
-  printf("len : %zu\n", len);
-  if(!str)
-    return NULL;
-  while(str[i] && ft_isspace(str[i]))
-    i++;
-  while(str[len - 1] && ft_isspace(str[len - 1]))
-    len--;
-  result = malloc((len - i) + 1);
-  while(i < len)
-    result[j++] = str[i++];
-  result[j] = '\0';
-  printf("%sft_strtok:%s---> %zu%s\n", MAGENTA, result, ft_strlen(result), NC);
-  free(str);
-  return result;
-}
-
-char *get_var_value(char *str, t_env *env)
-{
-  // printf("%sstr to compare ---> %c%s\n", CYAN, str[4], NC);
-  str = ft_strtok(str);
-  if(str[4] == ' ')
-    printf("space\n");
-  else if(str[4] == '\0')
-    printf("backslash\n");
-  while(env)
-  {
-    // printf("%s ---> variable : %s%s\n", RED, env->variable, NC);
-    if(!ft_strcmp(str, env->variable))
-    {
-      free(str);
-      return ft_strdup(env->value);
-    }
-    env = env->next;
-  }
-  free(str);
-  printf("this will return null\n");
-  return NULL;
-}
-
-char *handle_variables(char *str, t_env *env, size_t length)
-{
-  size_t i;
-  char **vars;
-  char *var;
-  char *result;
-  // char *rest;
-
-  printf("===> +length: %zu\n", length);
-  i = 0;
-  vars = ft_split(str, '$');
-  result = NULL;
-  if(!str)
-  {
-    printf("%s-------> NULL <----------%s\n", GREEN, NC);
-    return NULL;
-  }
-  while (vars[i])
-  {
-    printf("var ---> %s\n", vars[i]);
-    vars[i] = find_and_remove(vars[i], DOUBLE_QUOTE);
-    // rest = ft_substr()
-    vars[i] = get_var_value(vars[i], env);
-    printf("after getting value: %s\n", vars[i]);
-    // var = get_variable(vars[i]);
-    result = ft_strjoin(result, vars[i]);
-    printf("result: %s\n", result);
-    i++;
-  }
-  free(str);
-  str = NULL;
-  return result;
-}
 
 char *get_str_in_quotes(char *command, int *i, char c, t_env *env)
 {
@@ -120,21 +39,24 @@ char *get_str_in_quotes(char *command, int *i, char c, t_env *env)
   buffer = ft_substr(command + *i, 0, len);
   *i += len;
   if(c == DOUBLE_QUOTE && get_vars_length(buffer) > 0)
-  {
-      printf("---------> buffer : %s\n", buffer);
-      printf("%sis there a variable %s%s\n", RED, buffer, NC);
+    buffer = handle_variables(buffer, env, get_vars_length(buffer));
+    // catch_variable(buffer, );
+  // {
+      // printf("---------> buffer : %s\n", buffer);
+      // printf("%sis there a variable %s%s\n", RED, buffer, NC);
       // rest = ft_strdup(buffer + get_vars_length(buffer) + 1);
       // printf("rest of buffer ---> %s\n", rest);
-      var_value = ft_substr(buffer, 0, get_vars_length(buffer));
-      printf("%s before handle variable: %s%s\n", CYAN, var_value, NC);
-      buffer = handle_variables(buffer, env, get_vars_length(buffer));
+      // var_value = ft_substr(buffer, 0, get_vars_length(buffer));
+      // printf();
+      // printf("%s before handle variable: %s --- %zu%s\n", CYAN, var_value, ft_strlen(var_value), NC);
+      // buffer = handle_variables(buffer, env, get_vars_length(buffer));
       
       // if(!ft_strlen(rest))
       // {
       //   printf("len is zero\n");
       //   free(rest);
       // }
-  }
+  // }
 
   printf("%sbefore find and remove%s\n", YELLOW, NC);
   buffer = find_and_remove(buffer, c);
@@ -156,7 +78,7 @@ bool str_has_quotes(char *str, char c)
   return false;
 }
 
-char *get_str_without_quotes(char *command, int *i)
+char *get_str_without_quotes(char *command, int *i, t_env *env)
 {
   int len;
   char *buffer;
@@ -164,7 +86,9 @@ char *get_str_without_quotes(char *command, int *i)
   len = find_len(command + *i, false);
   buffer = ft_substr(command, *i, len);
   // printf("without quotes ------> %s\n", command + *i);
-  if(str_has_quotes(buffer, DOUBLE_QUOTE))
+  if(get_vars_length(buffer) > 0)
+    buffer = handle_variables(buffer, env, get_vars_length(buffer));
+  else if(str_has_quotes(buffer, DOUBLE_QUOTE))
     buffer = find_and_remove(buffer, DOUBLE_QUOTE);
   else if(str_has_quotes(buffer, SINGLE_QUOTE))
     buffer = find_and_remove(buffer, SINGLE_QUOTE);
@@ -318,7 +242,7 @@ int ft_lexer(char *command, t_all **all)
       else if(command[lexer.i] == '\"')
         lexer.buffer = get_str_in_quotes(command, &lexer.i, DOUBLE_QUOTE, (*all)->env);
       else
-        lexer.buffer = get_str_without_quotes(command, &lexer.i);
+        lexer.buffer = get_str_without_quotes(command, &lexer.i, (*all)->env);
       if(lexer.buffer == NULL || full_of_spaces(lexer.buffer))
         return 0;
       if(!ft_strlen(lexer.buffer))
