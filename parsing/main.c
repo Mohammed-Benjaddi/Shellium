@@ -24,7 +24,6 @@ int main(int ac, char **av, char **env)
   using_history();
   set_lists(all, env);
   setup_signal_handlers();
-
   while(1)
   {
     char *read = readline("minishell > ");
