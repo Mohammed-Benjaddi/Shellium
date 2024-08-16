@@ -11,7 +11,7 @@ void print_exp_list(t_all *all, int pipe[2])
     char *str;
     while (tmp != NULL)
     {
-        ft_write("declare -x", STDOUT_FILENO);
+        ft_write("declare -x ", STDOUT_FILENO);
         ft_write(tmp->variable, STDOUT_FILENO);
         ft_write("=", STDOUT_FILENO);
         ft_write("\"", STDOUT_FILENO);

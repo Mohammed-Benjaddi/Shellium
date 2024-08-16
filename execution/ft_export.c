@@ -45,10 +45,10 @@ void add_it_to_env(t_all *all, char *new)
    t_env *new_env;
    t_exp *new_exp;
 
-   new_env  =env_new(new);
+   new_env  = env_new(new);
    if (new_env == NULL)
         ft_error(all);
-   new_exp = new_exp_(env_getlast(all->env));
+   new_exp = exp_new(new);
    if (new_exp == NULL)
         ft_error(all);
    env_addback(all->env, new_env);
@@ -75,7 +75,7 @@ void parse_indetifier(t_all *all, char *str)
         identifier_error(str);
         return ;
     }
-    unset_exp(all);// check if its already there ,, delete it , to update a new one!
+    //unset_exp(all);// check if its already there ,, delete it , to update a new one!
     if(ret == -1)
     {
         t_exp *last;

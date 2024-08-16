@@ -48,4 +48,6 @@ void ft_pwd(t_all *all)
         ft_error(all);
     
     ft_write(ret, STDOUT_FILENO);
+    ft_write("\n", STDOUT_FILENO);
+
 }

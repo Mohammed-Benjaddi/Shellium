@@ -1,6 +1,21 @@
 #include "minishell.h"
 
+void mirroring_env_and_exp(t_all *all)
+{
+    t_env *env;
+    t_exp *exp;
 
+    env = all->env;
+    exp = all->exp;
+    write(2, "####\n\n\n" ,8);
+    while (env != NULL && exp != NULL)
+    {
+        if (match_word(env->variable, exp->variable) & !match_word(env->value, exp->value))
+            exp->value = env->value;
+        exp = exp->next;
+        env = env->next;
+    }
+}
 void set_old_pwd(t_all *all , char *old_dir)
 {
     t_env *a;
@@ -8,12 +23,9 @@ void set_old_pwd(t_all *all , char *old_dir)
     while (a != NULL)
     {
         if (match_word("OLDPWD", a->variable))
-        {
             a->value = ft_strdup(old_dir);
-        }
         a = a->next;
     }
-
 }
 void add_to_env(t_all *all, char *new_dir)
 {
@@ -32,19 +44,15 @@ void add_to_env(t_all *all, char *new_dir)
             {
                 set_old_pwd(all, tmp->value);
                 tmp->value = ft_strdup(new_dir);
-                return;
+                break;
             }
             al->env->prev->next = NULL;
             env_addback(al->env, env_new(new_dir));
-             //write(2, tmp->value, ft_strlen(tmp->value));
-
-            // all->env = tmp;
-            ////free(tmp);
-
-            return ;
+            break ;
          }
         tmp = tmp->next;
      }
+    mirroring_env_and_exp(all);
      
 }
 char *get_home_wd(t_all *all)
