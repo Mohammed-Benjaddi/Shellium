@@ -122,7 +122,8 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	new_node->in_file = get_input_redirection_file(args);
 	new_node->out_file = get_output_redirection_file(args);
 	new_node->append_file = get_append_to_file(args);
-	new_node->heredoc_delimiter = get_herdoc_delimiter(args);
+	// new_node->heredoc_delimiter = get_herdoc_delimiter(args);
+	new_node->heredoc_delimiter = NULL;
 	new_node->heredoc_content = NULL;
 	new_node->pipe = pipe;
 	new_node->next = NULL;
@@ -139,6 +140,7 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 		return NULL;
 	}
 	// ft_free(args);
+
 	return (new_node);
 }
 
