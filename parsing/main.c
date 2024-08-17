@@ -29,7 +29,6 @@ setup_signal_handlers() ;
 
   set_lists(all, env);
   setup_signal_handlers();
-
   while(1)
   {
     char *read = readline("minishell > ");
