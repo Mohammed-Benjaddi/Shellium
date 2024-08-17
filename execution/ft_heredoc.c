@@ -125,14 +125,26 @@ char	*heredoc(char *heredoc_str, int fd, t_all *all)
 void	heredoc_check(t_all *all)
 {
 	t_cmd	*doc;
-
+	int i;
+	char *here_tmp;
 	doc = all->cmd;
+
 	while (doc != NULL)
 	{
-		// if(doc->heredoc_delimiter == NULL)
-		//     exit(1);
-		if (doc->heredoc_delimiter != NULL)
-			doc->heredoc_content = heredoc(doc->heredoc_delimiter, 1, all);
+		if (doc-> heredoc_delimiter != NULL)
+		{
+			i = 0;
+			doc->heredoc_content = ft_strdup("");
+			while (doc->heredoc_delimiter[i])
+			{
+				here_tmp = ft_strdup("");
+				here_tmp = heredoc(doc->heredoc_delimiter[i], 1, all);
+				doc->heredoc_content = ft_strjoin(here_tmp, doc->heredoc_content);
+				free(here_tmp);
+				i++;
+			}
+			
+		}
 		doc = doc->next;
 	}
 }

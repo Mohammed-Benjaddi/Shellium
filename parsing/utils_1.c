@@ -233,7 +233,6 @@ char *find_and_remove(char *str, char c)
   // }
   // printf("---> after fixing\n");
   len = ft_strlen(str) - nums_of_chars(str, c) + 1;
-  printf("after fixing: %s\n", str);
   if(!str)
     return NULL;
   res = (char *)malloc(sizeof(char) * len);
@@ -248,5 +247,6 @@ char *find_and_remove(char *str, char c)
   }
   res[j] = '\0';
   free(str);
+  printf("after fixing: %s\n", res);
   return res;
 }

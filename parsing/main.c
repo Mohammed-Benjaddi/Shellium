@@ -24,7 +24,7 @@ int main(int ac, char **av, char **env)
   using_history();
 
   // printf("========\n");
-setup_signal_handlers() ;
+ 
 
 
   set_lists(all, env);
