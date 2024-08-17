@@ -116,8 +116,6 @@ char *get_append_to_file(char **args)
     // printf("args[i] --> %s\n", args[i]);
     if(!ft_strcmp(args[i], ">") && !ft_strcmp(args[i + 1], ">")) // and [i+1] != '\0'
     {
-      i++;
-      printf("%s ------> append detected%s\n", RED, NC);
       if(!args[i + 1])
         throw_error("syntax error near unexpected token `newline'");
       else
@@ -137,30 +135,34 @@ char *get_append_to_file(char **args)
   return file;
 }
 
-char *get_herdoc_delemiter(char **args)
+char **get_herdoc_delimiter(char **args)
 {
-  int i;
-  int fd;
-  char *file;
+  size_t i;
+  size_t len;
+  char **delimiters;
 
   i = 0;
-  file = NULL;
+  len = 0;
   while(args[i])
   {
-    if(!ft_strcmp(args[i], "<<"))
+    if(!ft_strcmp(args[i], "<") && !ft_strcmp(args[i + 1], "<")) // and [i+1] != '\0'
+      len++;
+    i++;
+  }
+  delimiters = malloc(sizeof(char *) * len + 1);
+  i = 0;
+  len = 0;
+  while(args[i])
+  {
+    if(!ft_strcmp(args[i], "<") && !ft_strcmp(args[i + 1], "<")) // and [i+1] != '\0'
     {
+      i++;
       if(!args[i + 1])
         throw_error("syntax error near unexpected token `newline'");
       else
-      {
-        free(file);
-        file = ft_strdup(args[i + 1]);
-        // must create a file
-        // fd = open(file, O_CREAT | O_RDWR);
-        // close(fd);
-      }
+        delimiters[len++] = ft_strdup(args[i + 1]);
     }
     i++;
   }
-  return file;
+  return delimiters;
 }

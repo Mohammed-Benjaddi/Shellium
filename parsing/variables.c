@@ -1,173 +1,105 @@
-// // #include "minishell.h" 
-// #include <minishell.h>
+#include <minishell.h>
 
-// char *get_variable(t_all *all, char *str)
-// {
-// 	size_t i;
-// 	char *var;
-//   t_env *env;
+char *ft_strtok(char *str)
+{
+  size_t i;
+  size_t j;
+  size_t len;
+  char *result;
 
-// 	i = 0;
-// 	var = NULL;
-//   env = all->env;
-//   while(env)
-//   {
-//     // printf("---> %s\n", env->variable);
-//     if(!ft_strcmp(str, env->variable))
-//       return ft_strdup(env->value);
-//       // printf("---> %s\n", env->value);
-//     env = env->next;
-//   }
-//   return ft_strdup("\n");
-//   // return var;
-// }
+  i = 0;
+  j = 0;
+  len = ft_strlen(str);
+  printf("len : %zu\n", len);
+  if(!str)
+    return NULL;
+  while(str[i] && ft_isspace(str[i]))
+    i++;
+  while(str[len - 1] && ft_isspace(str[len - 1]))
+    len--;
+  result = malloc((len - i) + 1);
+  while(i < len)
+    result[j++] = str[i++];
+  result[j] = '\0';
+  printf("%sft_strtok:%s---> %zu%s\n", MAGENTA, result, ft_strlen(result), NC);
+  free(str);
+  return result;
+}
 
-// size_t get_variable_len(char *str, t_all *all)
-// {
-//   size_t len;
-//   char *var;
-//   // t_env *env;
+char *get_only_var(char *str)
+{
+  size_t i;
+  size_t len;
+  char *result;
 
-//   if(!str)
-//     return 0;
-//   printf("getting variable value: %s\n", str);
-//   var = get_variable(all, str);
-//   len = ft_strlen(var);
-//   free(var);
-//   return len;
-// }
+  i = 0;
+  len = 0;
+  while(str[len] && !is_symbol(str[len]) && str[len] != SPACE && str[len] != SINGLE_QUOTE)
+    len++;
+  // result = malloc(len + 1);
+  result = ft_substr(str, 0, len);
+  printf("only variable: %s\n", result);
+  return result;
+}
 
-// size_t ft_strlen_var(char *str)
-// {
-//   size_t i;
+char *get_var_value(char *str, t_env *env)
+{
+  char *var;
+  char *rest;
+  char *result;
 
-//   i = 0;
-//   if(!str)
-//     return i;
-//   // printf("noooooo\n");
-//   while(str[i])
-//   {
-//     if(str[i] == VAR_SIGN)
-//       return i;
-//     i++;
-//   }
-//   return i;
-// }
+  result = NULL;
+  var = get_only_var(str);
+  rest = ft_strdup(str + ft_strlen(var));
+  while(env)
+  {
+    if(!ft_strcmp(var, env->variable))
+    {
+      result = ft_strjoin(env->value, rest);
+      break;
+    }
+    env = env->next;
+  }
+  free(str);
+  free(var);
+  if(!result)
+    return rest;
+  free(rest);
+  return result;
+}
 
-// size_t count_vars(char *str)
-// {
-//   size_t i;
-//   size_t counter;
+char *handle_variables(char *str, t_env *env, size_t length)
+{
+  size_t i;
+  char **vars;
+  char *var;
+  char *result;
+  // char *rest;
 
-//   i = 0;
-//   counter = 0;
-//   while(str[i])
-//   {
-//     if(str[i] == VAR_SIGN && str[i + 1] != VAR_SIGN)
-//       counter++;
-//     i++;
-//   }
-//   return counter;
-// }
-
-// size_t len_of_var(char *str)
-// {
-//   size_t i;
-//   size_t len;
-
-//   i = 0;
-//   len = 0;
-//   if(!str)
-//     return len;
-//   while (str[i])
-//   {
-//     if(str[i] == VAR_SIGN)
-//     {
-//       i++;
-//       break;
-//     }
-//     i++;
-//   }
-//   while(str[i] && str[i] != VAR_SIGN)
-//   {
-//     len++;
-//     i++;
-//   }
-//   printf("%s length returned: %zu%s\n", RED, len, NC);
-//   return len;
-// }
-
-// char *find_variable(char *str, t_all *all)
-// {
-//   size_t i;
-//   size_t j;
-//   size_t len;
-//   char *fixed_arg;
-//   char *var;
-//   size_t nums_of_vars;
-
-//   i = 0;
-//   j = 0;
-//   len = 0;
-//   nums_of_vars = count_vars(str);
-//   // printf("==> str len: %zu\n", ft_strlen_var(str) + get_variable_len(str + ft_strlen_var(str) + 1, all));
-//   // printf("==> nums of vars: %zu\n", count_vars(str));
-
-//   // len = ft_strlen_var(str) + get_variable_len(str + ft_strlen_var(str) + 2);
-//   while(i < nums_of_vars)
-//   {
-//     len += ft_strlen_var(str) + get_variable_len(str + ft_strlen_var(str) + 1, all);
-//     j += len_of_var(str + j);
-//     printf("-----> %zu ----- %zu\n", j, len);
-//     i++;
-//   }
-  
-//   printf("%slen: %zu%s\n", MAGENTA, len, NC);
-
-//   fixed_arg = malloc(len + 1);
-//   // printf("length allocated ---> %zu\n", len);
-
-
-//   // while(str[i])
-
-//   return NULL;
-// }
-
-// bool is_var(char *str)
-// {
-//   size_t i;
-
-//   i = 0;
-//   while(str[i])
-//   {
-//     if(str[i] == VAR_SIGN && str[i] != BACK_SLASH)
-//       return true;
-//     i++;
-//   }
-//   return false;
-// }
-
-// void check_args(t_all *all, t_cmd *cmd)
-// {
-// 	size_t i;
-// 	size_t j;
-// 	char *fixed_str;
-// 	char *var;
-
-// 	i = 0;
-//   j = 0;
-//   while(cmd)
-//   {
-//     while(cmd->args[i])
-//     {
-//       if(is_var(cmd->args[i]))
-//       {
-//         printf("%s----------------> variable detected%s\n", GREEN, NC);
-//         // return;
-//         cmd->args[i] = find_variable(cmd->args[i], all);
-//       }
-//       i++;
-//     }
-//     cmd = cmd->next;
-//   }
-// }
+  printf("===> +length: %zu\n", length);
+  i = 0;
+  vars = ft_split(str, '$');
+  result = NULL;
+  if(!str)
+  {
+    printf("%s-------> NULL <----------%s\n", GREEN, NC);
+    return NULL;
+  }
+  while (vars[i])
+  {
+    printf("var ---> %s\n", vars[i]);
+    vars[i] = find_and_remove(vars[i], DOUBLE_QUOTE);
+    // rest = ft_substr()
+    // printf("var length: %zu\n", get_length(vars[i]));
+    // result = 
+    vars[i] = get_var_value(vars[i], env);
+    printf("after getting value: %s\n", vars[i]);
+    // var = get_variable(vars[i]);
+    result = ft_strjoin(result, vars[i]);
+    printf("result: %s\n", result);
+    i++;
+  }
+  free(str);
+  str = NULL;
+  return result;
+}
