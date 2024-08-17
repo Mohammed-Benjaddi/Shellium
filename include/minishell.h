@@ -41,7 +41,7 @@ typedef struct s_command_line {
   char *out_file; // For output redirection (>)
   char *append_file; // For append redirection (>>)
   // char *append_from_file; // For append redirection (>>)
-  char *heredoc_delimiter; // For heredoc (<<)
+  char **heredoc_delimiter; // For heredoc (<<)
   char *heredoc_content; // Content of heredoc
   int   pipe; // 1 if this command pipes to next, 0 otherwise
   struct s_command_line *next; // Pointer to next command in pipeline
@@ -118,6 +118,8 @@ size_t get_vars_length(char *str);
 char *get_path(char *cmd);
 char *get_input_redirection_file(char **args);
 char *get_output_redirection_file(char **args);
+char **get_herdoc_delimiter(char **args);
+
 // char *get_herdoc_delimiter(char **args);
 // char *get_append_from_file(char **args);
 char *get_append_to_file(char **args);
