@@ -17,7 +17,7 @@ static int is_redirection(char *str, char *next)
 	else if(!ft_strcmp(str, "<") && ft_strcmp(next, "<"))
 		return 2;
 	else if(!ft_strcmp(str, "<") && !ft_strcmp(next, "<"))
-		return 2;
+		return 3;
 	else
 		return 0;
 }

@@ -9,12 +9,13 @@ char *get_input_redirection_file(char **args)
   in_file = NULL;
   while(args[i])
   {
-    if(!ft_strcmp(args[i], "<"))
+    if(!ft_strcmp(args[i], "<") && ft_strcmp(args[i + 1], "<") && ft_strcmp(args[i - 1], "<"))
     {
       if(!args[i + 1])
         throw_error("syntax error near unexpected token `newline'");
       else
       {
+        printf("======> %s ---- %s\n", args[i], args[i + 1]);
         free(in_file);
         in_file = ft_strdup(args[i + 1]);
       }
