@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_export.c                                        :+:      :+:    :+:   */
+/*   ft__export.c                                        :+:      :+:    :+:  */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-krid <ael-krid@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -18,7 +18,7 @@ int	check_(char *s, int index)
 	int		j;
 	char	*sp;
 
-	sp = "'`~#$&*()\\|[]{};<>\"/?!";
+	sp = "'`~#$&-*()\\|[]{};<>\"/?!%%^";
 	i = 0;
 	while (i < index)
 	{
@@ -50,27 +50,22 @@ int	check_before_env(char *s)
 		}
 		i++;
 	}
+	if (!check_(s, i))
+		return (0);
 	return (-1); // if we should add an (export var) to the env or not;
 }
-void	add_it_to_env(t_all *all, char *new)
+void	add_it_to_env(t_all *all, char *new, t_exp *new_exp)
 {
 	t_env	*new_env;
-	t_exp	*new_exp;
 
 	new_env = env_new(new);
 	if (new_env == NULL)
 		{
-        	write(2, "\n\n[@]error\n", 11);
-
-			ft_error(all);
-		}
-	new_exp = exp_new(new);
-	if (new_exp == NULL)
-		{
-        	write(2, "\n\n[#]error\n", 11);
-
-			ft_error(all);
-		}
+            free(new);
+            ft_error(all);
+        }
+	//new_exp = exp_new(new);
+    free(new);
 	env_addback(all->env, new_env);
 	exp_addback(all->exp, new_exp);
 }
@@ -85,22 +80,34 @@ void	parse_indetifier(t_all *all, char *str)
 {
 	int i;
 	int ret;
+	t_exp *last;
+	char *tmp_str;
 
 	i = 0;
-
+	tmp_str = ft_strdup(str);
 	ret = check_before_env(str);
+
 	if (ret == 0)
 	{
 		identifier_error(str);
 		return ;
 	}
-	unset_exp(all);
+	last = exp_new(str);
 	if (ret == -1)
 	{
-		t_exp *last;
-		last = exp_new(str);
+		if (unset_exp(all, last, ret))
+			{
+				free(last);
+                free(tmp_str);// check ...
+				return ;
+			}
 		exp_addback(all->exp, last); //t_exp    *head, t_exp    *new)
 		return ;
 	}
-	add_it_to_env(all, str);
+	if (unset_exp(all, last, ret))
+			{
+                free(tmp_str);// check ...
+				return ;
+			}
+	add_it_to_env(all, tmp_str, last);
 }

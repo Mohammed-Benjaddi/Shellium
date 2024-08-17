@@ -19,12 +19,14 @@ void	mirroring_env_and_exp(t_all *all)
 
 	env = all->env;
 	exp = all->exp;
-	write(2, "####\n\n\n", 8);
+			
+
 	while (env != NULL && exp != NULL)
 	{
-		if (match_word(env->variable, exp->variable) & !match_word(env->value,
-				exp->value))
-			exp->value = env->value;
+		if (match_word(env->variable, exp->variable) & !match_word(env->value, exp->value))
+			{
+				exp->value = env->value;
+			}
 		exp = exp->next;
 		env = env->next;
 	}

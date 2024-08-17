@@ -93,7 +93,6 @@ int	exec_built_ins(t_all *all)
 			unset_env(all);
 		exec++;
 	}
-	
 	if (match_word(all->cmd->cmd, "exit"))
 	{
 		if (!all->cmd->pipe)

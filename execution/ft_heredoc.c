@@ -28,6 +28,9 @@ int	match_word(char *neadle, char *str)
 	int	i;
 
 	i = 0;
+	if (!str || !neadle)
+		return (0);
+		
 	if (!(*str) || !(*neadle))
 		return (0);
 	while (str[i])

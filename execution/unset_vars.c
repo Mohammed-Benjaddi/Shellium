@@ -39,27 +39,44 @@ void	unset_exp_list(t_all *all, char *var)
 		exp = exp->next;
 	}
 }
-void	unset_exp(t_all *all)
+
+void	mirroring_exp_and_env(t_all *all)
+{
+	t_env	*env;
+	t_exp	*exp;
+
+	env = all->env;
+	exp = all->exp;
+			
+
+	while (env != NULL && exp != NULL)
+	{
+		if (match_word(env->variable, exp->variable) & !match_word(env->value, exp->value))
+			env->value = exp->value;
+		exp = exp->next;
+		env = env->next;
+	}
+}
+
+int	unset_exp(t_all *all, t_exp *exp_, int ret)
 {
 	t_exp	*exp;
-	int		i;
-
-	i = 1;
-	while (all->cmd->args[i])
+	
+	exp = all->exp;
+	while (exp != NULL)
 	{
-		exp = all->exp;
-		while (exp != NULL)
+		if (match_word(exp_->variable, exp->variable))
 		{
-			if (match_word(all->cmd->args[i], exp->variable))
-			{
-				if (exp->value != NULL)
-					unset_exp_list(all, exp->variable);
-				break ;
-			}
-			exp = exp->next;
+			if (ret == -1)
+				return (1);
+			exp->value = ft_strdup(exp_->value);
+			//if (exp_->value != NULL)
+			mirroring_exp_and_env(all);
+			return (1);
 		}
-		i++;
+		exp = exp->next;
 	}
+	return (0);
 }
 
 void	unset_env_list(t_all *all, char *var)
@@ -103,6 +120,7 @@ void	unset_env(t_all *all)
 			if (match_word(all->cmd->args[i], env->variable))
 			{
 				unset_env_list(all, env->variable);
+				unset_exp_list(all, all->cmd->args[i]);
 				break ;
 			}
 			env = env->next;
