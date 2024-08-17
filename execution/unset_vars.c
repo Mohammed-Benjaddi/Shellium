@@ -47,7 +47,6 @@ void	mirroring_exp_and_env(t_all *all)
 
 	env = all->env;
 	exp = all->exp;
-			
 
 	while (env != NULL && exp != NULL)
 	{
@@ -57,7 +56,6 @@ void	mirroring_exp_and_env(t_all *all)
 		env = env->next;
 	}
 }
-
 int	unset_exp(t_all *all, t_exp *exp_, int ret)
 {
 	t_exp	*exp;
