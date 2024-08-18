@@ -130,7 +130,7 @@ void	heredoc_check(t_all *all)
 
 
 	doc = all->cmd;
-
+	printf("%p##\n\n\n\n\n\n", doc->heredoc_delimiter);
 	while (doc != NULL)
 	{
 		if (doc->heredoc_delimiter != NULL)
