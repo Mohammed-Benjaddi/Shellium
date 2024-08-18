@@ -79,19 +79,23 @@ void	wait_ps(pid_t *pids, t_all *all)
 		i++;
 	}
 }
-
+void close_pipe_both_sides(int *sides)
+{
+	close(sides[1]);
+	close(sides[0]);
+}
 void	execution(t_all **alll, char *envpp[])
 {
 	t_all	*all;
 	t_cmd	*cmd_;
 	int		i;
-	int		x[2];
+	int		pipe_sides[2];
 	int		pr_fd;
 
 	all = *alll;
-	pid_t	pids[all->nums_of_cmds];
 	i = 0;
 	cmd_ = all->cmd;
+	pid_t	pids[all->nums_of_cmds];
 	heredoc_check(all);
 	if (exec_built_ins(all))
 	{
@@ -100,7 +104,7 @@ void	execution(t_all **alll, char *envpp[])
 	}
 	while (i < all->nums_of_cmds)
 	{
-		if (pipe(x) < 0)
+		if (pipe(pipe_sides) < 0)
 			ft_error(all);
 		pids[i] = fork();
 		if (pids[i] < 0)
@@ -108,21 +112,20 @@ void	execution(t_all **alll, char *envpp[])
 		if (pids[i] == 0)
 		{
 			reset_signal_handlers();
-			redirect_in_out_to_pipe(all->nums_of_cmds, i, x, &pr_fd, all);
+			redirect_in_out_to_pipe(all->nums_of_cmds, i, pipe_sides, &pr_fd, all);
 			redirections_set(all);
 			heredoc_pipe(all);
-			exec_piped_built_ins(all, x);
+			exec_piped_built_ins(all, pipe_sides);
 			if (execve(all->cmd->full_path, all->cmd->args, envpp) == -1)
 				ft_write(strerror(errno), 2);
 			exit(1);
 		}
 		if (i != 0)
 			close(pr_fd);
-		pr_fd = dup(x[0]);
+		pr_fd = dup(pipe_sides[0]);
 		if (pr_fd < 0)
 			ft_error(all);
-		close(x[1]);
-		close(x[0]);
+		close_pipe_both_sides(pipe_sides);
 		i++;
 		all->cmd = all->cmd->next;
 	}

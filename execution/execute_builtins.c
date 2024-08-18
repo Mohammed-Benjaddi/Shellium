@@ -70,23 +70,35 @@ void	exec_piped_built_ins(t_all *all, int pipes[2])
 	//execve("/bin/ls",ls_args , NULL);
 	exit(0);
 }
-
-int	exec_built_ins(t_all *all)
+void handle_export(t_all *all)
 {
 	int i;
-	int exec;
 
-	exec = 0;
 	i = 1;
-	if (match_word(all->cmd->cmd, "export") && all->cmd->args[1] != NULL)
+	while (all->cmd->args[i])
 	{
-		while (all->cmd->args[i])
-		{
-			parse_indetifier(all, all->cmd->args[i]);
-			i++;
-		}
-		exec++;
+		parse_indetifier(all, all->cmd->args[i]);
+		i++;
 	}
+}
+void handle_exit(t_all *all)
+{
+	if (!all->cmd->pipe)
+	{
+		env_exp_lists_clear(all);
+		exit(0);
+	}
+}
+int	exec_built_ins(t_all *all)
+{
+	int exec;
+	
+	exec = 0;
+	if (match_word(all->cmd->cmd, "export") && all->cmd->args[1] != NULL)
+		{
+			handle_export(all);
+			exec++;
+		}
 	if (match_word(all->cmd->cmd, "unset"))
 	{
 		if (all->cmd->args[1] != NULL)
@@ -94,14 +106,10 @@ int	exec_built_ins(t_all *all)
 		exec++;
 	}
 	if (match_word(all->cmd->cmd, "exit"))
-	{
-		if (!all->cmd->pipe)
 		{
-			env_exp_lists_clear(all);
-			exit(0);
+			handle_exit(all);
+			exec++;
 		}
-		exec++;
-	}
 	if (match_word(all->cmd->cmd, "cd"))
 	{
 		if (!all->cmd->pipe)
