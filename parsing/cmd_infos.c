@@ -83,38 +83,6 @@ char *get_append_to_file(char **args)
   }
   return file;
 }
-<<<<<<<<< Temporary merge branch 1
 
-char **get_herdoc_delimiter(char **args)
-{
-  size_t i;
-  size_t len;
-  char **delimiters;
 
-  i = 0;
-  len = 0;
-  while(args[i])
-  {
-    if(!ft_strcmp(args[i], "<") && !ft_strcmp(args[i + 1], "<")) // and [i+1] != '\0'
-      len++;
-    i++;
-  }
-  delimiters = malloc(sizeof(char *) * len + 1);
-  i = 0;
-  len = 0;
-  while(args[i])
-  {
-    if(!ft_strcmp(args[i], "<") && !ft_strcmp(args[i + 1], "<")) // and [i+1] != '\0'
-    {
-      i++;
-      if(!args[i + 1])
-        throw_error("syntax error near unexpected token `newline'");
-      else
-        delimiters[len++] = ft_strdup(args[i + 1]);
-    }
-    i++;
-  }
-  return delimiters;
-}
-=========
->>>>>>>>> Temporary merge branch 2
+
