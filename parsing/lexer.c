@@ -37,6 +37,7 @@ char *get_str_in_quotes(char *command, int *i, char c, t_env *env)
     return NULL;
   }
   buffer = ft_substr(command + *i, 0, len);
+  // system("leaks -q minishell");
   *i += len;
   if(c == DOUBLE_QUOTE && get_vars_length(buffer) > 0)
     buffer = handle_variables(buffer, env, get_vars_length(buffer));
@@ -93,6 +94,7 @@ char *get_str_without_quotes(char *command, int *i, t_env *env)
   else if(str_has_quotes(buffer, SINGLE_QUOTE))
     buffer = find_and_remove(buffer, SINGLE_QUOTE);
   *i += len;
+  // free(command);
   return buffer;
 }
 
@@ -103,6 +105,7 @@ int create_cmd(t_cmd **head, char **args, int words, int is_pipe)
   cmd = ft_lstnew(args, words, is_pipe);
   if(!cmd)
   {
+    // printf("cmd: %s\n", cmd);
     printf("%scommand not found%s\n", RED, NC);
     ft_free(args);
     return 0;
@@ -214,7 +217,6 @@ bool full_of_spaces(char *buffer)
 int ft_lexer(char *command, t_all **all)
 {
   t_lexer lexer;
-  // t_cmd *head = (*all)->cmd;
 
   lexer.i = 0;
   lexer.args = NULL;
@@ -227,9 +229,10 @@ int ft_lexer(char *command, t_all **all)
     while (command[lexer.i] && ft_isspace(command[lexer.i]))
       lexer.i++;
     if(!ft_strlen(command + lexer.i))
+    {
+      free(command);
       return 0;
-    // allocate_args(command, &lexer.pipe_idx, &lexer.words, lexer.i);
-    // lexer.args = malloc(sizeof(char *) )
+    }
     lexer.args = allocate_args(command, &lexer.pipe_idx, &lexer.words, lexer.i);
     if(!lexer.args)
       return 0;
@@ -244,30 +247,35 @@ int ft_lexer(char *command, t_all **all)
       else
         lexer.buffer = get_str_without_quotes(command, &lexer.i, (*all)->env);
       if(lexer.buffer == NULL || full_of_spaces(lexer.buffer))
+      {
+        ft_free(lexer.args);
+        free(lexer.buffer);
+        free(command);
         return 0;
+      }
       if(!ft_strlen(lexer.buffer))
         break;
-      lexer.args[lexer.j] = lexer.buffer;
+      // lexer.args[lexer.j] = lexer.buffer;
+      lexer.args[lexer.j] = ft_strdup(lexer.buffer);
+      free(lexer.buffer);
       lexer.j++;
-      // printf("\t\t\t\t\t\tlexer buffer: %s\n", lexer.buffer);
     }
-    // printf("j --> %d\n", lexer.j);
     lexer.args[lexer.j] = NULL;
     if(lexer.words)
     {
       if(is_pipe_after(command + lexer.i))
         lexer.pipe = 1;
       if (!create_cmd(&(*all)->cmd, lexer.args, lexer.words, lexer.pipe))
+      {
+        free(command);
         return 0;
+      }
     }
     else
       ft_free(lexer.args);
-      // printf("%s ---> <--- %s\n", GREEN, NC);
     lexer.i++;
-    // if(lexer.args != NULL)
-      // ft_free(lexer.args);
   }
   free(command);
-  command = NULL;
+  // command = NULL;
   return 1;
 }

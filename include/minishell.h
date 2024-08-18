@@ -20,6 +20,7 @@
 #define IN_RED '<'
 #define OUT_RED '>'
 #define VAR_SIGN '$'
+#define SLASH '/'
 #define BACK_SLASH '\\'
 
 # define NC "\e[0m"
@@ -117,7 +118,9 @@ size_t get_vars_length(char *str);
 char *get_path(char *cmd);
 char *get_input_redirection_file(char **args);
 char *get_output_redirection_file(char **args);
-char *get_herdoc_delimiter(char **args);
+char **get_herdoc_delimiter(char **args);
+
+// char *get_herdoc_delimiter(char **args);
 // char *get_append_from_file(char **args);
 char *get_append_to_file(char **args);
 char *handle_variables(char *str, t_env *env, size_t length);
