@@ -17,7 +17,7 @@ static int is_redirection(char *str, char *next)
 	else if(!ft_strcmp(str, "<") && ft_strcmp(next, "<"))
 		return 2;
 	else if(!ft_strcmp(str, "<") && !ft_strcmp(next, "<"))
-		return 2;
+		return 3;
 	else
 		return 0;
 }
@@ -123,6 +123,7 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	new_node->out_file = get_output_redirection_file(args);
 	new_node->append_file = get_append_to_file(args);
 	new_node->heredoc_delimiter = get_herdoc_delimiter(args);
+	// new_node->heredoc_delimiter = NULL;
 	new_node->heredoc_content = NULL;
 	new_node->pipe = pipe;
 	new_node->next = NULL;
@@ -138,7 +139,16 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 		free_cmd(new_node);
 		return NULL;
 	}
+
+	// int i;
+
+	// i = 0;
+	// while()
+	// {
+	// 	printf("delimiter: %s\n", new_node->);
+	// }
 	// ft_free(args);
+
 	return (new_node);
 }
 

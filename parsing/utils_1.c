@@ -226,12 +226,6 @@ char *find_and_remove(char *str, char c)
 
   i = 0;
   j = 0;
-  // if(c == DOUBLE_QUOTE && get_vars_length(str) > 0)
-  // {
-  //   printf("%sis there a variable %s%s\n", RED, str, NC);
-  //   str = handle_variables(str);
-  // }
-  // printf("---> after fixing\n");
   len = ft_strlen(str) - nums_of_chars(str, c) + 1;
   if(!str)
     return NULL;
@@ -247,6 +241,7 @@ char *find_and_remove(char *str, char c)
   }
   res[j] = '\0';
   free(str);
+  str = NULL;
   printf("after fixing: %s\n", res);
   return res;
 }

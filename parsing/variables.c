@@ -78,16 +78,17 @@ char *handle_variables(char *str, t_env *env, size_t length)
 
   printf("===> +length: %zu\n", length);
   i = 0;
-  vars = ft_split(str, '$');
-  result = NULL;
   if(!str)
   {
     printf("%s-------> NULL <----------%s\n", GREEN, NC);
     return NULL;
   }
+  vars = ft_split(str, '$');
+  result = NULL;
   while (vars[i])
   {
     printf("var ---> %s\n", vars[i]);
+
     vars[i] = find_and_remove(vars[i], DOUBLE_QUOTE);
     // rest = ft_substr()
     // printf("var length: %zu\n", get_length(vars[i]));
@@ -101,5 +102,6 @@ char *handle_variables(char *str, t_env *env, size_t length)
   }
   free(str);
   str = NULL;
+  ft_free(vars);
   return result;
 }
