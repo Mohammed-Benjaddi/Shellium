@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	free_env_list(t_all *all)
+void free_env_list(t_all *all)
 {
 	t_env	*tmp;
 
@@ -25,7 +25,8 @@ void	free_env_list(t_all *all)
 		free(tmp);
 	}
 }
-void	free_exp_list(t_all *all)
+
+void free_exp_list(t_all *all)
 {
 	t_exp	*tmp;
 
@@ -47,9 +48,9 @@ void	env_exp_lists_clear(t_all *all)
 }
 void	exit_way(t_all *all)
 {
-	env_exp_lists_clear(all);
-	free(all);
-	exit(1);
+    env_exp_lists_clear(all);
+		free(all);
+    exit(1);
 }
 void	ft_error(t_all *all)
 {
