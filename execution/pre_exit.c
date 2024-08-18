@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pre_exit.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-krid <ael-krid@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/08/16 14:54:50 by ael-krid         ###   ########.fr       */
+/*   Updated: 2024/08/18 13:16:19 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_env_list(t_all *all)
+void free_env_list(t_all *all)
 {
 	t_env	*tmp;
 
@@ -25,7 +25,8 @@ void	free_env_list(t_all *all)
 		free(tmp);
 	}
 }
-void	free_exp_list(t_all *all)
+
+void free_exp_list(t_all *all)
 {
 	t_exp	*tmp;
 
@@ -47,9 +48,9 @@ void	env_exp_lists_clear(t_all *all)
 }
 void	exit_way(t_all *all)
 {
-	env_exp_lists_clear(all);
-	free(all);
-	exit(1);
+    env_exp_lists_clear(all);
+		free(all);
+    exit(1);
 }
 void	ft_error(t_all *all)
 {

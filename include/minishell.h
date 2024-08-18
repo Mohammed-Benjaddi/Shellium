@@ -20,6 +20,7 @@
 #define IN_RED '<'
 #define OUT_RED '>'
 #define VAR_SIGN '$'
+#define SLASH '/'
 #define BACK_SLASH '\\'
 
 # define NC "\e[0m"
@@ -92,6 +93,8 @@ int ft_isalpha(char c);
 int ft_strchr(char *str, char c);
 int ft_strchr_pro(char *str, char c1, char c2, bool inside_quotes);
 int ft_isspace(char c);
+char *ft_strndup(char *str, size_t n);
+
 
 // ft_list.c
 t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe);
@@ -118,9 +121,16 @@ char *get_path(char *cmd);
 char *get_input_redirection_file(char **args);
 char *get_output_redirection_file(char **args);
 char **get_herdoc_delimiter(char **args);
+
+// char *get_herdoc_delimiter(char **args);
 // char *get_append_from_file(char **args);
 char *get_append_to_file(char **args);
 char *handle_variables(char *str, t_env *env, size_t length);
+
+
+// executables.c
+void get_executable(char *cmd);
+
 
 // ----------------------------------------------
 void    ft_error(t_all *all);

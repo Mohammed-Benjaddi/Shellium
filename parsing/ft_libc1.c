@@ -77,6 +77,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		return (NULL);
 	ft_strlcpy(res, s1, s1_len + 1);
 	ft_strlcpy(res + s1_len, s2, s1_len + s2_len + 1);
+	// free(s1);
 	return (res);
 }
 
@@ -150,9 +151,6 @@ bool search_for_2nd_quote(char *str, char c)
 	return false;
 }
 
-	  // || c ==  APPEND_RED || c == HERDOC
-
-
 int ft_strchr(char *str, char c)
 {
 	int i;
@@ -166,13 +164,8 @@ int ft_strchr(char *str, char c)
 		return -1;
 	while(str[i])
 	{
-		// 
-		// if(!in_quotes && is_symbol(str[i]))
 		if(!in_quotes && (str[i] == SPACE || str[i] == PIPE))
-		{
-			// printf("-------> here\n");
 			return i;
-		}
 		if(str[i] == c)
 		{
 			if(in_quotes == 1)
@@ -180,7 +173,6 @@ int ft_strchr(char *str, char c)
 			else
 				in_quotes = 1;
 		}
-		
 		i++;
 	}
 	return i;
@@ -191,7 +183,6 @@ int ft_strchr_pro(char *str, char c1, char c2, bool inside_quotes)
 	int i;
 
 	i = 0;
-	// while(str[i] && !is_symbol(str[i]))
 	while(str[i] && str[i] != c1 && str[i] != c2)
 	{
 		i++;
@@ -199,4 +190,22 @@ int ft_strchr_pro(char *str, char c1, char c2, bool inside_quotes)
 			return -1;
 	}
 	return i + 1;
+}
+
+char *ft_strndup(char *str, size_t n)
+{
+	size_t i;
+	char *result;
+
+	if(!str)
+		return NULL;
+	i = 0;
+	result = (char *)malloc(n + 1);
+	while(i < n)
+	{	
+		result[i] = str[i];
+		i++;
+	}
+	result[i] = '\0';
+	return result;
 }
