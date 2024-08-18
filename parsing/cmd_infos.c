@@ -18,6 +18,7 @@ char *get_input_redirection_file(char **args)
         printf("======> %s ---- %s\n", args[i], args[i + 1]);
         free(in_file);
         in_file = ft_strdup(args[i + 1]);
+        // in_file = args[i + 1];
       }
     }
     i++;
@@ -66,6 +67,7 @@ char *get_append_to_file(char **args)
   {
     if(!ft_strcmp(args[i], ">") && args[i + 1] && !ft_strcmp(args[i + 1], ">"))
     {
+      i++;
       if(!args[i + 1])
         throw_error("syntax error near unexpected token `newline'");
       else

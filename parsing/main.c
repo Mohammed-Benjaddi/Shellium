@@ -31,11 +31,9 @@ int main(int ac, char **av, char **env)
   using_history();
   set_lists(all, env); // 
   // setup_signal_handlers();
-
   // atexit(check_leaks);
   while(1)
   {
-    // set_lists(all, env);
     char *read = readline("minishell > ");
     if(!read)
     {
@@ -60,7 +58,6 @@ int main(int ac, char **av, char **env)
 		// free_env_list(all);
     // env_exp_lists_clear(all);
     // system("leaks -q minishell");
-	
   }
   return 0;
 }

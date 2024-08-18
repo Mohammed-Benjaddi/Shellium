@@ -105,7 +105,7 @@ int create_cmd(t_cmd **head, char **args, int words, int is_pipe)
   cmd = ft_lstnew(args, words, is_pipe);
   if(!cmd)
   {
-    // printf("cmd: %s\n", cmd);
+    // printf("cmd: %s\n", cmd);  
     printf("%scommand not found%s\n", RED, NC);
     ft_free(args);
     return 0;

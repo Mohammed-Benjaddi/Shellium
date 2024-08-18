@@ -97,6 +97,7 @@ char  *get_path(char *cmd)
     i++;
   }
   ft_free(all_paths);
+  printf("should return NULL\n");
   return NULL;
 }
 
@@ -108,6 +109,8 @@ char **get_herdoc_delimiter(char **args)
 
   i = 0;
   len = get_delimiters_len(args);
+  if(!len)
+    return NULL;
   delimiters = malloc(sizeof(char *) * len + 1);
   i = 0;
   len = 0;
