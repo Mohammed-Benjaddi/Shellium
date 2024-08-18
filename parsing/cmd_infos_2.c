@@ -111,7 +111,7 @@ char **get_herdoc_delimiter(char **args)
   len = get_delimiters_len(args);
   if(!len)
     return NULL;
-  delimiters = malloc(sizeof(char *) * len + 1);
+  delimiters = malloc(sizeof(char *) * (len + 1));
   i = 0;
   len = 0;
   while(args[i])

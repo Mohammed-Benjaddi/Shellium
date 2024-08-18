@@ -122,6 +122,7 @@ char	*heredoc(char *heredoc_str, int fd, t_all *all)
 	return (full_str);
 }
 
+
 void	heredoc_check(t_all *all)
 {
 	t_cmd	*doc;
@@ -130,7 +131,6 @@ void	heredoc_check(t_all *all)
 
 
 	doc = all->cmd;
-	printf("%p##\n\n\n\n\n\n", doc->heredoc_delimiter);
 	while (doc != NULL)
 	{
 		if (doc->heredoc_delimiter != NULL)
@@ -141,17 +141,12 @@ void	heredoc_check(t_all *all)
 			{
 				here_tmp = ft_strdup("");
 				here_tmp = heredoc(doc->heredoc_delimiter[i], 1, all);
-				doc->heredoc_content = ft_strjoin(here_tmp, doc->heredoc_content+i);
+				doc->heredoc_content = ft_strjoin(doc->heredoc_content+i, here_tmp);
 				free(here_tmp);
 				i++;
 			}
+			printf("[%s]\n\n\n", doc->heredoc_content);
 		}
 		doc = doc->next;
 	}
 }
-// int  main()
-// {
-// 	int fd = open("hello", O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
-
-//     printf("%s",heredoc("x", 1));
-// }
