@@ -83,16 +83,25 @@ char **ft_args_dup(char **args)
 
 void free_cmd(t_cmd *cmd)
 {
-	ft_free(cmd->args);
-	free(cmd->cmd);
-	free(cmd->in_file);
-	free(cmd->out_file);
-	free(cmd->heredoc_content);
-	free(cmd->heredoc_delimiter);
-	free(cmd->full_path);
-	free(cmd->append_file);
-	free(cmd);
-	cmd = NULL;
+	if(cmd->args)
+		ft_free(cmd->args);
+	if(cmd->cmd)
+		free(cmd->cmd);
+	if(cmd->in_file)
+		free(cmd->in_file);
+	if(cmd->out_file)
+		free(cmd->out_file);
+	if(cmd->heredoc_content)
+		free(cmd->heredoc_content);
+	if(cmd->heredoc_delimiter)
+		free(cmd->heredoc_delimiter);
+	if(cmd->full_path)
+		free(cmd->full_path);
+	if(cmd->append_file)
+		free(cmd->append_file);
+	// if(cmd)
+	// free(cmd);
+	// cmd = NULL;
 }
 
 bool is_builtin(char *cmd)
@@ -107,6 +116,11 @@ bool is_builtin(char *cmd)
 	// 	return true;
 	return false;
 }
+
+// bool is_executable(char *cmd)
+// {
+	
+// }
 
 t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 {
@@ -131,24 +145,20 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	new_node->full_path = get_path(new_node->cmd);
 	if(!new_node->full_path)
 	{
+		// get_executable(new_node->cmd);
 		if(!ft_strcmp(new_node->cmd, "exit"))
 			exit(0);
 		// if(!is_builtin(new_node->cmd) && !is_path(new_node->cmd))
-		if(is_builtin(new_node->cmd))
+		else if (is_builtin(new_node->cmd))
 			return new_node;
-		free_cmd(new_node);
+		// else if (is_executable(new_node->cmd))
+		// 	return new_node;
+		ft_lstclear(&new_node);
+		// if(new_node)
+			// free_cmd(new_node);
+		// printf("cmd not found hhhhhh\n");
 		return NULL;
 	}
-
-	// int i;
-
-	// i = 0;
-	// while()
-	// {
-	// 	printf("delimiter: %s\n", new_node->);
-	// }
-	// ft_free(args);
-
 	return (new_node);
 }
 
@@ -189,7 +199,7 @@ void    ft_lstclear(t_cmd **lst)
 		current = (*lst)->next;
 		ft_free((*lst)->args);
 		free((*lst)->cmd);
-		free((*lst)->in_file);
+		// free((*lst)->in_file);
 		free((*lst)->out_file);
 		free((*lst)->heredoc_content);
 		free((*lst)->heredoc_delimiter);
