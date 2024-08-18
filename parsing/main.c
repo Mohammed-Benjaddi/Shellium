@@ -51,7 +51,7 @@ int main(int ac, char **av, char **env)
     }
 
     // free(read);
-    print_list(all->cmd);
+    // print_list(all->cmd);
     all->nums_of_cmds = count_commands(all->cmd);
     execution(&all, env);
     ft_lstclear(&all->cmd);

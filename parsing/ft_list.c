@@ -145,6 +145,7 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	new_node->full_path = get_path(new_node->cmd);
 	if(!new_node->full_path)
 	{
+		// get_executable(new_node->cmd);
 		if(!ft_strcmp(new_node->cmd, "exit"))
 			exit(0);
 		// if(!is_builtin(new_node->cmd) && !is_path(new_node->cmd))
@@ -155,20 +156,9 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 		ft_lstclear(&new_node);
 		// if(new_node)
 			// free_cmd(new_node);
-		printf("cmd not found hhhhhh\n");
+		// printf("cmd not found hhhhhh\n");
 		return NULL;
 	}
-
-	// int i;
-
-	// i = 0;
-	// while()
-	// {
-	// 	printf("delimiter: %s\n", new_node->);
-	// }
-	// ft_free(args);
-
-	printf("%s---> correct node%s\n", CYAN, NC);
 	return (new_node);
 }
 

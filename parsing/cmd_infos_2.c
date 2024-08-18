@@ -70,8 +70,8 @@ char  *get_path(char *cmd)
   i = 0;
   is_path = false;
   all_paths = get_all_paths(cmd);
-	printf("%s-----------> checkpoint <-----------%s\n", RED, NC);
-  printf("cmd line ---> %s\n", cmd);
+	// printf("%s-----------> checkpoint <-----------%s\n", RED, NC);
+  // printf("cmd line ---> %s\n", cmd);
   if(cmd[0] && cmd[0] == SLASH && cmd[ft_strlen(cmd) - 1])
   {
     line = isolate_cmd_from_path(cmd);
@@ -97,7 +97,7 @@ char  *get_path(char *cmd)
     i++;
   }
   ft_free(all_paths);
-  printf("should return NULL\n");
+  // printf("should return NULL\n");
   return NULL;
 }
 
@@ -126,5 +126,6 @@ char **get_herdoc_delimiter(char **args)
     }
     i++;
   }
+  delimiters[len] = NULL;
   return delimiters;
 }
