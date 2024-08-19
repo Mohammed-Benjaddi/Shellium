@@ -216,6 +216,11 @@ int check_command(t_lexer *lexer, t_all **all, char *command)
 
 int handle_new_cmd(t_all **all, t_lexer *lexer, char *command)
 {
+  // printf("handle new command: %s\n", lexer->args[lexer->words - 1]);
+  if(lexer->words && (is_symbol(lexer->args[lexer->words - 1][0]) || lexer->args[lexer->words - 1][0] == BACK_SLASH))
+    return 0;
+  // printf("-----> %s <----\n", lexer->args[lexer->words - 1]);
+  // printf("----> words: %d\n", lexer->words);
   if(lexer->words)
   {
     if(is_pipe_after(command + lexer->i))
@@ -250,6 +255,7 @@ int ft_lexer(char *command, t_all **all)
     lexer.args = allocate_args(command, &lexer.pipe_idx, &lexer.words, lexer.i);
     if(!lexer.args || !check_command(&lexer, all, command))
       return 0;
+    // printf("-------> here\n");
     lexer.args[lexer.j] = NULL;
     if(!handle_new_cmd(all, &lexer, command))
       return 0;
