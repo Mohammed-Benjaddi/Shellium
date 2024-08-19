@@ -69,6 +69,8 @@ char  *get_path(char *cmd)
 
   i = 0;
   is_path = false;
+  if(!cmd)
+    return NULL;
   all_paths = get_all_paths(cmd);
 	// printf("%s-----------> checkpoint <-----------%s\n", RED, NC);
   // printf("cmd line ---> %s\n", cmd);
