@@ -116,6 +116,7 @@ void	execution(t_all **alll, char *envpp[])
 			redirections_set(all);
 			heredoc_pipe(all);
 			exec_piped_built_ins(all, pipe_sides);
+			
 			if (execve(all->cmd->full_path, all->cmd->args, envpp) == -1)
 				{
 					printf("\t#####\n\n\n" );
