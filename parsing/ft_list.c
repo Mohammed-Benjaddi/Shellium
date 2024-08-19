@@ -121,7 +121,7 @@ bool is_builtin(char *cmd)
 
 // bool is_executable(char *cmd)
 // {
-	
+
 // }
 
 t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
@@ -139,30 +139,34 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	new_node->out_file = get_output_redirection_file(args);
 	new_node->append_file = get_append_to_file(args);
 	new_node->heredoc_delimiter = get_herdoc_delimiter(args);
-	// new_node->heredoc_delimiter = NULL;
 	new_node->heredoc_content = NULL;
 	new_node->pipe = pipe;
 	new_node->next = NULL;
+	new_node->cmd = NULL;
 	if(!new_node->args)
-	{
-		printf("===> checkpoint <===\n");
-		new_node->cmd = NULL;
 		ft_free(new_node->args);
-	}
 	else
 		new_node->cmd = ft_strdup(new_node->args[0]);
 	new_node->full_path = get_path(new_node->cmd);
 	if(!new_node->full_path)
 	{
-		if(new_node->heredoc_delimiter)
-			return new_node;
-		if(!ft_strcmp(new_node->cmd, "exit"))
-			exit(0);
-		else if (is_builtin(new_node->cmd))
-			return new_node;
-		ft_lstclear(&new_node);
-		return NULL;
+		new_node->cmd_not_found = true;
+		// get_executable(new_node->cmd);
+		// if(get_executable(new_node->cmd))
+			// return new_node;
+		// if(new_node->heredoc_delimiter)
+		// 	return new_node;
+		// else if(!ft_strcmp(new_node->cmd, "exit"))
+		// 	exit(0);
+		// else if (is_builtin(new_node->cmd))
+		// 	return new_node;
+		// ft_lstclear(&new_node);
+		
+		// return NULL;
 	}
+	else 
+		new_node->cmd_not_found = false;
+
 	return (new_node);
 }
 
