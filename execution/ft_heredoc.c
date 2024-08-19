@@ -99,6 +99,7 @@ static void	join_the_two_strings(char *all, char const *s1, char const *s2)
 //     return (1);
 // }
 
+
 char	*heredoc(char *heredoc_str, int fd, t_all *all)
 {
 	char	*full_str;
@@ -121,13 +122,94 @@ char	*heredoc(char *heredoc_str, int fd, t_all *all)
 	}
 	return (full_str);
 }
-
-
-void	heredoc_check(t_all *all)
+void *shell_calloc(size_t size , int count)
 {
-	t_cmd	*doc;
+	unsigned char *ret;
+	int i;
+
+	if (!count || !size)
+		{
+			count++;
+			size++;
+		}
+	i = size*count;
+	ret = (unsigned char *) malloc(i);
+
+	if (!ret)
+		return (NULL);
+	i--;
+	while(i >=0 )
+	{
+		ret[i] = 0;
+		i--;
+	}
+	return ((void *) ret);
+}
+void	heredoc_(t_cmd *doc, t_all *all)
+{
 	char *here_tmp;
 	int i;
+	// t_cmd	*doc;
+
+
+	// doc = all->cmd;
+	
+	reset_signal_handlers();
+
+	doc->heredoc_content = ft_strdup("");
+	i = 0;
+	while (doc->heredoc_delimiter[i])
+	{
+		here_tmp = ft_strdup("");
+		here_tmp = heredoc(doc->heredoc_delimiter[i], 1, all);
+		doc->heredoc_content = ft_strjoin(doc->heredoc_content+i, here_tmp);
+		free(here_tmp);
+		i++;
+	}
+ }
+
+void heredoc_ing(t_cmd *cmd, t_all *all) 
+{
+    char *buffer;
+	int read_ret;
+	
+	read_ret = 1;
+    int pipefd[2];
+    if (pipe(pipefd) == -1) 
+	{
+        exit(EXIT_FAILURE);
+    }
+    pid_t pid = fork();
+    if (pid == 0) 
+	{
+        close(pipefd[0]);
+		heredoc_(cmd , all);
+        write(pipefd[1], cmd->heredoc_content, ft_strlen(cmd->heredoc_content));
+        close(pipefd[1]);
+        exit(0);
+    } 
+	else
+	{
+        close(pipefd[1]);
+		while (read_ret > 0)
+		{
+			buffer = (char *) shell_calloc(sizeof(char) , 11);
+			if (!buffer)
+				ft_error(all);
+			buffer[10] = 0;
+			read_ret = read(pipefd[0], buffer, 10);
+			cmd->heredoc_content = ft_strjoin(cmd->heredoc_content ,buffer  );
+			free(buffer);
+		}
+        close(pipefd[0]);
+        // waitpid(pid, NULL, 0);
+    }
+}
+
+void heredoc_check(t_all *all)
+{
+	//if (all->cmd->heredoc_delimiter)
+	t_cmd	*doc;
 
 
 	doc = all->cmd;
@@ -135,17 +217,9 @@ void	heredoc_check(t_all *all)
 	{
 		if (doc->heredoc_delimiter != NULL)
 		{
-			doc->heredoc_content = ft_strdup("");
-			i = 0;
-			while (doc->heredoc_delimiter[i])
-			{
-				here_tmp = ft_strdup("");
-				here_tmp = heredoc(doc->heredoc_delimiter[i], 1, all);
-				doc->heredoc_content = ft_strjoin(doc->heredoc_content+i, here_tmp);
-				free(here_tmp);
-				i++;
-			}
+			heredoc_ing(doc, all);
 		}
 		doc = doc->next;
 	}
 }
+

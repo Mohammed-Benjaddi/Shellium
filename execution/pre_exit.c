@@ -50,7 +50,7 @@ void	exit_way(t_all *all)
 {
     env_exp_lists_clear(all);
 		free(all);
-    exit(1);
+    exit(errno);
 }
 void	ft_error(t_all *all)
 {

@@ -111,13 +111,16 @@ void	execution(t_all **alll, char *envpp[])
 			ft_error(all);
 		if (pids[i] == 0)
 		{
-			reset_signal_handlers();
+			  reset_signal_handlers();
 			redirect_in_out_to_pipe(all->nums_of_cmds, i, pipe_sides, &pr_fd, all);
 			redirections_set(all);
 			heredoc_pipe(all);
 			exec_piped_built_ins(all, pipe_sides);
 			if (execve(all->cmd->full_path, all->cmd->args, envpp) == -1)
-				ft_write(strerror(errno), 2);
+				{
+					printf("\t#####\n\n\n" );
+					ft_write(strerror(errno), 2);
+				}
 			exit(1);
 		}
 		if (i != 0)
@@ -137,3 +140,83 @@ void	execution(t_all **alll, char *envpp[])
 	
 }
 
+
+
+
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <string.h>
+// #include <unistd.h>
+// #include <signal.h>
+// #include <sys/wait.h>
+
+// #define BUFFER_SIZE 1024
+
+// volatile sig_atomic_t stop = 0;
+
+// void signal_handler(int signum) {
+//     stop = 1;
+// // }
+
+// void heredoc_ing(t_all *all) 
+// {
+//     char *buffer;
+// 	int read_ret;
+// 	t_cmd	*doc;
+// 	char *here_tmp;
+// 	int i;
+
+// 	doc = all->cmd;
+// 	read_ret = 1;
+//     int pipefd[2];
+//     if (pipe(pipefd) == -1) 
+// 	{
+//         perror("pipe");
+//         exit(EXIT_FAILURE);
+//     }
+//     pid_t pid = fork();
+//     if (pid == 0) 
+// 	{
+//         close(pipefd[0]);
+// 		while (doc!=NULL)
+// 		{
+// 			if (doc->heredoc_delimiter != NULL)
+// 			{
+// 				reset_signal_handlers();
+// 				doc->heredoc_content = ft_strdup("");
+// 				i = 0;
+// 				while (doc->heredoc_delimiter[i])
+// 				{
+// 					here_tmp = ft_strdup("");
+// 					here_tmp = heredoc(doc->heredoc_delimiter[i], 1, all);
+// 					doc->heredoc_content = ft_strjoin(doc->heredoc_content+i, here_tmp);
+// 					free(here_tmp);
+// 					i++;
+// 				}
+//         		write(pipefd[1], doc->heredoc_content, ft_strlen(doc->heredoc_content));
+// 			}
+// 			doc = doc->next;
+// 			// heredoc_(all);
+// 		}
+//         close(pipefd[1]);
+//         exit(0);
+//     } 
+// 	else
+// 	{
+// 		doc = all->cmd;
+//         close(pipefd[1]);
+// 		while (read_ret > 0)
+// 		{
+// 			buffer = (char *) shell_calloc(sizeof(char) , 11);
+// 			if (!buffer)
+// 				ft_error(all);
+// 			buffer[10] = 0;
+// 			read_ret = read(pipefd[0], buffer, 10);
+// 			all->cmd->heredoc_content = ft_strjoin(all->cmd->heredoc_content ,buffer  );
+// 			free(buffer);
+
+// 		}
+//         close(pipefd[0]);
+//         // waitpid(pid, NULL, 0);
+//     }
+// }
