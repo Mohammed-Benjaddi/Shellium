@@ -65,6 +65,8 @@ void	heredoc_pipe(t_all *all)
 	if (dup2(p[0], STDIN_FILENO) < 0)
 		ft_error(all);
 	close(p[0]);
+	if(all->cmd->cmd == NULL)
+		exit(0);
 }
 
 void	redirect_in_out_to_pipe(int n_pipes, int index, int pipe[], int *pr_fd,
