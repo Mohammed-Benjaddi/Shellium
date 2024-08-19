@@ -44,12 +44,8 @@ int main(int ac, char **av, char **env)
       continue;
     add_history(read);
     if(!ft_lexer(read, &all))
-    {
-      // system("leaks -q minishell");
-      // free(read);
       continue;
-    }
-
+    // printf("--> after parsing\n");
     // free(read);
     // print_list(all->cmd);
     all->nums_of_cmds = count_commands(all->cmd);
