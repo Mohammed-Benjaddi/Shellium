@@ -31,11 +31,10 @@
 # define BLUE "\x1b[34m"
 # define MAGENTA "\x1b[35m"
 # define WHITE "\x1b[37m"
-
 typedef struct s_command_line {
-  char *cmd; // The command name (e.g., "echo", "ls")
-  char *full_path; // The full path to the command (e.g., "/bin/echo", "/bin
-  char **args; // Array of arguments including the command
+  char *cmd;        // The command name (e.g., "echo", "ls")
+  char *full_path;  // The full path to the command (e.g., "/bin/echo", "/bin
+  char **args;      // Array of arguments including the command
   int  arg_count; // Number of arguments
   char *in_file; // For input redirection (<)
   char *out_file; // For output redirection (>)
