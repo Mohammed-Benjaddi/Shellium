@@ -145,7 +145,6 @@ void	heredoc_check(t_all *all)
 				free(here_tmp);
 				i++;
 			}
-			printf("[%s]\n\n\n", doc->heredoc_content);
 		}
 		doc = doc->next;
 	}
