@@ -20,7 +20,11 @@ char *ft_strdup(char *str)
 
   i = 0;
   if(!str)  
+	{
+		printf("null at strdup\n");
     return NULL;
+	}
+	// printf("strdup: %s\n", str);
   buf = malloc(sizeof(char) * (ft_strlen(str) + 1));
   while(str[i])
   {
