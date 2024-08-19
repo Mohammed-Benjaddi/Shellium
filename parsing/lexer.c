@@ -216,6 +216,9 @@ int check_command(t_lexer *lexer, t_all **all, char *command)
 
 int handle_new_cmd(t_all **all, t_lexer *lexer, char *command)
 {
+  // printf("handle new command: %s\n", lexer->args[lexer->words - 1]);
+  if(is_symbol(lexer->args[lexer->words - 1][0]) || lexer->args[lexer->words - 1][0] == BACK_SLASH)
+    return 0;
   if(lexer->words)
   {
     if(is_pipe_after(command + lexer->i))
