@@ -31,10 +31,7 @@ void get_executable(char *cmd)
     return;
   arr = ft_split(cmd, SLASH);
   if(!arr)
-  {
-    printf("----> no slash here\n");
     return;
-  }
   while(arr[i + 1] != NULL)
   {
     printf("%s--> %s%s\n", MAGENTA, arr[i + 1], NC);

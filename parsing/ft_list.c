@@ -135,6 +135,7 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 		return (NULL);
 	new_node->arg_count = args_nbr;
 	new_node->args = ft_args_dup(args);
+	// get_executable(new_node->cmd, new_node->args);
 	new_node->in_file = get_input_redirection_file(args);
 	new_node->out_file = get_output_redirection_file(args);
 	new_node->append_file = get_append_to_file(args);
@@ -151,7 +152,6 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	if(!new_node->full_path)
 	{
 		new_node->cmd_not_found = true;
-		// get_executable(new_node->cmd);
 		// if(get_executable(new_node->cmd))
 			// return new_node;
 		// if(new_node->heredoc_delimiter)
