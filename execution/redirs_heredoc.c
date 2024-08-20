@@ -69,8 +69,7 @@ void	heredoc_pipe(t_all *all)
 		exit(0);
 }
 
-void	redirect_in_out_to_pipe(int n_pipes, int index, int pipe[], int *pr_fd,
-		t_all *all)
+void	redirect_in_out_to_pipe(int index, int pipe[], int *pr_fd, t_all *all)
 {
 	if (index != 0)
 	{
@@ -78,7 +77,7 @@ void	redirect_in_out_to_pipe(int n_pipes, int index, int pipe[], int *pr_fd,
 			ft_error(all);
 		close(*pr_fd);
 	}
-	if (index < n_pipes - 1)
+	if (index < all->nums_of_cmds - 1)
 	{
 		if (dup2(pipe[1], STDOUT_FILENO) < 0)
 			ft_error(all);
