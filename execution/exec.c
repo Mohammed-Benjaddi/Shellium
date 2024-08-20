@@ -84,6 +84,15 @@ void close_pipe_both_sides(int *sides)
 	close(sides[1]);
 	close(sides[0]);
 }
+void executing_commands(t_all *all, int *pipe_sides, char **envpp)
+{
+	redirections_set(all);
+	heredoc_pipe(all);
+	exec_piped_built_ins(all, pipe_sides);
+	if (execve(all->cmd->full_path, all->cmd->args, envpp) == -1)
+		ft_write(strerror(errno), 2);
+	exit(1);
+}
 void	execution(t_all **alll, char *envpp[])
 {
 	t_all	*all;
@@ -111,18 +120,8 @@ void	execution(t_all **alll, char *envpp[])
 			ft_error(all);
 		if (pids[i] == 0)
 		{
-			  reset_signal_handlers();
-			redirect_in_out_to_pipe(all->nums_of_cmds, i, pipe_sides, &pr_fd, all);
-			redirections_set(all);
-			heredoc_pipe(all);
-			exec_piped_built_ins(all, pipe_sides);
-			
-			if (execve(all->cmd->full_path, all->cmd->args, envpp) == -1)
-				{
-					printf("\t#####\n\n\n" );
-					ft_write(strerror(errno), 2);
-				}
-			exit(1);
+			redirect_in_out_to_pipe(i, pipe_sides, &pr_fd, all);
+			executing_commands(all, pipe_sides, envpp);
 		}
 		if (i != 0)
 			close(pr_fd);

@@ -135,7 +135,7 @@ void get_executable(char *cmd);
 void    ft_error(t_all *all);
 void    mirroring_env_and_exp(t_all *all);
 void    heredoc_pipe(t_all *all);
-void    redirect_in_out_to_pipe(int n_pipes, int index, int pipe[],int *pr_fd, t_all *all);
+void    redirect_in_out_to_pipe(int index, int pipe[],int *pr_fd, t_all *all);
 void    redirections_set(t_all *all);
 // void    change_dir(t_all *all, char *new_dir);
 void    reset_signal_handlers() ;

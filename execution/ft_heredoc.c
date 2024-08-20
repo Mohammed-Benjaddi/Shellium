@@ -127,11 +127,6 @@ void *shell_calloc(size_t size , int count)
 	unsigned char *ret;
 	int i;
 
-	if (!count || !size)
-		{
-			count++;
-			size++;
-		}
 	i = size*count;
 	ret = (unsigned char *) malloc(i);
 
@@ -167,27 +162,29 @@ void	heredoc_(t_cmd *doc, t_all *all)
 		i++;
 	}
  }
-
+void heredoc_child(int *_pipe, t_cmd *cmd, t_all *all)
+{
+	close(_pipe[0]);
+	heredoc_(cmd , all);
+    write(_pipe[1], cmd->heredoc_content, ft_strlen(cmd->heredoc_content));
+    close(_pipe[1]);
+    exit(0);
+}
 void heredoc_ing(t_cmd *cmd, t_all *all) 
 {
     char *buffer;
 	int read_ret;
+	pid_t pid;
 	
 	read_ret = 1;
     int pipefd[2];
     if (pipe(pipefd) == -1) 
-	{
-        exit(EXIT_FAILURE);
-    }
-    pid_t pid = fork();
+		ft_error(all);
+    pid = fork();
+	if (pid < 0)
+		ft_error(all);
     if (pid == 0) 
-	{
-        close(pipefd[0]);
-		heredoc_(cmd , all);
-        write(pipefd[1], cmd->heredoc_content, ft_strlen(cmd->heredoc_content));
-        close(pipefd[1]);
-        exit(0);
-    } 
+		heredoc_child(pipefd, cmd, all);
 	else
 	{
         close(pipefd[1]);
@@ -202,9 +199,10 @@ void heredoc_ing(t_cmd *cmd, t_all *all)
 			free(buffer);
 		}
         close(pipefd[0]);
-        // waitpid(pid, NULL, 0);
+        waitpid(pid, NULL, 0);
     }
 }
+
 
 void heredoc_check(t_all *all)
 {
@@ -216,9 +214,7 @@ void heredoc_check(t_all *all)
 	while (doc != NULL)
 	{
 		if (doc->heredoc_delimiter != NULL)
-		{
 			heredoc_ing(doc, all);
-		}
 		doc = doc->next;
 	}
 }
