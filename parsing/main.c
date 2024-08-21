@@ -35,6 +35,9 @@ bool is_correct_cmd(char *cmd)
   int i;
 
   i = 0;
+  skip_spaces(cmd, &i);
+  if(cmd[i] == PIPE)
+    return false;
   while(cmd[i])
   {
     skip_spaces(cmd, &i);
@@ -47,16 +50,10 @@ bool is_correct_cmd(char *cmd)
     {
       i++;
       if(cmd[i] && cmd[i] == PIPE)
-      {
-        printf("second pipe\n");
         i++;
-      }
       skip_spaces(cmd, &i);
       if(is_symbol_in_cmd(cmd[i]) || cmd[i] == PIPE)
-      {
-        printf("---> incorrect\n");
         return false;
-      }
     }
     i++;
   }
@@ -74,7 +71,7 @@ int main(int ac, char **av, char **env)
   // ft_init(shell);
   using_history();
   set_lists(all, env); // 
-  // setup_signal_handlers();
+  setup_signal_handlers();
   // atexit(check_leaks);
   while(1)
   {

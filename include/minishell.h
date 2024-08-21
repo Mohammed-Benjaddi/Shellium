@@ -132,7 +132,7 @@ char *handle_variables(char *str, t_env *env, size_t length);
 
 
 // executables.c
-void get_executable(char *cmd);
+char *get_executable(char *cmd);
 
 
 // ----------------------------------------------

@@ -69,11 +69,11 @@ char  *get_path(char *cmd)
 
   i = 0;
   is_path = false;
+  command = NULL;
+  path = NULL;
   if(!cmd)
     return NULL;
   all_paths = get_all_paths(cmd);
-	// printf("%s-----------> checkpoint <-----------%s\n", RED, NC);
-  // printf("cmd line ---> %s\n", cmd);
   if(cmd[0] && cmd[0] == SLASH && cmd[ft_strlen(cmd) - 1])
   {
     line = isolate_cmd_from_path(cmd);
@@ -83,9 +83,11 @@ char  *get_path(char *cmd)
     line = cmd;
   while (all_paths[i])
   {
-    command = ft_strjoin(all_paths[i], "/");
+    char *curr_path = ft_strdup(all_paths[i]);
+    command = ft_strjoin(curr_path, "/");
     path = ft_strjoin(command, line);
-    free(command);
+    // free(command);
+    // command = NULL;
     if(access(path, X_OK) == 0)
     {
       ft_free(all_paths);

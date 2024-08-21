@@ -144,6 +144,7 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	new_node->pipe = pipe;
 	new_node->next = NULL;
 	new_node->cmd = NULL;
+	new_node->cmd_not_found = false;
 	if(!new_node->args)
 		ft_free(new_node->args);
 	else
@@ -151,22 +152,10 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	new_node->full_path = get_path(new_node->cmd);
 	if(!new_node->full_path)
 	{
-		new_node->cmd_not_found = true;
-		// if(get_executable(new_node->cmd))
-			// return new_node;
-		// if(new_node->heredoc_delimiter)
-		// 	return new_node;
-		// else if(!ft_strcmp(new_node->cmd, "exit"))
-		// 	exit(0);
-		// else if (is_builtin(new_node->cmd))
-		// 	return new_node;
-		// ft_lstclear(&new_node);
-		
-		// return NULL;
+		new_node->full_path = get_executable(new_node->cmd);
+		if(!new_node->full_path)
+			new_node->cmd_not_found = true;
 	}
-	else 
-		new_node->cmd_not_found = false;
-
 	return (new_node);
 }
 
