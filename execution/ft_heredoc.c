@@ -112,6 +112,8 @@ char	*heredoc(char *heredoc_str, int fd, t_all *all)
 	while (1)
 	{
 		input = readline(">>");
+		if (!input)
+			exit(0);
 		if (!match_word(input, heredoc_str))
 		{
 			full_str = ft_strjoin(full_str, input);

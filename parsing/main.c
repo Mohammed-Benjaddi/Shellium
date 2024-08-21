@@ -71,7 +71,7 @@ int main(int ac, char **av, char **env)
   // ft_init(shell);
   using_history();
   set_lists(all, env); // 
-  setup_signal_handlers();
+    setup_signal_handlers();
   // atexit(check_leaks);
   while(1)
   {
