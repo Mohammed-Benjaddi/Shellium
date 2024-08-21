@@ -31,11 +31,10 @@
 # define BLUE "\x1b[34m"
 # define MAGENTA "\x1b[35m"
 # define WHITE "\x1b[37m"
-
 typedef struct s_command_line {
-  char *cmd; // The command name (e.g., "echo", "ls")
-  char *full_path; // The full path to the command (e.g., "/bin/echo", "/bin
-  char **args; // Array of arguments including the command
+  char *cmd;        // The command name (e.g., "echo", "ls")
+  char *full_path;  // The full path to the command (e.g., "/bin/echo", "/bin
+  char **args;      // Array of arguments including the command
   int  arg_count; // Number of arguments
   char *in_file; // For input redirection (<)
   char *out_file; // For output redirection (>)
@@ -45,7 +44,7 @@ typedef struct s_command_line {
   char *heredoc_content; // Content of heredoc
   int   pipe; // 1 if this command pipes to next, 0 otherwise
   struct s_command_line *next; // Pointer to next command in pipeline
-  bool cmd_not_found;
+  int cmd_not_found;
 } t_cmd;
 
 typedef struct s_lexer
@@ -139,7 +138,7 @@ char *get_executable(char *cmd);
 void    ft_error(t_all *all);
 void    mirroring_env_and_exp(t_all *all);
 void    heredoc_pipe(t_all *all);
-void    redirect_in_out_to_pipe(int n_pipes, int index, int pipe[],int *pr_fd, t_all *all);
+void    redirect_in_out_to_pipe(int index, int pipe[],int *pr_fd, t_all *all);
 void    redirections_set(t_all *all);
 // void    change_dir(t_all *all, char *new_dir);
 void    reset_signal_handlers() ;

@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/08/19 20:01:30 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/08/21 17:04:14 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,59 +79,70 @@ void	wait_ps(pid_t *pids, t_all *all)
 		i++;
 	}
 }
-
+void close_pipe_both_sides(int *sides)
+{
+	close(sides[1]);
+	close(sides[0]);
+}
+void executing_commands(t_all *all, int *pipe_sides, char **envpp)
+{
+	redirections_set(all);
+	heredoc_pipe(all);
+	exec_piped_built_ins(all, pipe_sides);
+	if (execve(all->cmd->full_path, all->cmd->args, envpp) == -1)
+		ft_write(strerror(errno), 2);
+	exit(1);
+}
+void fds_handling(t_all *all, int i, int *pr_fd, int *pipe_sides)
+{
+	if (i != 0)
+		close(*pr_fd);
+	*pr_fd = dup(pipe_sides[0]);
+	if (*pr_fd < 0)
+		ft_error(all);
+	close_pipe_both_sides(pipe_sides);
+}
 void	execution(t_all **alll, char *envpp[])
 {
 	t_all	*all;
 	t_cmd	*cmd_;
 	int		i;
-	int		x[2];
+	int		pipe_sides[2];
 	int		pr_fd;
 
 	all = *alll;
-	pid_t	pids[all->nums_of_cmds];
 	i = 0;
 	cmd_ = all->cmd;
+	pid_t	pids[all->nums_of_cmds];
 	heredoc_check(all);
 	if (exec_built_ins(all))
 	{
 		all->nums_of_cmds--;
 		all->cmd = all->cmd->next;
 	}
+	signal (SIGINT, SIG_IGN);
 	while (i < all->nums_of_cmds)
 	{
-		if (pipe(x) < 0)
+		if (pipe(pipe_sides) < 0)
 			ft_error(all);
 		pids[i] = fork();
 		if (pids[i] < 0)
 			ft_error(all);
 		if (pids[i] == 0)
 		{
-			reset_signal_handlers();
-			redirect_in_out_to_pipe(all->nums_of_cmds, i, x, &pr_fd, all);
-			redirections_set(all);
-			heredoc_pipe(all);
-			exec_piped_built_ins(all, x);
-			
-			if (execve(all->cmd->full_path, all->cmd->args, envpp) == -1)
-				ft_write(strerror(errno), 2);
-			exit(1);
+    		setup_signal_handlers();
+			redirect_in_out_to_pipe(i, pipe_sides, &pr_fd, all);
+			executing_commands(all, pipe_sides, envpp);
 		}
-		if (i != 0)
-			close(pr_fd);
-		pr_fd = dup(x[0]);
-		if (pr_fd < 0)
-			ft_error(all);
-		close(x[1]);
-		close(x[0]);
+		fds_handling(all, i, &pr_fd, pipe_sides);
 		i++;
 		all->cmd = all->cmd->next;
 	}
 	// if(valid == 1)
-	// 	close(pr_fd);
+	 	// close(pr_fd);
 	wait_ps(pids, all);
+    // setup_signal_handlers();
 	all = *alll;
 	all->cmd = cmd_;
 	
 }
-
