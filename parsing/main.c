@@ -38,8 +38,10 @@ bool is_correct_cmd(char *cmd)
   skip_spaces(cmd, &i);
   if(cmd[i] == PIPE)
     return false;
+  printf("len : %zu\n", ft_strlen(cmd));
   while(cmd[i])
   {
+    printf("i ---> %d\n", i);
     skip_spaces(cmd, &i);
     if(cmd[i] == SINGLE_QUOTE || cmd[i] == DOUBLE_QUOTE)
     {
@@ -57,7 +59,6 @@ bool is_correct_cmd(char *cmd)
     }
     i++;
   }
-
   return true;
 }
 
