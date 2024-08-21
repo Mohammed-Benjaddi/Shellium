@@ -98,13 +98,15 @@ char *ft_strndup(char *str, size_t n);
 
 // ft_list.c
 t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe);
-void	ft_lstadd_back(t_cmd **lst, t_cmd *);
+void	ft_lstadd_back(t_cmd **lst, t_cmd *new);
 // void  ft_init(t_shell *shell);
 void    ft_lstclear(t_cmd **lst);
 
 // ft_lexer.c
 int ft_lexer(char *command, t_all **all);
 bool is_symbol(char c);
+void skip_str_inside_quote(char *cmd, int *i, char c);
+char *fix_cmd(char *cmd);
 
 // utils_1.c
 void throw_error(char *msg);
@@ -129,7 +131,7 @@ char *handle_variables(char *str, t_env *env, size_t length);
 
 
 // executables.c
-void get_executable(char *cmd);
+char *get_executable(char *cmd);
 
 
 // ----------------------------------------------

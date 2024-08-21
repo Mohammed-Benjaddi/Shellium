@@ -16,7 +16,7 @@ size_t get_slash_index(char *cmd)
   return index;
 }
 
-void get_executable(char *cmd)
+char *get_executable(char *cmd)
 {
   size_t i;
   char **arr;
@@ -28,26 +28,23 @@ void get_executable(char *cmd)
   i = 0;
   slash_index = 0;
   if(get_slash_index(cmd) == -1)
-    return;
+    return NULL;
   arr = ft_split(cmd, SLASH);
   if(!arr)
-  {
-    printf("----> no slash here\n");
-    return;
-  }
+    return NULL;
   while(arr[i + 1] != NULL)
-  {
-    printf("%s--> %s%s\n", MAGENTA, arr[i + 1], NC);
     i++;
-  }
   filename = ft_strdup(arr[i]);
   if(!filename)
-    return;
+    return NULL;
   slash_index = get_slash_index(cmd);
   path = ft_strndup(cmd, slash_index + 1);
   chdir(path);
-  getcwd(cwd, sizeof(cwd));  
-  printf("filename: %s\npath is: %s\n", filename, cwd);
-  // return filename;
-  // printf("file name: %s\n", filename);
+  free(path);
+  getcwd(cwd, sizeof(cwd));
+  path = ft_strjoin(ft_strjoin(ft_strdup(cwd), "/"), filename);
+  free(filename);
+  if(access(path, X_OK) == 0)
+    return path;
+  return NULL;
 }

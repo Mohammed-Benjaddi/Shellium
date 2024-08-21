@@ -55,7 +55,7 @@ char *get_var_value(char *str, t_env *env)
   {
     if(!ft_strcmp(var, env->variable))
     {
-      result = ft_strjoin(env->value, rest);
+      result = ft_strjoin(ft_strdup(env->value), rest);
       break;
     }
     env = env->next;
@@ -87,17 +87,17 @@ char *handle_variables(char *str, t_env *env, size_t length)
   result = NULL;
   while (vars[i])
   {
-    printf("var ---> %s\n", vars[i]);
+    // printf("var ---> %s\n", vars[i]);
 
     vars[i] = find_and_remove(vars[i], DOUBLE_QUOTE);
     // rest = ft_substr()
     // printf("var length: %zu\n", get_length(vars[i]));
     // result = 
     vars[i] = get_var_value(vars[i], env);
-    printf("after getting value: %s\n", vars[i]);
+    // printf("after getting value: %s\n", vars[i]);
     // var = get_variable(vars[i]);
     result = ft_strjoin(result, vars[i]);
-    printf("result: %s\n", result);
+    // printf("result: %s\n", result);
     i++;
   }
   free(str);

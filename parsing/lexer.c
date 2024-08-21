@@ -157,21 +157,34 @@ char *fix_cmd(char *cmd)
   int i;
   int j;
   char *line;
+  char quote;
 
   i = 0;
   j = 0;
   line = malloc(sizeof(char) * ft_strlen(cmd) + reds_counter(cmd) + 1);
+  if(!line)
+    return NULL;
+  // printf("---> allocated: %zu\n", ft_strlen(cmd) + reds_counter(cmd) + 1);
   while (cmd[i])
   {
-    if((cmd[i] == IN_RED || cmd[i] == OUT_RED) && (i > 0 && (cmd[i - 1] != IN_RED || cmd[i - 1] != OUT_RED)))
-      line[j++] = ' ';
+    if(cmd[i] == SINGLE_QUOTE || cmd[i] == DOUBLE_QUOTE)
+    {
+      quote = cmd[i];
+      while(cmd[i] && cmd[i + 1] != quote)
+        line[j++] = cmd[i++];
+    }
+    else if(((cmd[i] == IN_RED || cmd[i] == OUT_RED || cmd[i] == PIPE)
+      && (i > 0 && (cmd[i - 1] != IN_RED || cmd[i - 1] != OUT_RED))))
+      {
+        line[j++] = ' ';
+      }
     else if (i > 0 && (cmd[i - 1] == IN_RED || cmd[i - 1] == OUT_RED) && cmd[i] != SPACE)
       line[j++] = ' ';
     line[j++] = cmd[i++];
   }
+  // printf("j ---> %d\n", j);
   line[j] = '\0';
-  free(cmd);
-  return line;
+  return free(cmd),line;
 }
 
 bool full_of_spaces(char *buffer)
@@ -216,11 +229,9 @@ int check_command(t_lexer *lexer, t_all **all, char *command)
 
 int handle_new_cmd(t_all **all, t_lexer *lexer, char *command)
 {
-  // printf("handle new command: %s\n", lexer->args[lexer->words - 1]);
-  if(lexer->words && (is_symbol(lexer->args[lexer->words - 1][0]) || lexer->args[lexer->words - 1][0] == BACK_SLASH))
+  if(lexer->words && (is_symbol(lexer->args[lexer->words - 1][0]) 
+    || lexer->args[lexer->words - 1][0] == BACK_SLASH))
     return 0;
-  // printf("-----> %s <----\n", lexer->args[lexer->words - 1]);
-  // printf("----> words: %d\n", lexer->words);
   if(lexer->words)
   {
     if(is_pipe_after(command + lexer->i))
@@ -236,30 +247,58 @@ int handle_new_cmd(t_all **all, t_lexer *lexer, char *command)
   return 1;
 }
 
+bool is_incorrect_cmd(char *cmd, int *pipe)
+{
+  size_t i;
+
+  i = 0;
+  if(cmd[i] == PIPE)
+  {
+    // printf("a pipe was found\n");
+    if(!cmd[i + 1])
+      return true;
+  }
+  if(cmd[i + 1] == PIPE && cmd[i + 2] != PIPE)
+  {
+    *pipe = -1;
+    return false;
+  }
+  else if(cmd[i + 1] == PIPE && cmd[i + 2] == PIPE)
+    return true;
+  return false;
+}
+
+void init_lexer(t_lexer *lexer, char *command)
+{
+  lexer->i = 0;
+  lexer->args = NULL;
+  lexer->length = ft_strlen(command);
+}
+
 int ft_lexer(char *command, t_all **all)
 {
   t_lexer lexer;
 
-  lexer.i = 0;
-  lexer.args = NULL;
-  lexer.length = ft_strlen(command);
-  command = fix_cmd(command);
+  init_lexer(&lexer, command);
+  // command = fix_cmd(command);
+  // printf("%snew command: %s%s\n", CYAN, command, NC);
   while(lexer.i < lexer.length)
   {
     lexer.j = 0;
     lexer.pipe = 0;
     while (command[lexer.i] && ft_isspace(command[lexer.i]))
       lexer.i++;
-    if(!ft_strlen(command + lexer.i))
+    if(!ft_strlen(command + lexer.i) || is_incorrect_cmd(command + lexer.i, &lexer.pipe))
       return (free(command), 0);
     lexer.args = allocate_args(command, &lexer.pipe_idx, &lexer.words, lexer.i);
     if(!lexer.args || !check_command(&lexer, all, command))
       return 0;
-    // printf("-------> here\n");
     lexer.args[lexer.j] = NULL;
     if(!handle_new_cmd(all, &lexer, command))
       return 0;
     lexer.i++;
+    if(lexer.pipe == -1)
+      return 1;
   }
   free(command);
   return 1;
