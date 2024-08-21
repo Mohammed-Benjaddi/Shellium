@@ -89,6 +89,11 @@ void executing_commands(t_all *all, int *pipe_sides, char **envpp)
 	redirections_set(all);
 	heredoc_pipe(all);
 	exec_piped_built_ins(all, pipe_sides);
+	if (all->cmd->cmd_not_found)
+		{
+			ft_write("command not found\n", 2);
+			exit(1);
+		}
 	if (execve(all->cmd->full_path, all->cmd->args, envpp) == -1)
 		ft_write(strerror(errno), 2);
 	exit(1);
@@ -111,9 +116,9 @@ void	execution(t_all **alll, char *envpp[])
 	int		pr_fd;
 
 	all = *alll;
+	pid_t	pids[all->nums_of_cmds];
 	i = 0;
 	cmd_ = all->cmd;
-	pid_t	pids[all->nums_of_cmds];
 	heredoc_check(all);
 	if (exec_built_ins(all))
 	{
@@ -123,6 +128,7 @@ void	execution(t_all **alll, char *envpp[])
 	signal (SIGINT, SIG_IGN);
 	while (i < all->nums_of_cmds)
 	{
+		
 		if (pipe(pipe_sides) < 0)
 			ft_error(all);
 		pids[i] = fork();
@@ -131,7 +137,6 @@ void	execution(t_all **alll, char *envpp[])
 		if (pids[i] == 0)
 		{
     		setup_signal_handlers();
-
 			redirect_in_out_to_pipe(i, pipe_sides, &pr_fd, all);
 			executing_commands(all, pipe_sides, envpp);
 		}

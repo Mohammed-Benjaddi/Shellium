@@ -47,6 +47,12 @@ typedef struct s_command_line {
   bool cmd_not_found;
 } t_cmd;
 
+// typedef struct s_exec
+// {
+//   int i;
+//   int		pipe_sides[2];
+  
+// }
 typedef struct s_lexer
 {
   int i;
