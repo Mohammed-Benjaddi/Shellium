@@ -93,6 +93,15 @@ void executing_commands(t_all *all, int *pipe_sides, char **envpp)
 		ft_write(strerror(errno), 2);
 	exit(1);
 }
+void fds_handling(t_all *all, int i, int *pr_fd, int *pipe_sides)
+{
+	if (i != 0)
+		close(*pr_fd);
+	*pr_fd = dup(pipe_sides[0]);
+	if (*pr_fd < 0)
+		ft_error(all);
+	close_pipe_both_sides(pipe_sides);
+}
 void	execution(t_all **alll, char *envpp[])
 {
 	t_all	*all;
@@ -111,6 +120,7 @@ void	execution(t_all **alll, char *envpp[])
 		all->nums_of_cmds--;
 		all->cmd = all->cmd->next;
 	}
+	signal (SIGINT, SIG_IGN);
 	while (i < all->nums_of_cmds)
 	{
 		if (pipe(pipe_sides) < 0)
@@ -120,103 +130,20 @@ void	execution(t_all **alll, char *envpp[])
 			ft_error(all);
 		if (pids[i] == 0)
 		{
+    		setup_signal_handlers();
+
 			redirect_in_out_to_pipe(i, pipe_sides, &pr_fd, all);
 			executing_commands(all, pipe_sides, envpp);
 		}
-		if (i != 0)
-			close(pr_fd);
-		pr_fd = dup(pipe_sides[0]);
-		if (pr_fd < 0)
-			ft_error(all);
-		close_pipe_both_sides(pipe_sides);
+		fds_handling(all, i, &pr_fd, pipe_sides);
 		i++;
 		all->cmd = all->cmd->next;
 	}
 	// if(valid == 1)
-	// 	close(pr_fd);
+	 	// close(pr_fd);
 	wait_ps(pids, all);
+    setup_signal_handlers();
 	all = *alll;
 	all->cmd = cmd_;
 	
 }
-
-
-
-
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <string.h>
-// #include <unistd.h>
-// #include <signal.h>
-// #include <sys/wait.h>
-
-// #define BUFFER_SIZE 1024
-
-// volatile sig_atomic_t stop = 0;
-
-// void signal_handler(int signum) {
-//     stop = 1;
-// // }
-
-// void heredoc_ing(t_all *all) 
-// {
-//     char *buffer;
-// 	int read_ret;
-// 	t_cmd	*doc;
-// 	char *here_tmp;
-// 	int i;
-
-// 	doc = all->cmd;
-// 	read_ret = 1;
-//     int pipefd[2];
-//     if (pipe(pipefd) == -1) 
-// 	{
-//         perror("pipe");
-//         exit(EXIT_FAILURE);
-//     }
-//     pid_t pid = fork();
-//     if (pid == 0) 
-// 	{
-//         close(pipefd[0]);
-// 		while (doc!=NULL)
-// 		{
-// 			if (doc->heredoc_delimiter != NULL)
-// 			{
-// 				reset_signal_handlers();
-// 				doc->heredoc_content = ft_strdup("");
-// 				i = 0;
-// 				while (doc->heredoc_delimiter[i])
-// 				{
-// 					here_tmp = ft_strdup("");
-// 					here_tmp = heredoc(doc->heredoc_delimiter[i], 1, all);
-// 					doc->heredoc_content = ft_strjoin(doc->heredoc_content+i, here_tmp);
-// 					free(here_tmp);
-// 					i++;
-// 				}
-//         		write(pipefd[1], doc->heredoc_content, ft_strlen(doc->heredoc_content));
-// 			}
-// 			doc = doc->next;
-// 			// heredoc_(all);
-// 		}
-//         close(pipefd[1]);
-//         exit(0);
-//     } 
-// 	else
-// 	{
-// 		doc = all->cmd;
-//         close(pipefd[1]);
-// 		while (read_ret > 0)
-// 		{
-// 			buffer = (char *) shell_calloc(sizeof(char) , 11);
-// 			if (!buffer)
-// 				ft_error(all);
-// 			buffer[10] = 0;
-// 			read_ret = read(pipefd[0], buffer, 10);
-// 			all->cmd->heredoc_content = ft_strjoin(all->cmd->heredoc_content ,buffer  );
-// 			free(buffer);
-
-// 		}
-//         close(pipefd[0]);
-//         // waitpid(pid, NULL, 0);
-//     }
-// }
