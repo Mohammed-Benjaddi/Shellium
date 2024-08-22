@@ -46,10 +46,15 @@ void	env_exp_lists_clear(t_all *all)
 		free_exp_list(all);
 	ft_lstclear(&all->cmd);
 }
+void free_vars(t_all *all)
+{
+	free(all->_vars->pids);
+}
 void	exit_way(t_all *all)
 {
     env_exp_lists_clear(all);
-		free(all);
+	free_vars(all);
+	free(all);
     exit(errno);
 }
 void	ft_error(t_all *all)

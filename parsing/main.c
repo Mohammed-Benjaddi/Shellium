@@ -71,7 +71,7 @@ int main(int ac, char **av, char **env)
   // ft_init(shell);
   using_history();
   set_lists(all, env); // 
-    setup_signal_handlers();
+  setup_signal_handlers();
   // atexit(check_leaks);
   while(1)
   {
@@ -81,24 +81,19 @@ int main(int ac, char **av, char **env)
       env_exp_lists_clear(all);
       exit(0);
     }
-    if (!ft_strlen(read))
-      continue;
-    add_history(read);
-    read = fix_cmd(read);
-    // printf("after fixing: %s %zu\n", read, ft_strlen(read));
-    if(!is_correct_cmd(read))
-      continue;
-    if(!ft_lexer(read, &all))
-      continue;
-    // printf("--> after parsing\n");
-    // free(read);
-    // print_list(all->cmd);
-    all->nums_of_cmds = count_commands(all->cmd);
-    execution(&all, env);
+    if (ft_strlen(read))
+    {
+      add_history(read);
+      read = fix_cmd(read);
+      if(!is_correct_cmd(read))
+        continue;
+      if(!ft_lexer(read, &all))
+        continue;
+      all->nums_of_cmds = count_commands(all->cmd);
+      execution(&all, env);
+    }
     ft_lstclear(&all->cmd);
-		// free_env_list(all);
-    // env_exp_lists_clear(all);
-    // system("leaks -q minishell");
+    // free(read);
   }
-  return 0;
+    return 0;
 }

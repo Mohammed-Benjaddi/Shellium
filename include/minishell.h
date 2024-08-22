@@ -65,6 +65,12 @@ typedef struct s_lexer
   int pipe;
 } t_lexer;
 
+typedef struct s_vars
+{
+  char **envpp;
+	pid_t	*pids;
+  
+} t_vars;
 typedef struct s_env{
   char *variable;
   char *value;
@@ -85,6 +91,7 @@ typedef struct s_all
   t_env      *env; // environment variables list
   t_exp     *exp; // exported variables list
   size_t     nums_of_cmds;
+  t_vars    *_vars;
 } t_all;
 
 // libc functions
@@ -141,6 +148,7 @@ char *get_executable(char *cmd);
 
 
 // ----------------------------------------------
+void    *shell_calloc(size_t size , int count);
 void    ft_error(t_all *all);
 void    mirroring_env_and_exp(t_all *all);
 void    heredoc_pipe(t_all *all);

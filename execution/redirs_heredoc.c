@@ -43,7 +43,8 @@ void	heredoc_pipe(t_all *all)
 {
 	int	fd;
 	int	p[2];
-
+	
+	
 	if (all->cmd->heredoc_delimiter == NULL)
 		return ;
 	if (pipe(p) < 0)
