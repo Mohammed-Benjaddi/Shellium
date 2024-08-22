@@ -52,7 +52,7 @@ int	check_before_env(char *s)
 	}
 	if (!check_(s, i))
 		return (0);
-	return (-1); // if we should add an (export var) to the env or not;
+	return (-1);
 }
 void	add_it_to_env(t_all *all, char *new, t_exp *new_exp)
 {
@@ -60,12 +60,11 @@ void	add_it_to_env(t_all *all, char *new, t_exp *new_exp)
 
 	new_env = env_new(new);
 	if (new_env == NULL)
-		{
-            free(new);
-            ft_error(all);
-        }
-	//new_exp = exp_new(new);
-    free(new);
+	{
+		free(new);
+		ft_error(all);
+	}
+	free(new);
 	env_addback(all->env, new_env);
 	exp_addback(all->exp, new_exp);
 }
@@ -86,9 +85,9 @@ void	parse_indetifier(t_all *all, char *str)
 	i = 0;
 	tmp_str = ft_strdup(str);
 	ret = check_before_env(str);
-
 	if (ret == 0)
 	{
+		// free(tmp_str);
 		identifier_error(str);
 		return ;
 	}
@@ -96,18 +95,18 @@ void	parse_indetifier(t_all *all, char *str)
 	if (ret == -1)
 	{
 		if (unset_exp(all, last, ret))
-			{
-				free(last);
-                free(tmp_str);// check ...
-				return ;
-			}
-		exp_addback(all->exp, last); //t_exp    *head, t_exp    *new)
+		{
+			free(last);
+			free(tmp_str); // check ...
+			return ;
+		}
+		exp_addback(all->exp, last); 
 		return ;
 	}
 	if (unset_exp(all, last, ret))
-			{
-                free(tmp_str);// check ...
-				return ;
-			}
+	{
+		free(tmp_str); // check ...
+		return ;
+	}
 	add_it_to_env(all, tmp_str, last);
 }

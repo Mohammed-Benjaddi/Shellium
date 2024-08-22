@@ -66,4 +66,3 @@ void	exec_piped_built_ins(t_all *all, int pipes[2])
 		return ;
 	exit(0);
 }
-

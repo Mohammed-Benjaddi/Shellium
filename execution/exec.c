@@ -24,27 +24,27 @@ void	wait_ps(pid_t *pids, t_all *all)
 		i++;
 	}
 }
-void executing_commands(t_all *all, int *pipe_sides, char **envpp)
+void	executing_commands(t_all *all, int *pipe_sides, char **envpp)
 {
 	redirections_set(all);
 	heredoc_pipe(all);
 	exec_piped_built_ins(all, pipe_sides);
 	if (all->cmd->cmd_not_found)
-		{
-			ft_write(all->cmd->cmd, 2);
-			ft_write(": command not found\n", 2);
-			ft_error(all);
-		}
+	{
+		ft_write(all->cmd->cmd, 2);
+		ft_write(": command not found\n", 2);
+		ft_error(all);
+	}
 	if (execve(all->cmd->full_path, all->cmd->args, envpp) == -1)
 		ft_write(strerror(errno), 2);
 	exit(1);
 }
 
-void execution_loop(t_vars *vars, int i, t_all *all, t_cmd *cmd)
+void	execution_loop(t_vars *vars, int i, t_all *all, t_cmd *cmd)
 {
-	int		pipe_sides[2];
-	int		pr_fd;
-	
+	int	pipe_sides[2];
+	int	pr_fd;
+
 	if (pipe(pipe_sides) < 0)
 		ft_error(all);
 	vars->pids[i] = fork();
@@ -64,11 +64,11 @@ void execution_loop(t_vars *vars, int i, t_all *all, t_cmd *cmd)
 	close(pipe_sides[1]);
 	close(pipe_sides[0]);
 }
-t_vars *set_envp_pids(t_all *all, char **env)
+t_vars	*set_envp_pids(t_all *all, char **env)
 {
-	t_vars *vars;
+	t_vars	*vars;
 
-	vars = (t_vars *) malloc(sizeof(t_vars));
+	vars = (t_vars *)malloc(sizeof(t_vars));
 	if (!vars)
 		ft_error(all);
 	vars->envpp = env;
@@ -84,8 +84,8 @@ void	execution(t_all **alll, char *envpp[])
 	t_all	*all;
 	t_cmd	*cmd_;
 	int		i;
-	t_vars *vars;
-	
+	t_vars	*vars;
+
 	all = *alll;
 	i = 0;
 	cmd_ = all->cmd;
@@ -104,7 +104,7 @@ void	execution(t_all **alll, char *envpp[])
 		all->cmd = all->cmd->next;
 	}
 	wait_ps(vars->pids, all);
-    setup_signal_handlers();
+	setup_signal_handlers();
 	all = *alll;
 	all->cmd = cmd_;
 }

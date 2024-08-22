@@ -30,14 +30,13 @@ char	**n_env(t_all *all, char **env)
 	return (envp);
 }
 
-void free_e(char **envp)
+void	free_e(char **envp)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (envp[i])
-		free(envp[i++])
-		;
+		free(envp[i++]);
 	free(envp);
 }
 void	set_lists(t_all *all, char **env)
@@ -67,21 +66,20 @@ void	set_lists(t_all *all, char **env)
 	}
 	free_e(envp);
 }
-void *shell_calloc(size_t size , int count)
+void	*shell_calloc(size_t size, int count)
 {
-	unsigned char *ret;
-	int i;
+	unsigned char	*ret;
+	int				i;
 
-	i = size*count;
-	ret = (unsigned char *) malloc(i);
-
+	i = size * count;
+	ret = (unsigned char *)malloc(i);
 	if (!ret)
 		return (NULL);
 	i--;
-	while(i >=0 )
+	while (i >= 0)
 	{
 		ret[i] = 0;
 		i--;
 	}
-	return ((void *) ret);
+	return ((void *)ret);
 }

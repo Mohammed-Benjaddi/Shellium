@@ -12,9 +12,9 @@
 
 #include "minishell.h"
 
-void handle_export(t_all *all)
+void	handle_export(t_all *all)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	while (all->cmd->args[i])
@@ -23,7 +23,7 @@ void handle_export(t_all *all)
 		i++;
 	}
 }
-void handle_exit(t_all *all)
+void	handle_exit(t_all *all)
 {
 	if (!all->cmd->pipe)
 	{
@@ -33,14 +33,14 @@ void handle_exit(t_all *all)
 }
 int	exec_built_ins(t_all *all)
 {
-	int exec;
-	
+	int	exec;
+
 	exec = 0;
 	if (match_word(all->cmd->cmd, "export") && all->cmd->args[1] != NULL)
-		{
-			handle_export(all);
-			exec++;
-		}
+	{
+		handle_export(all);
+		exec++;
+	}
 	if (match_word(all->cmd->cmd, "unset"))
 	{
 		if (all->cmd->args[1] != NULL)
@@ -48,10 +48,10 @@ int	exec_built_ins(t_all *all)
 		exec++;
 	}
 	if (match_word(all->cmd->cmd, "exit"))
-		{
-			handle_exit(all);
-			// exec++;
-		}
+	{
+		handle_exit(all);
+		// exec++;
+	}
 	if (match_word(all->cmd->cmd, "cd"))
 	{
 		if (!all->cmd->pipe)
