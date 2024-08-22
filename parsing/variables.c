@@ -60,7 +60,7 @@ char *get_var_value(char *str, t_env *env)
     }
     env = env->next;
   }
-  free(str);
+  // free(str);
   free(var);
   if(!result)
     return rest;
@@ -94,37 +94,78 @@ char *handle_variables(char *str, t_env *env, size_t length)
   return result;
 }
 
-char *handle_variables_no_quote(char *str, t_env *env, size_t length)
-{
-  size_t i;
-  char **vars;
-  char *var;
-  char *result;
-  char *rest;
+// char *handle_variables_no_quote(char *str, t_env *env, size_t length)
+// {
+//   size_t i;
+//   char **vars;
+//   char *var;
+//   char *result;
+//   char *rest;
 
-  i = 0;
-  if(!str)
-    return NULL;
-  // printf("--> %s\n", str + length);
-  if(ft_strlen(str) > length)
-  {
-    rest = ft_strdup(str + length);
-    printf("rest: %s\n", rest);
-    printf("%sgreater than length%zu%s\n", RED, length, NC);
-  }
-  vars = ft_split(str, '$');
-  result = NULL;
-  while (vars[i])
-  {
-    printf("vars ---> %s\n", vars[i]);
-    // vars[i] = find_and_remove(vars[i], DOUBLE_QUOTE);
-    // printf("");
-    vars[i] = get_var_value(vars[i], env);
-    result = ft_strjoin(result, vars[i]);
-    i++;
-  }
-  free(str);
-  str = NULL;
-  ft_free(vars);
-  return result;
+//   i = 0;
+//   if(!str)
+//     return NULL;
+//   // printf("--> %s\n", str + length);
+//   if(ft_strlen(str) > length)
+//   {
+//     rest = ft_strdup(str + length);
+//     printf("rest: %s\n", rest);
+//     printf("%sgreater than length%zu%s\n", RED, length, NC);
+//   }
+//   vars = ft_split(str, '$');
+//   result = NULL;
+//   while (vars[i])
+//   {
+//     printf("vars ---> %s\n", vars[i]);
+//     // vars[i] = find_and_remove(vars[i], DOUBLE_QUOTE);
+//     // printf("");
+//     vars[i] = get_var_value(vars[i], env);
+//     result = ft_strjoin(result, vars[i]);
+//     i++;
+//   }
+//   free(str);
+//   str = NULL;
+//   ft_free(vars);
+//   return result;
+// }
+
+// char* process_input(const char* input) {
+char *handle_variables_no_quote(char *input, t_env *env, size_t length)
+{
+  // free();
+    size_t len = strlen(input);
+    char* output = malloc(len * 3);  // Allocating double the size for safety
+    if (!output) {
+        fprintf(stderr, "Memory allocation failed\n");
+        exit(1);
+    }
+    output[0] = '\0';
+
+    size_t i = 0;
+    while (i < len) {
+        if (input[i] == '$') {
+            // Extract the variable name
+            i++;
+            char var_name[100];  // Assuming variable names won't exceed 99 characters
+            size_t var_len = 0;
+            
+            while (i < len && (isalnum(input[i]) || input[i] == '_')) {
+                var_name[var_len++] = input[i++];
+            }
+            var_name[var_len] = '\0';
+
+            // Get variable value
+            char* var_value = get_var_value(var_name, env);
+            strcat(output, var_value);
+        } else {
+            // Add non-variable characters to output
+            size_t j = ft_strlen(output);
+            output[j] = input[i];
+            output[j + 1] = '\0';
+            i++;
+        }
+    }
+  printf("waaaaaaaaaaaaaaaaa3\n");
+
+    return output;
 }

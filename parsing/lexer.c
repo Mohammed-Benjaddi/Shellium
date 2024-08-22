@@ -69,14 +69,12 @@ char *get_str_without_quotes(char *command, int *i, t_env *env)
     buffer = handle_variables_no_quote(buffer, env, get_vars_length(buffer));
     // printf("length of var is: %zu\n", get_vars_length(buffer));
     printf("%sbuffer ---> %s%s\n", CYAN, buffer, NC);
-
   }
   else if(str_has_quotes(buffer, DOUBLE_QUOTE))
     buffer = find_and_remove(buffer, DOUBLE_QUOTE);
   else if(str_has_quotes(buffer, SINGLE_QUOTE))
     buffer = find_and_remove(buffer, SINGLE_QUOTE);
   // printf("%sbuffer ---> %s%s\n", CYAN, buffer, NC);
-  
   *i += len;
   return buffer;
 }
