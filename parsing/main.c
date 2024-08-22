@@ -90,10 +90,13 @@ int main(int ac, char **av, char **env)
       if(!ft_lexer(read, &all))
         continue;
       all->nums_of_cmds = count_commands(all->cmd);
-      execution(&all, env);
+       execution(&all, env);
+       free(all->_vars->pids);
+       free(all->_vars);
+      ft_lstclear(&all->cmd);
     }
-    ft_lstclear(&all->cmd);
-    // free(read);
+    else
+      free(read);
   }
     return 0;
 }

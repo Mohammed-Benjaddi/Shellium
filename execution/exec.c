@@ -44,6 +44,7 @@ void execution_loop(t_vars *vars, int i, t_all *all, t_cmd *cmd)
 {
 	int		pipe_sides[2];
 	int		pr_fd;
+	
 	if (pipe(pipe_sides) < 0)
 		ft_error(all);
 	vars->pids[i] = fork();
