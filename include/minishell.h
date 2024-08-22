@@ -132,7 +132,12 @@ char *handle_variables(char *str, t_env *env, size_t length);
 
 // executables.c
 char *get_executable(char *cmd);
+char *handle_variables_no_quote(char *str, t_env *env, size_t length);
 
+
+
+// main.c
+void skip_spaces(char *cmd, int *i);
 
 // ----------------------------------------------
 void    ft_error(t_all *all);

@@ -149,19 +149,25 @@ void skip_reds(char *str, int *i, char c)
 
 size_t get_vars_length(char *str)
 {
-  size_t i;
+  int i;
   size_t length;
+  size_t str_len;
 
   i = 0;
   length = 0;
+  str_len = ft_strlen(str);
   if(!str)
     return length;
   while(str[i])
   {
     while(str[i] && ft_isspace(str[i]))
-        i++;
-    if(str[i] == VAR_SIGN && str[i - 1] != BACK_SLASH)
+      i++;
+    // if(str[i] && str[i] == VAR_SIGN && str[i - 1] != BACK_SLASH)
+    // printf("outside the func\n");
+    if(str[i] && str[i] == VAR_SIGN && (i == 0 || (i > 0 && str[i - 1] != BACK_SLASH)))
     {
+      // printf("inside the func\n");
+      // if(i > 0 && str[i - 1] != BACK_SLASH)
       while(str[i] && str[i] != DOUBLE_QUOTE && str[i] != PIPE)
       {
         i++;
@@ -171,6 +177,7 @@ size_t get_vars_length(char *str)
     }
     i++;
   }
+  // printf("length should returned : %zu\n", length);
   return length;
 }
 
@@ -184,8 +191,7 @@ char *find_variable(char *str)
   j = 0;
   if(!str)
     return NULL;
-  // printf("%slength of variable is %zu%s\n", MAGENTA, , NC);
-  vars = malloc(sizeof(char) * (get_vars_length(str) + 1));
+  vars = malloc(get_vars_length(str) + 1);
   while(str[i])
   {
     while(str[i] && ft_isspace(str[i]))
@@ -200,7 +206,7 @@ char *find_variable(char *str)
     }
     i++;
   }
-  printf("%sall vars: %s%s\n", YELLOW, vars, NC);
+  // printf("%sall vars: %s%s\n", YELLOW, vars, NC);
   return vars;
 }
 
@@ -244,6 +250,6 @@ char *find_and_remove(char *str, char c)
   res[j] = '\0';
   free(str);
   str = NULL;
-  printf("after fixing: %s\n", res);
+  // printf("after fixing: %s\n", res);
   return res;
 }

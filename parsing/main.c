@@ -38,10 +38,8 @@ bool is_correct_cmd(char *cmd)
   skip_spaces(cmd, &i);
   if(cmd[i] == PIPE)
     return false;
-  printf("len : %zu\n", ft_strlen(cmd));
-  while(cmd[i])
+  while(i < ft_strlen(cmd))
   {
-    printf("i ---> %d\n", i);
     skip_spaces(cmd, &i);
     if(cmd[i] == SINGLE_QUOTE || cmd[i] == DOUBLE_QUOTE)
     {
@@ -50,8 +48,7 @@ bool is_correct_cmd(char *cmd)
     }
     else if(cmd[i] == PIPE)
     {
-      i++;
-      if(cmd[i] && cmd[i] == PIPE)
+      if(cmd[++i] && cmd[i] == PIPE)
         i++;
       skip_spaces(cmd, &i);
       if(is_symbol_in_cmd(cmd[i]) || cmd[i] == PIPE)
@@ -87,6 +84,7 @@ int main(int ac, char **av, char **env)
     add_history(read);
     read = fix_cmd(read);
     // printf("after fixing: %s %zu\n", read, ft_strlen(read));
+    // printf("%sread: %s%s\n", RED, read, NC);
     if(!is_correct_cmd(read))
       continue;
     if(!ft_lexer(read, &all))

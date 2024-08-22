@@ -10,7 +10,7 @@ char *ft_strtok(char *str)
   i = 0;
   j = 0;
   len = ft_strlen(str);
-  printf("len : %zu\n", len);
+  // printf("len : %zu\n", len);
   if(!str)
     return NULL;
   while(str[i] && ft_isspace(str[i]))
@@ -21,7 +21,7 @@ char *ft_strtok(char *str)
   while(i < len)
     result[j++] = str[i++];
   result[j] = '\0';
-  printf("%sft_strtok:%s---> %zu%s\n", MAGENTA, result, ft_strlen(result), NC);
+  // printf("%sft_strtok:%s---> %zu%s\n", MAGENTA, result, ft_strlen(result), NC);
   free(str);
   return result;
 }
@@ -38,7 +38,7 @@ char *get_only_var(char *str)
     len++;
   // result = malloc(len + 1);
   result = ft_substr(str, 0, len);
-  printf("only variable: %s\n", result);
+  // printf("only variable: %s\n", result);
   return result;
 }
 
@@ -74,30 +74,53 @@ char *handle_variables(char *str, t_env *env, size_t length)
   char **vars;
   char *var;
   char *result;
-  // char *rest;
 
-  printf("===> +length: %zu\n", length);
   i = 0;
   if(!str)
-  {
-    printf("%s-------> NULL <----------%s\n", GREEN, NC);
     return NULL;
+  vars = ft_split(str, '$');
+  result = NULL;
+  while (vars[i])
+  {
+    vars[i] = find_and_remove(vars[i], DOUBLE_QUOTE);
+    // printf("%s---> %s%s\n", RED, vars[i], NC);
+    vars[i] = get_var_value(vars[i], env);
+    result = ft_strjoin(result, vars[i]);
+    i++;
+  }
+  free(str);
+  str = NULL;
+  ft_free(vars);
+  return result;
+}
+
+char *handle_variables_no_quote(char *str, t_env *env, size_t length)
+{
+  size_t i;
+  char **vars;
+  char *var;
+  char *result;
+  char *rest;
+
+  i = 0;
+  if(!str)
+    return NULL;
+  // printf("--> %s\n", str + length);
+  if(ft_strlen(str) > length)
+  {
+    rest = ft_strdup(str + length);
+    printf("rest: %s\n", rest);
+    printf("%sgreater than length%zu%s\n", RED, length, NC);
   }
   vars = ft_split(str, '$');
   result = NULL;
   while (vars[i])
   {
-    // printf("var ---> %s\n", vars[i]);
-
-    vars[i] = find_and_remove(vars[i], DOUBLE_QUOTE);
-    // rest = ft_substr()
-    // printf("var length: %zu\n", get_length(vars[i]));
-    // result = 
+    printf("vars ---> %s\n", vars[i]);
+    // vars[i] = find_and_remove(vars[i], DOUBLE_QUOTE);
+    // printf("");
     vars[i] = get_var_value(vars[i], env);
-    // printf("after getting value: %s\n", vars[i]);
-    // var = get_variable(vars[i]);
     result = ft_strjoin(result, vars[i]);
-    // printf("result: %s\n", result);
     i++;
   }
   free(str);

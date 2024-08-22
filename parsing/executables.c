@@ -43,7 +43,7 @@ char *get_executable(char *cmd)
   free(path);
   getcwd(cwd, sizeof(cwd));
   path = ft_strjoin(ft_strjoin(ft_strdup(cwd), "/"), filename);
-  printf("path ---> %s\n", path);
+  // printf("path ---> %s\n", path);
   free(filename);
   if(path != NULL)
     return path;
