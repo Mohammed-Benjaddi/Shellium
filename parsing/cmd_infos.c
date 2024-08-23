@@ -15,7 +15,7 @@ char *get_input_redirection_file(char **args)
         throw_error("syntax error near unexpected token `newline'");
       else
       {
-        printf("======> %s ---- %s\n", args[i], args[i + 1]);
+        // printf("======> %s ---- %s\n", args[i], args[i + 1]);
         free(in_file);
         in_file = ft_strdup(args[i + 1]);
         // in_file = args[i + 1];

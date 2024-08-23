@@ -136,41 +136,36 @@ int	ft_isalnum(int c)
 	return (0);
 }
 
-char *handle_variables_no_quote(char *input, t_env *env, size_t length)
+char *handle_variables_no_quote(char *str, t_env *env, size_t length)
 {
   // free();
-    size_t i = 0;
-    size_t len = strlen(input);
-    char* output = malloc(len * 3);
-    if (!output) 
-    {
-      throw_error("Memory allocation failed");
-      exit(1);
-    }
-    output[0] = '\0';
+  size_t i = 0;
+  size_t len = strlen(str);
+  // char* output = malloc(len * 3);
+  char output[1024];
+  output[0] = '\0';
 
-    while (i < len)
+  while (i < len)
+  {
+    if (str[i] == '$') 
     {
-        if (input[i] == '$') 
-        {
-            i++;
-            char var_name[100];
-            size_t var_len = 0;
-            while (i < len && (ft_isalnum(input[i]) || input[i] == '_'))
-                var_name[var_len++] = input[i++];
-            var_name[var_len] = '\0';
-            char* var_value = get_var_value(var_name, env);
-            strcat(output, var_value);
-        } 
-        else 
-        {
-            size_t j = ft_strlen(output);
-            output[j] = input[i];
-            output[j + 1] = '\0';
-            i++;
-        }
+      i++;
+      char var_name[1024];
+      size_t var_len = 0;
+      while (i < len && (ft_isalnum(str[i]) || str[i] == '_'))
+        var_name[var_len++] = str[i++];
+      var_name[var_len] = '\0';
+      char* var_value = get_var_value(var_name, env);
+      strcat(output, var_value);
+    } 
+    else 
+    {
+      size_t j = ft_strlen(output);
+      output[j] = str[i];
+      output[j + 1] = '\0';
+      i++;
     }
-    // printf("waaaaaaaaaaaaaaaaa3\n");
-
-    return output;
+  }
+  // printf("waaaaaaaaaaaaaaaaa3\n");
+  return ft_strdup(output);
 }

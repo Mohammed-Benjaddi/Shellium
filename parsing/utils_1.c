@@ -74,13 +74,19 @@ void ft_free(char **args)
   i = 0;
   while(args && args[i])
   {
-
     if(args[i] != NULL)
+    {
       free(args[i]);
+      args[i] = NULL;
+    }
+    
     i++;
   }
-  free(args);
-  args = NULL;
+  if(args)
+  {
+    free(args);
+    args = NULL;
+  }
 }
 
 void print_list(t_cmd *head)
