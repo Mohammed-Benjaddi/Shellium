@@ -129,43 +129,48 @@ char *handle_variables(char *str, t_env *env, size_t length)
 //   return result;
 // }
 
-// char* process_input(const char* input) {
+int	ft_isalnum(int c)
+{
+	if ((c >= 48 && c <= 57) || (c >= 97 && c <= 122) || (c >= 65 && c <= 90))
+		return (1);
+	return (0);
+}
+
 char *handle_variables_no_quote(char *input, t_env *env, size_t length)
 {
   // free();
+    size_t i = 0;
     size_t len = strlen(input);
-    char* output = malloc(len * 3);  // Allocating double the size for safety
-    if (!output) {
-        fprintf(stderr, "Memory allocation failed\n");
-        exit(1);
+    char* output = malloc(len * 3);
+    if (!output) 
+    {
+      throw_error("Memory allocation failed");
+      exit(1);
     }
     output[0] = '\0';
 
-    size_t i = 0;
-    while (i < len) {
-        if (input[i] == '$') {
-            // Extract the variable name
+    while (i < len)
+    {
+        if (input[i] == '$') 
+        {
             i++;
-            char var_name[100];  // Assuming variable names won't exceed 99 characters
+            char var_name[100];
             size_t var_len = 0;
-            
-            while (i < len && (isalnum(input[i]) || input[i] == '_')) {
+            while (i < len && (ft_isalnum(input[i]) || input[i] == '_'))
                 var_name[var_len++] = input[i++];
-            }
             var_name[var_len] = '\0';
-
-            // Get variable value
             char* var_value = get_var_value(var_name, env);
             strcat(output, var_value);
-        } else {
-            // Add non-variable characters to output
+        } 
+        else 
+        {
             size_t j = ft_strlen(output);
             output[j] = input[i];
             output[j + 1] = '\0';
             i++;
         }
     }
-  printf("waaaaaaaaaaaaaaaaa3\n");
+    // printf("waaaaaaaaaaaaaaaaa3\n");
 
     return output;
 }
