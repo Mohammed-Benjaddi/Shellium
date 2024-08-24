@@ -44,9 +44,15 @@ typedef struct s_command_line {
   char *heredoc_content; // Content of heredoc
   int   pipe; // 1 if this command pipes to next, 0 otherwise
   struct s_command_line *next; // Pointer to next command in pipeline
-  int cmd_not_found;
+  bool cmd_not_found;
 } t_cmd;
 
+// typedef struct s_exec
+// {
+//   int i;
+//   int		pipe_sides[2];
+  
+// }
 typedef struct s_lexer
 {
   int i;
@@ -59,6 +65,12 @@ typedef struct s_lexer
   int pipe;
 } t_lexer;
 
+typedef struct s_vars
+{
+  char **envpp;
+	pid_t	*pids;
+  
+} t_vars;
 typedef struct s_env{
   char *variable;
   char *value;
@@ -79,6 +91,7 @@ typedef struct s_all
   t_env      *env; // environment variables list
   t_exp     *exp; // exported variables list
   size_t     nums_of_cmds;
+  t_vars    *_vars;
 } t_all;
 
 // libc functions
@@ -132,14 +145,12 @@ char *handle_variables(char *str, t_env *env, size_t length);
 
 // executables.c
 char *get_executable(char *cmd);
+
 char *handle_variables_no_quote(char *str, t_env *env, size_t length);
 
 
-
-// main.c
-void skip_spaces(char *cmd, int *i);
-
 // ----------------------------------------------
+void    *shell_calloc(size_t size , int count);
 void    ft_error(t_all *all);
 void    mirroring_env_and_exp(t_all *all);
 void    heredoc_pipe(t_all *all);

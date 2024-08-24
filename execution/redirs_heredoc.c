@@ -30,7 +30,7 @@ void	redirections_set(t_all *all)
 		if (all->cmd->append_file)
 			fd = open(all->cmd->append_file, O_CREAT | O_RDWR | O_APPEND);
 		else
-			fd = open(all->cmd->out_file,O_CREAT | O_WRONLY  | O_TRUNC);
+			fd = open(all->cmd->out_file, O_CREAT | O_WRONLY | O_TRUNC);
 		if (fd == -1)
 			ft_error(all);
 		if (dup2(fd, STDOUT_FILENO) < 0)
@@ -64,7 +64,7 @@ void	heredoc_pipe(t_all *all)
 	if (dup2(p[0], STDIN_FILENO) < 0)
 		ft_error(all);
 	close(p[0]);
-	if(all->cmd->cmd == NULL)
+	if (all->cmd->cmd == NULL)
 		exit(0);
 }
 
