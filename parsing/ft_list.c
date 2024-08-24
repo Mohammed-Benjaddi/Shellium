@@ -204,7 +204,7 @@ void    ft_lstclear(t_cmd **lst)
 			ft_free((*lst)->heredoc_delimiter);
 		free((*lst)->heredoc_content);
 		free((*lst)->full_path);
-		free((*lst)->append_file);
+		free((*lst)->append_file);		
 		free(*lst);
 		*lst = NULL;
 		*lst = current;

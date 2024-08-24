@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/08/19 20:01:30 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/08/24 15:32:05 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ t_vars	*set_envp_pids(t_all *all, char **env)
 	if (!vars)
 		ft_error(all);
 	vars->envpp = env;
-	vars->pids = malloc(sizeof(all->nums_of_cmds));
+	vars->pids = (pid_t *) malloc(sizeof(pid_t)*all->nums_of_cmds);
 	if (!vars->pids)
 		ft_error(all);
 	all->_vars = vars;
