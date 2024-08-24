@@ -146,6 +146,8 @@ char *handle_variables(char *str, t_env *env, size_t length);
 // executables.c
 char *get_executable(char *cmd);
 
+char *handle_variables_no_quote(char *str, t_env *env, size_t length);
+
 
 // ----------------------------------------------
 void    *shell_calloc(size_t size , int count);

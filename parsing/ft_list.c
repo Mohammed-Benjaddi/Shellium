@@ -154,7 +154,7 @@ t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe)
 	{
 		new_node->full_path = get_executable(new_node->cmd);
 		if(!new_node->full_path)
-			new_node->cmd_not_found = true;
+			new_node->cmd_not_found = 1;
 	}
 	return (new_node);
 }

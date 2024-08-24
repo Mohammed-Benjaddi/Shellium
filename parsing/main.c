@@ -38,7 +38,7 @@ bool is_correct_cmd(char *cmd)
   skip_spaces(cmd, &i);
   if(cmd[i] == PIPE)
     return false;
-  while(cmd[i])
+  while(i < ft_strlen(cmd))
   {
     skip_spaces(cmd, &i);
     if(cmd[i] == SINGLE_QUOTE || cmd[i] == DOUBLE_QUOTE)
@@ -48,8 +48,7 @@ bool is_correct_cmd(char *cmd)
     }
     else if(cmd[i] == PIPE)
     {
-      i++;
-      if(cmd[i] && cmd[i] == PIPE)
+      if(cmd[++i] && cmd[i] == PIPE)
         i++;
       skip_spaces(cmd, &i);
       if(is_symbol_in_cmd(cmd[i]) || cmd[i] == PIPE)
@@ -57,7 +56,6 @@ bool is_correct_cmd(char *cmd)
     }
     i++;
   }
-
   return true;
 }
 
@@ -81,22 +79,25 @@ int main(int ac, char **av, char **env)
       env_exp_lists_clear(all);
       exit(0);
     }
-    if (ft_strlen(read))
-    {
-      add_history(read);
-      read = fix_cmd(read);
-      if(!is_correct_cmd(read))
-        continue;
-      if(!ft_lexer(read, &all))
-        continue;
-      all->nums_of_cmds = count_commands(all->cmd);
-       execution(&all, env);
-       free(all->_vars->pids);
-       free(all->_vars);
-      ft_lstclear(&all->cmd);
-    }
-    else
-      free(read);
+    if (!ft_strlen(read))
+      continue;
+    add_history(read);
+    read = fix_cmd(read);
+    // printf("after fixing: %s %zu\n", read, ft_strlen(read));
+    // printf("%sread: %s%s\n", RED, read, NC);
+    if(!is_correct_cmd(read))
+      continue;
+    if(!ft_lexer(read, &all))
+      continue;
+    // printf("--> after parsing\n");
+    // free(read);
+    // print_list(all->cmd);
+    all->nums_of_cmds = count_commands(all->cmd);
+    execution(&all, env);
+    ft_lstclear(&all->cmd);
+		// free_env_list(all);
+    // env_exp_lists_clear(all);
+    // system("leaks -q minishell");
   }
     return 0;
 }
