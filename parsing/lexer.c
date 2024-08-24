@@ -140,24 +140,25 @@ size_t reds_counter(char *cmd)
 {
   int i;
   size_t counter;
+  size_t len;
 
   i = 0;
   counter = 0;
-  while(cmd[i] && i < ft_strlen(cmd))
+  len = ft_strlen(cmd);
+  while(i < len)
   {
-    if(cmd[i] == SINGLE_QUOTE || cmd[i] == DOUBLE_QUOTE)
+    if(i < len && (cmd[i] == SINGLE_QUOTE || cmd[i] == DOUBLE_QUOTE))
     {
       i++;
       skip_str_inside_quote(cmd, &i, cmd[i - 1]);
     }
-    if(cmd[i] == IN_RED || cmd[i] == OUT_RED || cmd[i] == PIPE)
+    if(i < len && (cmd[i] == IN_RED || cmd[i] == OUT_RED || cmd[i] == PIPE))
     {
       counter++;
       skip_reds(cmd, &i, cmd[i]);
     }
     i++;
   }
-  // printf("counter returned: %zu\n", (counter * 3) + 1);
   return ((counter * 2));
 }
 
@@ -168,14 +169,13 @@ char *fix_cmd(char *cmd)
   char *line;
   char quote;
 
+  if(!reds_counter(cmd))
+    return cmd;
   i = 0;
   j = 0;
   line = malloc(ft_strlen(cmd) + reds_counter(cmd) + 1);
-  // printf("len allocated: %zu\nlen of cmd:%zu\n", ft_strlen(cmd) + reds_counter(cmd) + 1, ft_strlen(cmd));
   if(!line)
     return NULL;
-  // printf("---> allocated: %zu\n", ft_strlen(cmd) + reds_counter(cmd) + 1);
-  // printf("cmd: %zu\nline: %zu\n", ft_strlen(cmd), ft_strlen(cmd) + reds_counter(cmd));
   while (i < ft_strlen(cmd))
   {
     if(cmd[i] == SINGLE_QUOTE || cmd[i] == DOUBLE_QUOTE)
@@ -191,11 +191,8 @@ char *fix_cmd(char *cmd)
       }
     else if (i > 0 && (cmd[i - 1] == IN_RED || cmd[i - 1] == OUT_RED) && cmd[i] != SPACE)
       line[j++] = ' ';
-    // printf("j ===> %d\ni ++++ %d\n", j, i);
-    // printf("%s%c%s", YELLOW, line[j - 1], NC);
     line[j++] = cmd[i++];
   }
-  // printf("j ---> %d\n", j);
   line[j] = '\0';
   return free(cmd),line;
 }

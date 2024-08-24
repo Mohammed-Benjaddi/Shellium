@@ -9,22 +9,24 @@ void throw_error(char *msg)
 int find_pipe_index(char *str)
 {
   int i;
+  size_t len;
 
   i = 0;
-  while (str[i])
+  len = ft_strlen(str);
+  while (i < len && str[i])
   {
     if(str[i] == PIPE)
       return i;
-    else if(str[i] == DOUBLE_QUOTE)
+    else if(i < len && str[i] == DOUBLE_QUOTE)
     {
       i++;
-      while(str[i] && str[i] != DOUBLE_QUOTE)
+      while(i < len && str[i] && str[i] != DOUBLE_QUOTE)
         i++;
     }
-    else if(str[i] == SINGLE_QUOTE)
+    else if(i < len && str[i] == SINGLE_QUOTE)
     {
       i++;
-      while(str[i] && str[i] != SINGLE_QUOTE)
+      while(i < len && str[i] && str[i] != SINGLE_QUOTE)
         i++;
     }
     i++;
@@ -138,18 +140,20 @@ void skip_reds(char *str, int *i, char c)
 {
   int counter;
   char redirection;
+  size_t len;
 
   counter = 0;
-  while(str[*i] && str[*i] == c)
+  len = ft_strlen(str);
+  while(*i < len && str[*i] && str[*i] == c)
   {
     counter++;
     *i += 1;
     if(counter > 2)
       throw_error("parse error");
   }
-  while (str[*i] && str[*i] == SPACE)
+  while (*i < len && str[*i] && str[*i] == SPACE)
     *i += 1;
-  if(is_symbol(str[*i]))
+  if(*i < len && is_symbol(str[*i]))
     throw_error("parse error");
 }
 
