@@ -69,7 +69,6 @@ typedef struct s_vars
 {
   char **envpp;
 	pid_t	*pids;
-  
 } t_vars;
 typedef struct s_env{
   char *variable;
@@ -141,8 +140,6 @@ char **get_herdoc_delimiter(char **args);
 // char *get_append_from_file(char **args);
 char *get_append_to_file(char **args);
 char *handle_variables(char *str, t_env *env, size_t length);
-
-
 // executables.c
 char *get_executable(char *cmd);
 
@@ -163,7 +160,6 @@ void    setup_signal_handlers();
 void    env_exp_lists_clear(t_all *all);
 void    free_env_list(t_all *all);
 int     exec_built_ins(t_all *all);
-void    setup_signal_handlers();
 void    set_lists(t_all *all, char **env);
 void    exec_piped_built_ins(t_all *all, int pipes[2]);
 void    heredoc_check(t_all *all);

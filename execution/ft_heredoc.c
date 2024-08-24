@@ -53,6 +53,7 @@ char	*heredoc(char *heredoc_str, int fd, t_all *all)
 				ft_error(all);
 			full_str = ft_strjoin(full_str, "\n");
 		}
+		//free(input);
 		else
 			break ;
 	}
@@ -63,6 +64,9 @@ void	heredoc_(t_cmd *doc, t_all *all)
 {
 	char	*here_tmp;
 	int		i;
+	int		last_hrdoc;
+	char	*here_tmp2;
+
 
 	doc->heredoc_content = ft_strdup("");
 	i = 0;
@@ -70,10 +74,17 @@ void	heredoc_(t_cmd *doc, t_all *all)
 	{
 		here_tmp = ft_strdup("");
 		here_tmp = heredoc(doc->heredoc_delimiter[i], 1, all);
-		doc->heredoc_content = ft_strjoin(doc->heredoc_content + i, here_tmp);
+		last_hrdoc = ft_strlen(here_tmp);
+		doc->heredoc_content = ft_strjoin(doc->heredoc_content , here_tmp);
 		free(here_tmp);
 		i++;
 	}
+	if (doc->out_file || doc->in_file )
+		{
+			here_tmp2 = doc->heredoc_content;	
+			doc->heredoc_content = ft_strdup( here_tmp2+(ft_strlen(here_tmp2)-last_hrdoc));
+			free(here_tmp2);
+		}
 }
 void	heredoc_child(int *_pipe, t_cmd *cmd, t_all *all)
 {
