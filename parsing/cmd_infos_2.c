@@ -105,7 +105,7 @@ char  *get_path(char *cmd)
   return NULL;
 }
 
-char **get_herdoc_delimiter(char **args)
+char **get_herdoc_delimiter(char **args, t_all *all)
 {
   size_t i;
   size_t len;
@@ -124,7 +124,7 @@ char **get_herdoc_delimiter(char **args)
     {
       i++;
       if(!args[i + 1])
-        throw_error("syntax error near unexpected token `newline'");
+        return (throw_error("syntax error near unexpected token `newline'", all), NULL);
       else
         delimiters[len++] = ft_strdup(args[i + 1]);
     }

@@ -1,9 +1,10 @@
 #include "minishell.h"
 
-void throw_error(char *msg)
+void throw_error(char *msg, t_all *all)
 {
   printf("%sError: %s%s\n", RED, msg, NC);
-  exit(1);
+  all->error = true;
+  // exit(1);
 }
 
 int find_pipe_index(char *str)
@@ -96,6 +97,8 @@ void print_list(t_cmd *head)
   int i;
 
   i = 0;
+  if(!head)
+    printf("head is null\n");
   printf("-----------------------------\n");
   while(head)
   {
@@ -136,7 +139,7 @@ size_t nums_of_chars(char *str, char c)
   return counter;
 }
 
-void skip_reds(char *str, int *i, char c)
+void skip_reds(char *str, int *i, char c, t_all *all)
 {
   int counter;
   char redirection;
@@ -149,12 +152,12 @@ void skip_reds(char *str, int *i, char c)
     counter++;
     *i += 1;
     if(counter > 2)
-      throw_error("parse error");
+      throw_error("parse error", all);
   }
   while (*i < len && str[*i] && str[*i] == SPACE)
     *i += 1;
   if(*i < len && is_symbol(str[*i]))
-    throw_error("parse error");
+    throw_error("parse error", all);
 }
 
 size_t get_vars_length(char *str)

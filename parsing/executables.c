@@ -7,6 +7,8 @@ size_t get_slash_index(char *cmd)
 
   i = 0;
   index = -1;
+  if(!cmd)
+    return -1;
   while(cmd[i])
   {
     if(cmd[i] == SLASH)

@@ -91,6 +91,7 @@ typedef struct s_all
   t_exp     *exp; // exported variables list
   size_t     nums_of_cmds;
   t_vars    *_vars;
+  bool error;
 } t_all;
 
 // libc functions
@@ -109,7 +110,7 @@ char *ft_strndup(char *str, size_t n);
 
 
 // ft_list.c
-t_cmd	*ft_lstnew(char **args, int args_nbr, int pipe);
+t_cmd	*ft_lstnew(t_all **all, char **args, int args_nbr, int pipe);
 void	ft_lstadd_back(t_cmd **lst, t_cmd *new);
 // void  ft_init(t_shell *shell);
 void    ft_lstclear(t_cmd **lst);
@@ -118,27 +119,27 @@ void    ft_lstclear(t_cmd **lst);
 int ft_lexer(char *command, t_all **all);
 bool is_symbol(char c);
 void skip_str_inside_quote(char *cmd, int *i, char c);
-char *fix_cmd(char *cmd);
+char *fix_cmd(char *cmd, t_all *all);
 
 // utils_1.c
-void throw_error(char *msg);
+void throw_error(char *msg, t_all *all);
 int find_pipe_index(char *str);
 size_t args_counter(char *str, int len);
 void ft_free(char **args);
 void print_list(t_cmd *head);
 char *find_and_remove(char *str, char c);
-void skip_reds(char *str, int *i, char c);
+void skip_reds(char *str, int *i, char c, t_all *all);
 size_t get_vars_length(char *str);
 
 // cmd_infos.c
 char *get_path(char *cmd);
-char *get_input_redirection_file(char **args);
-char *get_output_redirection_file(char **args);
-char **get_herdoc_delimiter(char **args);
+char *get_input_redirection_file(char **args, t_all *all);
+char *get_output_redirection_file(char **args, t_all *all);
+char **get_herdoc_delimiter(char **args, t_all *all);
 
 // char *get_herdoc_delimiter(char **args);
 // char *get_append_from_file(char **args);
-char *get_append_to_file(char **args);
+char *get_append_to_file(char **args, t_all *all);
 char *handle_variables(char *str, t_env *env, size_t length);
 // executables.c
 char *get_executable(char *cmd);
