@@ -68,33 +68,33 @@ char *get_var_value(char *str, t_env *env)
   return result;
 }
 
-char *handle_variables(char *str, t_env *env, size_t length)
-{
-  size_t i;
-  char **vars;
-  char *var;
-  char *result;
+// char *handle_variables(char *str, t_env *env, size_t length)
+// {
+//   size_t i;
+//   char **vars;
+//   char *var;
+//   char *result;
 
-  i = 0;
-  if(!str)
-    return NULL;
-  vars = ft_split(str, '$');
-  result = NULL;
-  while (vars[i])
-  {
-    vars[i] = find_and_remove(vars[i], DOUBLE_QUOTE);
-    // printf("%s---> %s%s\n", RED, vars[i], NC);
-    vars[i] = get_var_value(vars[i], env);
-    result = ft_strjoin(result, vars[i]);
-    i++;
-  }
-  free(str);
-  str = NULL;
-  ft_free(vars);
-  return result;
-}
+//   i = 0;
+//   if(!str)
+//     return NULL;
+//   vars = ft_split(str, '$');
+//   result = NULL;
+//   while (vars[i])
+//   {
+//     vars[i] = find_and_remove(vars[i], DOUBLE_QUOTE);
+//     // printf("%s---> %s%s\n", RED, vars[i], NC);
+//     vars[i] = get_var_value(vars[i], env);
+//     result = ft_strjoin(result, vars[i]);
+//     i++;
+//   }
+//   free(str);
+//   str = NULL;
+//   ft_free(vars);
+//   return result;
+// }
 
-// char *handle_variables_no_quote(char *str, t_env *env, size_t length)
+// char *handle_variables(char *str, t_env *env, size_t length)
 // {
 //   size_t i;
 //   char **vars;
@@ -136,7 +136,7 @@ int	ft_isalnum(int c)
 	return (0);
 }
 
-char *handle_variables_no_quote(char *str, t_env *env, size_t length)
+char *handle_variables(char *str, t_env *env, size_t length)
 {
   // free();
   size_t i = 0;

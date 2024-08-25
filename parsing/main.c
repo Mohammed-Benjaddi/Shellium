@@ -85,14 +85,13 @@ int main(int ac, char **av, char **env)
     {
       add_history(read);
       read = fix_cmd(read, all);
+      if(all->error)
+        continue;
       if(!is_correct_cmd(read, all))
         continue;
       if(!ft_lexer(read, &all))
-      {
-        printf("%snew readline%s\n" , CYAN, NC);
         continue;
-      }
-        all->nums_of_cmds = count_commands(all->cmd);
+      all->nums_of_cmds = count_commands(all->cmd);
       // print_list(all->cmd);
       if(!all->error)
         execution(&all, env);

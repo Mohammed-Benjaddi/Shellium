@@ -37,7 +37,7 @@ char *get_str_in_quotes(char *command, int *i, char c, t_all *all)
   buffer = ft_substr(command + *i, 0, len);
   *i += len;
   if(c == DOUBLE_QUOTE && get_vars_length(buffer) > 0)
-    buffer = handle_variables_no_quote(buffer, all->env, get_vars_length(buffer));
+    buffer = handle_variables(buffer, all->env, get_vars_length(buffer));
     // buffer = handle_variables(buffer, env, get_vars_length(buffer));
   buffer = find_and_remove(buffer, c);
   // printf("%s--> %s%s\n", CYAN, buffer, NC);
@@ -64,20 +64,23 @@ char *get_str_without_quotes(char *command, int *i, t_env *env)
   char *buffer;
   int index;
 
+
   len = find_len(command + *i, false);
   buffer = ft_substr(command, *i, len);
   if(get_vars_length(buffer) > 0)
   {
-    buffer = handle_variables_no_quote(buffer, env, get_vars_length(buffer));
+    buffer = handle_variables(buffer, env, get_vars_length(buffer));
     // printf("%sbuffer ---> %s%s\n", CYAN, buffer, NC);
   }
   index = ft_strchr_pro(buffer, DOUBLE_QUOTE, SINGLE_QUOTE, false); 
   if(index != -1 && buffer[index - 1] == SINGLE_QUOTE)
     buffer = find_and_remove(buffer, SINGLE_QUOTE);    
   else if (index != -1 && buffer[index - 1] == DOUBLE_QUOTE)
+  {
+    printf("-------------------------[>   %d]\n", index);
     buffer = find_and_remove(buffer, DOUBLE_QUOTE);
+  }
   *i += len;
-  // printf("len -------> %zu\n", ft_strlen(buffer));
   return buffer;
 }
 
@@ -159,7 +162,8 @@ size_t reds_counter(char *cmd, t_all *all)
     else if(i < len && (cmd[i] == IN_RED || cmd[i] == OUT_RED))
     {
       counter++;
-      skip_reds(cmd, &i, cmd[i], all);
+      if (!skip_reds(cmd, &i, cmd[i], all))
+        return 0;
     }
     i++;
   }
@@ -172,12 +176,13 @@ char *fix_cmd(char *cmd, t_all *all)
   int j;
   char *line;
   char quote;
+  int reds_nums = reds_counter(cmd, all);
 
-  if(!reds_counter(cmd, all))
+  if(!reds_nums)
     return cmd;
   i = 0;
   j = 0;
-  line = malloc(ft_strlen(cmd) + reds_counter(cmd, all) + 1);
+  line = malloc(ft_strlen(cmd) + reds_nums + 1);
   if(!line)
     return NULL;
   while (i < ft_strlen(cmd))
