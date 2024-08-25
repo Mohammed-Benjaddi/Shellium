@@ -12,7 +12,6 @@ size_t count_commands(t_cmd *cmd)
   }
   return counter;
 }
-
 // void check_leaks()
 // {
 //   system("leaks -q minishell");
@@ -31,14 +30,14 @@ bool is_symbol_in_cmd(char c)
   return false;
 }
 
-bool is_correct_cmd(char *cmd, t_all *all)
+bool is_correct_cmd(char *cmd)
 {
   int i;
 
   i = 0;
   skip_spaces(cmd, &i);
   if(cmd[i] == PIPE)
-    return (throw_error("syntax error near unexpected token `|'", all), false);
+    return false;
   while(i < ft_strlen(cmd))
   {
     skip_spaces(cmd, &i);
@@ -53,16 +52,13 @@ bool is_correct_cmd(char *cmd, t_all *all)
         i++;
       skip_spaces(cmd, &i);
       if(is_symbol_in_cmd(cmd[i]) || cmd[i] == PIPE)
-        return (throw_error("syntax error near unexpected token `|'", all), false);
+        return false;
     }
     i++;
   }
   return true;
 }
-void f()
-{
-  system("leaks -q minishell");
-}
+
 int main(int ac, char **av, char **env)
 {
   t_all *all;
@@ -74,10 +70,9 @@ int main(int ac, char **av, char **env)
   using_history();
   set_lists(all, env); // 
   setup_signal_handlers();
-  atexit(f);
+  // atexit(check_leaks);
   while(1)
   {
-    all->error = false;
     char *read = readline("minishell > ");
     if(!read)
     {
@@ -87,18 +82,13 @@ int main(int ac, char **av, char **env)
     if (ft_strlen(read))
     {
       add_history(read);
-      read = fix_cmd(read, all);
-      if(!is_correct_cmd(read, all))
+      read = fix_cmd(read);
+      if(!is_correct_cmd(read))
         continue;
       if(!ft_lexer(read, &all))
-      {
-        printf("%snew readline%s\n" , CYAN, NC);
         continue;
-      }
         all->nums_of_cmds = count_commands(all->cmd);
-      // print_list(all->cmd);
-      if(!all->error)
-        execution(&all, env);
+      execution(&all, env);
       free(all->_vars->pids);
       free(all->_vars);
       ft_lstclear(&all->cmd);
