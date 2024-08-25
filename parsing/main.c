@@ -58,7 +58,10 @@ bool is_correct_cmd(char *cmd)
   }
   return true;
 }
-
+void f()
+{
+  system("leaks -q minishell");
+}
 int main(int ac, char **av, char **env)
 {
   t_all *all;
@@ -70,7 +73,7 @@ int main(int ac, char **av, char **env)
   using_history();
   set_lists(all, env); // 
   setup_signal_handlers();
-  // atexit(check_leaks);
+  atexit(f);
   while(1)
   {
     char *read = readline("minishell > ");
