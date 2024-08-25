@@ -33,6 +33,21 @@ int	check_(char *s, int index)
 	}
 	return (1);
 }
+int is_empty(char *s, int index)
+{
+	int i;
+
+	i = 0;
+	while (i < index)
+	{
+		if (s[i] != '\t' && s[i] != '\n' 
+			&& s[i] != ' ' && s[i] != '\r' && s[i] != '\v' && s[i] != '\f')
+			return (0);
+		i++;
+	}
+	return (1);
+	
+}
 int	check_before_env(char *s)
 {
 	int	i;
@@ -44,7 +59,7 @@ int	check_before_env(char *s)
 	{
 		if (s[i] == '=')
 		{
-			if (!check_(s, i))
+			if (is_empty(s, i) || !check_(s, i))
 				return (0);
 			return (1);
 		}

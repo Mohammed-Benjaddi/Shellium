@@ -107,8 +107,6 @@ int ft_strchr(char *str, char c);
 int ft_strchr_pro(char *str, char c1, char c2, bool inside_quotes);
 int ft_isspace(char c);
 char *ft_strndup(char *str, size_t n);
-
-
 // ft_list.c
 t_cmd	*ft_lstnew(t_all **all, char **args, int args_nbr, int pipe);
 void	ft_lstadd_back(t_cmd **lst, t_cmd *new);
@@ -167,7 +165,7 @@ void    heredoc_check(t_all *all);
 t_exp   *new_exp_(t_env *env);
 int     spliter_index(char *str);
 t_exp   *exp_new(char *new_line);// not used
-void    exp_addback(t_exp    *head, t_exp    *);
+void    exp_addback(t_exp    *head, t_exp    *new);
 t_exp   *set_export_list(t_all *all);
 void    identifier_error(char *indentifer);
 void    ft_write(char *str, int fd);

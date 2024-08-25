@@ -31,7 +31,20 @@ int	match_word(char *neadle, char *str)
 		return (0);
 	return (1);
 }
+int no_expand(char *s)
+{
+	int i;
+	i = 0 ;
 
+	while (s[i])
+	{
+		if (s[i] == '$' && (s[i+1] != 0 || s[i+1] != ' '))
+			return (0);
+		i++;
+	}
+	return (1);
+	
+}
 char	*heredoc(char *heredoc_str, int fd, t_all *all)
 {
 	char	*full_str;
@@ -51,11 +64,19 @@ char	*heredoc(char *heredoc_str, int fd, t_all *all)
 			full_str = ft_strjoin(full_str, input);
 			if (full_str == NULL)
 				ft_error(all);
-			full_str = ft_strjoin(full_str, "\n");
+			if (!ft_strlen(full_str) || no_expand(full_str))
+				full_str = ft_strjoin(full_str, "\n");
+			else
+				full_str = ft_strjoin(
+					handle_variables_no_quote(full_str, all->env
+					, get_vars_length(full_str)), "\n");
+			free(input);
 		}
-		//free(input);
 		else
-			break ;
+			{
+				free(input);
+				break ;
+			}
 	}
 	return (full_str);
 }
@@ -75,7 +96,8 @@ void	heredoc_(t_cmd *doc, t_all *all)
 		here_tmp = ft_strdup("");
 		here_tmp = heredoc(doc->heredoc_delimiter[i], 1, all);
 		last_hrdoc = ft_strlen(here_tmp);
-		doc->heredoc_content = ft_strjoin(doc->heredoc_content , here_tmp);
+		
+		doc->heredoc_content = ft_strjoin(doc->heredoc_content, here_tmp);
 		free(here_tmp);
 		i++;
 	}

@@ -82,7 +82,7 @@ int main(int ac, char **av, char **env)
     if (ft_strlen(read))
     {
       add_history(read);
-      read = fix_cmd(read);
+      read = fix_cmd(read, all);
       if(!is_correct_cmd(read))
         continue;
       if(!ft_lexer(read, &all))
