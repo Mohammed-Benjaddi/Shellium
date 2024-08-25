@@ -10,11 +10,30 @@ int ft_isspace(char c)
 int find_len(char *str, bool inside_quotes)
 {
   int len;
+  int i;
+  size_t str_len;
 
-  len = ft_strchr_pro(str + 1, ' ', '|', inside_quotes); 
-  if(len != -1)
-    return len;
-  return ft_strlen(str);
+  // printf("==> %c <==\n", str[0]);
+  // len = ft_strchr_pro(str + 1, ' ', '|', inside_quotes);
+  i = 0;
+  // if(!str)
+  //   return -1;
+  str_len = ft_strlen(str);
+  while(i < str_len && str[i] != SPACE && str[i] != PIPE)
+  {
+    if(i < len && (str[i] == SINGLE_QUOTE || str[i] == DOUBLE_QUOTE))
+    {
+      i++;
+      skip_str_inside_quote(str, &i, str[i - 1]);
+    }
+    i++;
+    if(i< str_len && str[i] == '\0')
+			return -1;
+  }
+  // len = ft_strchr_pro(str + 1, '\0', '|', inside_quotes); 
+  // if(len != -1)
+  //   return len;
+  return i;
 }
 
 char *get_str_in_quotes(char *command, int *i, char c, t_all *all)
@@ -67,6 +86,7 @@ char *get_str_without_quotes(char *command, int *i, t_env *env)
 
   len = find_len(command + *i, false);
   buffer = ft_substr(command, *i, len);
+  // printf("-------------------------[>   %s]\n", buffer);
   if(get_vars_length(buffer) > 0)
   {
     buffer = handle_variables(buffer, env, get_vars_length(buffer));
@@ -77,7 +97,6 @@ char *get_str_without_quotes(char *command, int *i, t_env *env)
     buffer = find_and_remove(buffer, SINGLE_QUOTE);    
   else if (index != -1 && buffer[index - 1] == DOUBLE_QUOTE)
   {
-    printf("-------------------------[>   %d]\n", index);
     buffer = find_and_remove(buffer, DOUBLE_QUOTE);
   }
   *i += len;

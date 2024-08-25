@@ -258,7 +258,7 @@ char *find_and_remove(char *str, char c)
   len = ft_strlen(str) - nums_of_chars(str, c) + 1;
   if(!str)
     return NULL;
-  printf("%s --------> %s%s\n", RED, str, NC);
+  // printf("%s --------> %s%s\n", RED, str, NC);
   res = (char *)malloc(sizeof(char) * len);
   while(str[i])
   {
