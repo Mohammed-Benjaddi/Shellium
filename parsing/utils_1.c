@@ -3,6 +3,7 @@
 void throw_error(char *msg, t_all *all)
 {
   printf("%sError: %s%s\n", RED, msg, NC);
+  
   all->error = true;
   // exit(1);
 }
@@ -75,14 +76,12 @@ void ft_free(char **args)
   int i;
 
   i = 0;
-  while(args && args[i])
+  // int j = 0;
+  while(args[i])
   {
+    // printf("%s%s%s\n", YELLOW, args[i], NC);
     if(args[i] != NULL)
-    {
       free(args[i]);
-      args[i] = NULL;
-    }
-    
     i++;
   }
   if(args)
@@ -90,6 +89,8 @@ void ft_free(char **args)
     free(args);
     args = NULL;
   }
+  free(args);
+  args = NULL;
 }
 
 void print_list(t_cmd *head)
@@ -139,7 +140,7 @@ size_t nums_of_chars(char *str, char c)
   return counter;
 }
 
-void skip_reds(char *str, int *i, char c, t_all *all)
+int skip_reds(char *str, int *i, char c, t_all *all)
 {
   int counter;
   char redirection;
@@ -152,12 +153,19 @@ void skip_reds(char *str, int *i, char c, t_all *all)
     counter++;
     *i += 1;
     if(counter > 2)
+    {
       throw_error("parse error", all);
+      return 0;
+    }
   }
   while (*i < len && str[*i] && str[*i] == SPACE)
     *i += 1;
   if(*i < len && is_symbol(str[*i]))
+  {
     throw_error("parse error", all);
+    return 0;
+  }
+  return 1;
 }
 
 size_t get_vars_length(char *str)
@@ -247,9 +255,11 @@ char *find_and_remove(char *str, char c)
 
   i = 0;
   j = 0;
+
   len = ft_strlen(str) - nums_of_chars(str, c) + 1;
   if(!str)
     return NULL;
+  // printf("%s --------> %s%s\n", RED, str, NC);
   res = (char *)malloc(sizeof(char) * len);
   while(str[i])
   {

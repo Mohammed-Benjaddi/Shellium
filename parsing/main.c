@@ -12,10 +12,11 @@ size_t count_commands(t_cmd *cmd)
   }
   return counter;
 }
-// void check_leaks()
-// {
-//   system("leaks -q minishell");
-// }
+
+void check_leaks()
+{
+  system("leaks -q minishell");
+}
 
 void skip_spaces(char *cmd, int *i)
 {
@@ -83,15 +84,37 @@ int main(int ac, char **av, char **env)
     {
       add_history(read);
       read = fix_cmd(read, all);
+      if(all->error)
+      {
+        free(read);
+        read = NULL;
+        // check_leaks();
+        continue;
+      }
       if(!is_correct_cmd(read))
-        continue;
+      {
+        free(read);
+        read = NULL;
+        // check_leaks();
+        // continue;
+      }
       if(!ft_lexer(read, &all))
+      {
+        free(read);
+        read = NULL;
+        // check_leaks();
         continue;
+      }
       all->nums_of_cmds = count_commands(all->cmd);
-      execution(&all, env);
+      // print_list(all->cmd);
+      // -------------------
+      if(!all->error)
+        execution(&all, env);
+      // -------------------
       free(all->_vars->pids);
       free(all->_vars);
       ft_lstclear(&all->cmd);
+      // check_leaks();
     }
     else
       free(read);

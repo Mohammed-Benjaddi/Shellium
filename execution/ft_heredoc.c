@@ -68,8 +68,7 @@ char	*heredoc(char *heredoc_str, int fd, t_all *all)
 				full_str = ft_strjoin(full_str, "\n");
 			else
 				full_str = ft_strjoin(
-					handle_variables_no_quote(full_str, all->env
-					, get_vars_length(full_str)), "\n");
+					handle_variables(full_str, all->env, get_vars_length(full_str), all), "\n");
 			free(input);
 		}
 		else

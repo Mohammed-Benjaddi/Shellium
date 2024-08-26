@@ -86,13 +86,13 @@ typedef struct s_exp{
 
 typedef struct s_all
 {
-  t_cmd   *cmd; // our parsing struct
-  t_env   *env; // environment variables list
-  t_exp   *exp; // exported variables list
-  size_t  nums_of_cmds;
-  t_vars  *_vars;
-  int     exit_status;
-  bool    error;
+  t_cmd    *cmd; // our parsing struct
+  t_env      *env; // environment variables list
+  t_exp     *exp; // exported variables list
+  size_t     nums_of_cmds;
+  t_vars    *_vars;
+  bool error;
+  int exit_status;
 } t_all;
 
 // libc functions
@@ -108,6 +108,8 @@ int ft_strchr(char *str, char c);
 int ft_strchr_pro(char *str, char c1, char c2, bool inside_quotes);
 int ft_isspace(char c);
 char *ft_strndup(char *str, size_t n);
+char	*ft_itoa(int n);
+
 // ft_list.c
 t_cmd	*ft_lstnew(t_all **all, char **args, int args_nbr, int pipe);
 void	ft_lstadd_back(t_cmd **lst, t_cmd *new);
@@ -127,7 +129,7 @@ size_t args_counter(char *str, int len);
 void ft_free(char **args);
 void print_list(t_cmd *head);
 char *find_and_remove(char *str, char c);
-void skip_reds(char *str, int *i, char c, t_all *all);
+int skip_reds(char *str, int *i, char c, t_all *all);
 size_t get_vars_length(char *str);
 
 // cmd_infos.c
@@ -139,11 +141,13 @@ char **get_herdoc_delimiter(char **args, t_all *all);
 // char *get_herdoc_delimiter(char **args);
 // char *get_append_from_file(char **args);
 char *get_append_to_file(char **args, t_all *all);
-char *handle_variables(char *str, t_env *env, size_t length);
+// char *handle_variables(char *str, t_env *env, size_t length);
+
+
 // executables.c
 char *get_executable(char *cmd);
 
-char *handle_variables_no_quote(char *str, t_env *env, size_t length);
+char *handle_variables(char *str, t_env *env, size_t length, t_all *all);
 
 
 // ----------------------------------------------

@@ -37,6 +37,7 @@ char *get_executable(char *cmd)
   while(arr[i + 1] != NULL)
     i++;
   filename = ft_strdup(arr[i]);
+  ft_free(arr);
   if(!filename)
     return NULL;
   slash_index = get_slash_index(cmd);
@@ -45,11 +46,8 @@ char *get_executable(char *cmd)
   free(path);
   getcwd(cwd, sizeof(cwd));
   path = ft_strjoin(ft_strjoin(ft_strdup(cwd), "/"), filename);
-  // printf("path ---> %s\n", path);
   free(filename);
   if(path != NULL)
     return path;
-  // if(access(path, X_OK) == 0)
-  //   return path;
   return NULL;
 }

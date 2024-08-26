@@ -186,6 +186,9 @@ int ft_strchr_pro(char *str, char c1, char c2, bool inside_quotes)
 	int i;
 
 	i = 0;
+	if(!str)
+		return -1;
+	// printf("strchr pro max: %s\n", str);
 	while(str[i] && str[i] != c1 && str[i] != c2)
 	{
 		i++;
