@@ -41,17 +41,25 @@ void	ft_echo(char **str, int fd)
 {
 	int	i;
 	int	flag;
+	int index_to_txt;
 
 	flag = 0;
 	i = 0;
-		
-	if (n_flaged(*str))
+	index_to_txt = 0;
+	while (n_flaged(str[i]))
+		{
+			i++;
+			index_to_txt++;
+		}
+	i = 0;
+	if (index_to_txt > 0)
 	{
 		if (str[1] == NULL)
 			return ;
 		flag = 1;
 		i++;
 	}
+	i = index_to_txt;
 	while (str[i])
 	{
 		ft_write(str[i], fd);

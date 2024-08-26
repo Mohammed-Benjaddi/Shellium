@@ -108,7 +108,7 @@ char *handle_variables(char *str, t_env *env, size_t length, t_all *all)
         var_name[var_len++] = str[i++];
         var_name[var_len] = '\0';
         var_value = get_var_value(ft_strdup(var_name), env);
-        printf("varname is : %s\n", var_name);
+        // printf("varname is : %s\n", var_name);
         strcat(output, var_value);
         free(var_value);
         var_value = NULL;
@@ -123,7 +123,7 @@ char *handle_variables(char *str, t_env *env, size_t length, t_all *all)
       i++;
     }
   }
-  printf("-------> waaaaaaaaaaaaaaaaa3\n");
+  // printf("-------> waaaaaaaaaaaaaaaaa3\n");
   free(var_value);
   free(str);
   str = NULL;
