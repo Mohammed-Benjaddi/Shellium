@@ -3,6 +3,7 @@
 void throw_error(char *msg, t_all *all)
 {
   printf("%sError: %s%s\n", RED, msg, NC);
+  
   all->error = true;
   // exit(1);
 }
@@ -75,14 +76,12 @@ void ft_free(char **args)
   int i;
 
   i = 0;
-  while(args && args[i])
+  // int j = 0;
+  while(args[i])
   {
+    // printf("%s%s%s\n", YELLOW, args[i], NC);
     if(args[i] != NULL)
-    {
       free(args[i]);
-      args[i] = NULL;
-    }
-    
     i++;
   }
   if(args)
@@ -90,6 +89,8 @@ void ft_free(char **args)
     free(args);
     args = NULL;
   }
+  free(args);
+  args = NULL;
 }
 
 void print_list(t_cmd *head)

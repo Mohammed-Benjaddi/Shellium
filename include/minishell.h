@@ -93,6 +93,7 @@ typedef struct s_all
   size_t     nums_of_cmds;
   t_vars    *_vars;
   bool error;
+  int exit_status;
 } t_all;
 
 // libc functions
@@ -108,7 +109,7 @@ int ft_strchr(char *str, char c);
 int ft_strchr_pro(char *str, char c1, char c2, bool inside_quotes);
 int ft_isspace(char c);
 char *ft_strndup(char *str, size_t n);
-
+char	*ft_itoa(int n);
 
 // ft_list.c
 t_cmd	*ft_lstnew(t_all **all, char **args, int args_nbr, int pipe);
@@ -147,7 +148,7 @@ char *get_append_to_file(char **args, t_all *all);
 // executables.c
 char *get_executable(char *cmd);
 
-char *handle_variables(char *str, t_env *env, size_t length);
+char *handle_variables(char *str, t_env *env, size_t length, t_all *all);
 
 
 // ----------------------------------------------
