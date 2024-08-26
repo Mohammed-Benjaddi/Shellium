@@ -70,7 +70,7 @@ int main(int ac, char **av, char **env)
   using_history();
   set_lists(all, env); // 
   setup_signal_handlers();
-  // atexit(check_leaks);
+  all->exit_status = 0;
   while(1)
   {
     char *read = readline("minishell > ");
@@ -87,7 +87,7 @@ int main(int ac, char **av, char **env)
         continue;
       if(!ft_lexer(read, &all))
         continue;
-        all->nums_of_cmds = count_commands(all->cmd);
+      all->nums_of_cmds = count_commands(all->cmd);
       execution(&all, env);
       free(all->_vars->pids);
       free(all->_vars);
@@ -96,5 +96,5 @@ int main(int ac, char **av, char **env)
     else
       free(read);
   }
-    return 0;
+  return (all->exit_status);
 }

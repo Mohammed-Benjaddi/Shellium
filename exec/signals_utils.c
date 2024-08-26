@@ -13,7 +13,7 @@ void signal_handler(int signo)
         //    rl_on_new_line();
            write(1, "\n", 1);
            rl_on_new_line();
-           rl_replace_line("", 0);
+           //rl_replace_line("", 0);
            rl_redisplay();
 
 
@@ -22,15 +22,11 @@ void signal_handler(int signo)
         {
             // rl_redisplay();
             // rl_on_new_line();
-            rl_replace_line("", 0);// fix compiling 
+          //  rl_replace_line("", 0);// fix compiling 
             // rl_on_new_line();
-        }
-    if (signo == SIGTSTP)
-        {
-            rl_on_new_line();
             exit(1);
-            // rl_on_new_line();
         }
+    
 }
 
 void setup_signal_handlers() 
@@ -40,6 +36,8 @@ void setup_signal_handlers()
     // sigemptyset(&sa.sa_mask);
     // sa.sa_flags = SA_RESTART;
      signal(SIGINT, signal_handler);
+     signal(SIGQUIT, signal_handler);
+
 
     // sigaction(SIGINT, &sa, NULL);
 

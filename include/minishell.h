@@ -78,20 +78,21 @@ typedef struct s_env{
 } t_env;
 
 typedef struct s_exp{
-  char *variable;
-  char *value;
-  struct s_exp *prev;
-  struct s_exp *next;
+  char      *variable;
+  char      *value;
+  struct    s_exp *prev;
+  struct    s_exp *next;
 } t_exp;
 
 typedef struct s_all
 {
-  t_cmd    *cmd; // our parsing struct
-  t_env      *env; // environment variables list
-  t_exp     *exp; // exported variables list
-  size_t     nums_of_cmds;
-  t_vars    *_vars;
-  bool error;
+  t_cmd   *cmd; // our parsing struct
+  t_env   *env; // environment variables list
+  t_exp   *exp; // exported variables list
+  size_t  nums_of_cmds;
+  t_vars  *_vars;
+  int     exit_status;
+  bool    error;
 } t_all;
 
 // libc functions

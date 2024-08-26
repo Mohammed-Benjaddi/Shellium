@@ -12,6 +12,31 @@
 
 #include "minishell.h"
 
+int check_amb(char *file)
+{
+	int i;
+	i = 0;
+
+	while (file[i])
+	{
+		if (file[i] == ' ')
+			if (i != 0 && file[i+1] != 0)
+				return (1);
+		i++;
+	}
+	return (0);
+}
+int ambig_outed(t_all *all)
+{
+	if (all->cmd->out_file || all->cmd->append_file)
+	{
+		if (all->cmd->out_file)
+			return (check_amb(all->cmd->out_file));
+		return (check_amb(all->cmd->out_file));
+	}	
+	return (0);
+
+}
 void	redirections_set(t_all *all)
 {
 	int	fd;
@@ -27,6 +52,13 @@ void	redirections_set(t_all *all)
 	}
 	if (all->cmd->out_file || all->cmd->append_file)
 	{
+		if (ambig_outed(all))
+		{
+			ft_write("minishell: ambiguous redirect", 2);
+			//free();
+			// exit(1);
+		}
+
 		if (all->cmd->append_file)
 			fd = open(all->cmd->append_file, O_CREAT | O_RDWR | O_APPEND);
 		else

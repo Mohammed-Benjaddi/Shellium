@@ -1,7 +1,7 @@
 CC = cc
 CFLAGS = -fsanitize=address -g #-Wall -Wextra -Werror
-XFLAGS = -I ~/.brew/opt/readline/include
-
+XFLAGS = #-I ~/.brew/opt/readline/include
+X_FLAGS = #-L ~/.brew/Cellar/readline/8.2.13/lib
 
 HEADER = -I ./include/
 
@@ -22,7 +22,7 @@ EXEC_OBJS = ${EXEC_SRCS:.c=.o}
 all: $(NAME)
 
 $(NAME): $(PARSING_OBJS) $(EXEC_OBJS) $(EXEC_RD)
-	$(CC) $(CFLAGS) -L ~/.brew/Cellar/readline/8.2.13/lib $(EXEC_RD) $(PARSING_OBJS) $(EXEC_OBJS) -o $(NAME) -lreadline $(XFLAGS)
+	$(CC) $(CFLAGS)  $(X_FLAGS) $(EXEC_RD) $(PARSING_OBJS) $(EXEC_OBJS) -o $(NAME) -lreadline $(XFLAGS)
 
 ./parsing/%.o: ./parsing/%.c ./include/minishell.h
 	$(CC) $(CFLAGS) $(HEADER) -c $< -o $@
