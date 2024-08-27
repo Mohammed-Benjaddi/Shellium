@@ -86,7 +86,7 @@ char **ft_args_dup(char **args)
 void free_cmd(t_cmd *cmd)
 {
 	if(cmd->args)
-		ft_free(cmd->args);
+		ft_free(cmd->args, get_arr_len(cmd->args));
 	if(cmd->cmd)
 		free(cmd->cmd);
 	if(cmd->in_file)
@@ -146,7 +146,7 @@ t_cmd	*ft_lstnew(t_all **all, char **args, int args_nbr, int pipe)
 	new_node->cmd = NULL;
 	new_node->cmd_not_found = false;
 	if(!new_node->args)
-		ft_free(new_node->args);
+		ft_free(new_node->args, get_arr_len(new_node->args));
 	else
 		new_node->cmd = ft_strdup(new_node->args[0]);
 	new_node->full_path = get_path(new_node->cmd);
@@ -197,13 +197,13 @@ void    ft_lstclear(t_cmd **lst)
 	{
 		current = (*lst)->next;
 		if((*lst)->args)
-			ft_free((*lst)->args);
+			ft_free((*lst)->args, get_arr_len((*lst)->args));
 		if((*lst)->cmd != NULL)
 			free((*lst)->cmd);
 		free((*lst)->in_file);
 		free((*lst)->out_file);
 		if((*lst)->heredoc_delimiter)
-			ft_free((*lst)->heredoc_delimiter);
+			ft_free((*lst)->heredoc_delimiter, get_arr_len((*lst)->heredoc_delimiter));
 		free((*lst)->heredoc_content);
 		free((*lst)->full_path);
 		free((*lst)->append_file);		

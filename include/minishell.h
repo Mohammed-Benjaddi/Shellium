@@ -127,7 +127,7 @@ char *fix_cmd(char *cmd, t_all *all);
 void throw_error(char *msg, t_all *all);
 int find_pipe_index(char *str);
 size_t args_counter(char *str, int len);
-void ft_free(char **args);
+void ft_free(char **args, int len);
 void print_list(t_cmd *head);
 char *find_and_remove(char *str, char c);
 int skip_reds(char *str, int *i, char c, t_all *all);
@@ -138,6 +138,7 @@ char *get_path(char *cmd);
 char *get_input_redirection_file(char **args, t_all *all);
 char *get_output_redirection_file(char **args, t_all *all);
 char **get_herdoc_delimiter(char **args, t_all *all);
+int get_arr_len(char **arr);
 
 // char *get_herdoc_delimiter(char **args);
 // char *get_append_from_file(char **args);

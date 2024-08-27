@@ -71,24 +71,24 @@ size_t args_counter(char *str, int len)
   return words;
 }
 
-void ft_free(char **args)
+void ft_free(char **args, int len)
 {
   int i;
 
   i = 0;
   // int j = 0;
-  while(args[i])
+  while(i < len)
   {
     // printf("%s%s%s\n", YELLOW, args[i], NC);
     if(args[i] != NULL)
       free(args[i]);
     i++;
   }
-  if(args)
-  {
-    free(args);
-    args = NULL;
-  }
+  // if(args)
+  // {
+  //   free(args);
+  //   args = NULL;
+  // }
   free(args);
   args = NULL;
 }

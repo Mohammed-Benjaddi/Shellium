@@ -37,7 +37,7 @@ char *get_executable(char *cmd)
   while(arr[i + 1] != NULL)
     i++;
   filename = ft_strdup(arr[i]);
-  ft_free(arr);
+  ft_free(arr, get_arr_len(arr));
   if(!filename)
     return NULL;
   slash_index = get_slash_index(cmd);

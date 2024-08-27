@@ -103,9 +103,9 @@ int create_cmd(t_all **all, char **args, int words, int is_pipe)
 
   cmd = ft_lstnew(all, args, words, is_pipe);
   if(!cmd)
-    return ft_free(args), 0;
+    return ft_free(args, get_arr_len(args)), 0;
   ft_lstadd_back(&(*all)->cmd, cmd);
-  ft_free(args);
+  ft_free(args, get_arr_len(args));
   return 1;
 }
 
@@ -241,7 +241,10 @@ int check_command(t_lexer *lexer, t_all **all, char *command)
     else
       lexer->buffer = get_str_without_quotes(command, &lexer->i, (*all)->env, *all);
     if((*all)->error == true)
+    {
+      printf("--------------> here");
       return (free(lexer->buffer), 0);
+    }
     if(lexer->buffer == NULL || full_of_spaces(lexer->buffer) || !ft_strlen(lexer->buffer))
       return (free(lexer->buffer), 0);
     if(!ft_strlen(lexer->buffer))
@@ -269,7 +272,7 @@ int handle_new_cmd(t_all **all, t_lexer *lexer, char *command)
       return 0;
   }
   else
-    ft_free(lexer->args);
+    ft_free(lexer->args, lexer->j);
   return 1;
 }
 
@@ -321,8 +324,8 @@ int ft_lexer(char *command, t_all **all)
     {
       if(lexer.args)
       {
-        // printf("words ++++ %d\n", lexer.words);
-        ft_free(lexer.args);
+        printf("j ++++ %d\n", lexer.j);
+        ft_free(lexer.args, lexer.j);
         lexer.args = NULL;
       }
       return 0;

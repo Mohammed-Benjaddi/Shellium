@@ -43,7 +43,7 @@ char *isolate_cmd_from_path(char *cmd)
   command = ft_strdup(path[i]);
   // free(cmd);
   // cmd = NULL;
-  ft_free(path);
+  ft_free(path, i + 1);
   return command;
 }
 
@@ -56,6 +56,16 @@ bool correct_path(char *path, char *cmd, bool is_path)
     return false;
   }  
   return true;
+}
+
+int get_arr_len(char **arr)
+{
+  int i;
+
+  i = 0;
+  while(arr[i])
+    i++;
+  return i;
 }
 
 char  *get_path(char *cmd)
@@ -90,7 +100,7 @@ char  *get_path(char *cmd)
     // command = NULL;
     if(access(path, X_OK) == 0)
     {
-      ft_free(all_paths);
+      ft_free(all_paths, get_arr_len(all_paths));
       if (correct_path(path, cmd, is_path))
         return path;
       return (free(path), NULL);
@@ -100,7 +110,7 @@ char  *get_path(char *cmd)
     path = NULL;
     i++;
   }
-  ft_free(all_paths);
+  ft_free(all_paths, get_arr_len(all_paths));
   // printf("should return NULL\n");
   return NULL;
 }
