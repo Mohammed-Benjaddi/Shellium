@@ -4,7 +4,7 @@ void throw_error(char *msg, t_all *all)
 {
   printf("%sError: %s%s\n", RED, msg, NC);
   
-  all->error = true;
+  all->error = 1;
   // exit(1);
 }
 

@@ -37,6 +37,17 @@ int n_flaged(char *str)
 	}
 	return (1);
 }
+
+void echo_to_file(char **str, int i, int fd)
+{
+	while (str[i])
+	{
+		ft_write(str[i], fd);
+		if (str[i + 1] != NULL)
+			ft_write(" ", fd);
+		i++;
+	}
+}
 void	ft_echo(char **str, int fd)
 {
 	int	i;
@@ -59,14 +70,7 @@ void	ft_echo(char **str, int fd)
 		flag = 1;
 		i++;
 	}
-	i = index_to_txt;
-	while (str[i])
-	{
-		ft_write(str[i], fd);
-		if (str[i + 1] != NULL)
-			ft_write(" ", fd);
-		i++;
-	}
+	echo_to_file(str, index_to_txt, fd);
 	if (flag != 1)
 		ft_write("\n", fd);
 }

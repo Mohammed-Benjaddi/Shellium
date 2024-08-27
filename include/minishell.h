@@ -12,6 +12,7 @@
 #include <string.h>
 #include <signal.h>
 #include <errno.h>
+#include <dirent.h>
 
 #define SINGLE_QUOTE '\''
 #define DOUBLE_QUOTE '\"'

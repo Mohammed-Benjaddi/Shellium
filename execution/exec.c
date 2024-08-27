@@ -11,9 +11,9 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <sys/wait.h> 
-#include <sys/signal.h>         /* [XSI] for siginfo_t */
-#include <sys/resource.h> 
+// #include <sys/wait.h> 
+// #include <sys/signal.h>         /* [XSI] for siginfo_t */
+// #include <sys/resource.h> 
 void	wait_ps(pid_t *pids, t_all *all)
 {
 	int	i;
@@ -38,7 +38,6 @@ void	executing_commands(t_all *all, int *pipe_sides, char **envpp)
 	if (all->cmd->cmd_not_found)
 	{
 		printf("%s|\n\n\n",all->cmd->cmd);
-		// ft_write(all->cmd->cmd, 2);
 		ft_write("minishell: command not found\n", 2);
 		ft_error(all);
 	}

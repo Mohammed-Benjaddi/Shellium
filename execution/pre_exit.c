@@ -52,9 +52,10 @@ void	free_vars(t_all *all)
 }
 void	exit_way(t_all *all)
 {
+	int cause_exit;
+
 	env_exp_lists_clear(all);
 	free_vars(all);
-	all->exit_status = 1;
 	free(all);
 	if (errno == 22)
 		exit(127);
@@ -64,6 +65,5 @@ void	exit_way(t_all *all)
 }
 void	ft_error(t_all *all)
 {
-	
 	exit_way(all);
 }

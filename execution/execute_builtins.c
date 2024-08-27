@@ -48,14 +48,10 @@ int	exec_built_ins(t_all *all)
 		exec++;
 	}
 	if (match_word(all->cmd->cmd, "exit"))
-	{
 		handle_exit(all);
-		// exec++;
-	}
 	if (match_word(all->cmd->cmd, "cd"))
 	{
-		if (!all->cmd->pipe)
-			change_dir(all, all->cmd->args[1]);
+		change_dir(all, all->cmd->args[1]);
 		exec++;
 	}
 	if (exec)

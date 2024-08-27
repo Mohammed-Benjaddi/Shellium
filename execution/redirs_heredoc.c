@@ -56,7 +56,7 @@ void	redirections_set(t_all *all)
 		{
 			ft_write("minishell: ambiguous redirect", 2);
 			//free();
-			// exit(1);
+			exit(1);
 		}
 
 		if (all->cmd->append_file)
