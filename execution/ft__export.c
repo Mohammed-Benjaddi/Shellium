@@ -33,6 +33,21 @@ int	check_(char *s, int index)
 	}
 	return (1);
 }
+int is_empty(char *s, int index)
+{
+	int i;
+
+	i = 0;
+	while (i < index)
+	{
+		if (s[i] != '\t' && s[i] != '\n' 
+			&& s[i] != ' ' && s[i] != '\r' && s[i] != '\v' && s[i] != '\f')
+			return (0);
+		i++;
+	}
+	return (1);
+	
+}
 int	check_before_env(char *s)
 {
 	int	i;
@@ -44,7 +59,7 @@ int	check_before_env(char *s)
 	{
 		if (s[i] == '=')
 		{
-			if (!check_(s, i))
+			if (is_empty(s, i) || !check_(s, i))
 				return (0);
 			return (1);
 		}
@@ -70,9 +85,10 @@ void	add_it_to_env(t_all *all, char *new, t_exp *new_exp)
 }
 void	identifier_error(char *indentifer)
 {
-	ft_write("export: ", 2);
-	ft_write(indentifer, 2);
-	ft_write(": not a valid identifier\n", 2);
+	// ft_write("export: ", 2);
+	// ft_write(indentifer, 2);
+	
+	
 }
 
 void	parse_indetifier(t_all *all, char *str)
@@ -88,7 +104,8 @@ void	parse_indetifier(t_all *all, char *str)
 	if (ret == 0)
 	{
 		// free(tmp_str);
-		identifier_error(str);
+		ft_write("minishell: not a valid identifier\n", 2);
+		all->exit_status = 1;
 		return ;
 	}
 	last = exp_new(str);

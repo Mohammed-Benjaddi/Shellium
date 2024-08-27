@@ -54,12 +54,16 @@ void	exit_way(t_all *all)
 {
 	env_exp_lists_clear(all);
 	free_vars(all);
+	all->exit_status = 1;
 	free(all);
-	exit(errno);
+	if (errno == 22)
+		exit(127);
+	ft_write(strerror(errno), 2);
+	write(2, "\n", 1);
+	exit(1);
 }
 void	ft_error(t_all *all)
 {
-	ft_write(strerror(errno), 2);
-	write(2, "\n", 1);
+	
 	exit_way(all);
 }

@@ -22,20 +22,44 @@ void	ft_write(char *str, int fd)
 		exit(1);
 	}
 }
+int n_flaged(char *str)
+{
+	if (str == NULL)	
+		return (0);
+	if ((*str != '-' && *(++str) != 0) || *str == 0)
+		return (0);
+	str++;
+	while (*str)
+	{
+		if (*str != 'n')
+			return (0);
+		str++;
+	}
+	return (1);
+}
 void	ft_echo(char **str, int fd)
 {
 	int	i;
 	int	flag;
+	int index_to_txt;
 
 	flag = 0;
 	i = 0;
-	if (match_word("-n", *str))
+	index_to_txt = 0;
+	while (n_flaged(str[i]))
+		{
+			i++;
+			index_to_txt++;
+		}
+	i = 0;
+	if (index_to_txt > 0)
 	{
 		if (str[1] == NULL)
 			return ;
 		flag = 1;
 		i++;
 	}
+	i = index_to_txt;
 	while (str[i])
 	{
 		ft_write(str[i], fd);

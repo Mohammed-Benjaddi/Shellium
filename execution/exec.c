@@ -6,12 +6,14 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/08/24 15:32:05 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:18:57 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+#include <sys/wait.h> 
+#include <sys/signal.h>         /* [XSI] for siginfo_t */
+#include <sys/resource.h> 
 void	wait_ps(pid_t *pids, t_all *all)
 {
 	int	i;
@@ -21,6 +23,10 @@ void	wait_ps(pid_t *pids, t_all *all)
 	while (i < all->nums_of_cmds)
 	{
 		waitpid(pids[i], &status, 0);
+		if (WIFEXITED(status))
+            all->exit_status = WEXITSTATUS(status);
+        else if (WIFSIGNALED(status))
+            all->exit_status = WTERMSIG(status) + 128;
 		i++;
 	}
 }
@@ -31,12 +37,15 @@ void	executing_commands(t_all *all, int *pipe_sides, char **envpp)
 	exec_piped_built_ins(all, pipe_sides);
 	if (all->cmd->cmd_not_found)
 	{
-		ft_write(all->cmd->cmd, 2);
-		ft_write(": command not found\n", 2);
+		// printf("%s|\n\n\n",all->cmd->cmd);
+		// ft_write(all->cmd->cmd, 2);
+		ft_write("minishell: command not found\n", 2);
 		ft_error(all);
 	}
 	if (execve(all->cmd->full_path, all->cmd->args, envpp) == -1)
 		ft_write(strerror(errno), 2);
+	if (errno == 13)
+		exit(127);
 	exit(1);
 }
 
