@@ -27,8 +27,10 @@ void	handle_exit(t_all *all)
 {
 	if (!all->cmd->pipe)
 	{
+		int o;
+		o = all->exit_status;
 		env_exp_lists_clear(all);
-		exit(0);
+		exit(o);
 	}
 }
 int	exec_built_ins(t_all *all)

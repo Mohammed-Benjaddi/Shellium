@@ -85,7 +85,7 @@ char	*get_home_wd(t_all *all)
 }
 void cd_error_exit(t_all *all)
 {
-	ft_write("Minishell: ", 2);
+	ft_write("minishell: ", 2);
 	ft_write(strerror(errno), 2);
 	ft_write("\n", 1);
 	all->exit_status = 1;
