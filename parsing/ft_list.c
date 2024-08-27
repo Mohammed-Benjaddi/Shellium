@@ -145,10 +145,10 @@ t_cmd	*ft_lstnew(t_all **all, char **args, int args_nbr, int pipe)
 	new_node->next = NULL;
 	new_node->cmd = NULL;
 	new_node->cmd_not_found = false;
-	if(!new_node->args)
-		ft_free(new_node->args, get_arr_len(new_node->args));
-	else
+	if(new_node->args)
 		new_node->cmd = ft_strdup(new_node->args[0]);
+		// ft_free(new_node->args, args_nbr + 1);
+	// else
 	new_node->full_path = get_path(new_node->cmd);
 	if(!new_node->full_path)
 	{
