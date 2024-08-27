@@ -28,12 +28,14 @@ int check_amb(char *file)
 }
 int ambig_outed(t_all *all)
 {
-	if (all->cmd->out_file || all->cmd->append_file)
+	if (all->cmd->out_file || all->cmd->append_file || all->cmd->append_file)
 	{
 		if (all->cmd->out_file)
 			return (check_amb(all->cmd->out_file));
-		return (check_amb(all->cmd->out_file));
-	}	
+		else if (all->cmd->in_file)
+			return (check_amb(all->cmd->in_file));
+		return (check_amb(all->cmd->append_file));
+	}		
 	return (0);
 
 }
