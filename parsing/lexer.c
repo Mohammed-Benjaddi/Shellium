@@ -249,8 +249,8 @@ int check_command(t_lexer *lexer, t_all **all, char *command)
     {
       return (free(lexer->buffer), 0);
     }
-    if(lexer->buffer == NULL || full_of_spaces(lexer->buffer) || !ft_strlen(lexer->buffer))
-      return (free(lexer->buffer), 0);
+    // if(lexer->buffer == NULL || full_of_spaces(lexer->buffer) || !ft_strlen(lexer->buffer))
+    //   return (free(lexer->buffer), 0);
     if(ft_strlen(lexer->buffer))
     {
       lexer->args[lexer->j] = ft_strdup(lexer->buffer);
