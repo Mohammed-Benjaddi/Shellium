@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-void throw_error(char *msg, t_all *all)
+void throw_error(char *msg, t_all *all, int exit_status)
 {
   printf("%sError: %s%s\n", RED, msg, NC);
-  
+  all->exit_status = exit_status;
   all->error = true;
   // exit(1);
 }
@@ -113,10 +113,11 @@ void print_list(t_cmd *head)
       i++;
     }
     printf("%s %s %s", CYAN, head->full_path, NC);
-    printf("%s %s %s", RED, head->in_file, NC);
-    printf("%s %s %s", GREEN, head->out_file, NC);
-    printf("%s %s %s", RED, head->append_file, NC);
-    printf("%s %d %s", GREEN, head->pipe, NC);
+    printf("%s %d %s", RED, head->cmd_not_found, NC);
+    // printf("%s %s %s", RED, head->in_file, NC);
+    // printf("%s %s %s", GREEN, head->out_file, NC);
+    // printf("%s %s %s", RED, head->append_file, NC);
+    // printf("%s %d %s", GREEN, head->pipe, NC);
     head = head->next;
   }
   printf("\n-----------------------------\n");
@@ -154,7 +155,7 @@ int skip_reds(char *str, int *i, char c, t_all *all)
     *i += 1;
     if(counter > 2)
     {
-      throw_error("parse error", all);
+      throw_error("syntax error near unexpected token", all, 258);
       return 0;
     }
   }
@@ -162,7 +163,7 @@ int skip_reds(char *str, int *i, char c, t_all *all)
     *i += 1;
   if(*i < len && is_symbol(str[*i]))
   {
-    throw_error("parse error", all);
+    throw_error("syntax error near unexpected token", all, 258);
     return 0;
   }
   return 1;

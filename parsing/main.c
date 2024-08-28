@@ -38,7 +38,7 @@ bool is_correct_cmd(char *cmd, t_all *all)
   i = 0;
   skip_spaces(cmd, &i);
   if(cmd[i] == PIPE)
-    return (throw_error("syntax error near unexpected token `|'", all), false);
+    return (throw_error("syntax error near unexpected token", all, 258), false);
   while(i < ft_strlen(cmd))
   {
     skip_spaces(cmd, &i);
@@ -53,7 +53,7 @@ bool is_correct_cmd(char *cmd, t_all *all)
         i++;
       skip_spaces(cmd, &i);
       if(is_symbol_in_cmd(cmd[i]) || cmd[i] == PIPE)
-        return (throw_error("syntax error near unexpected token `|'", all), false);
+        return (throw_error("syntax error near unexpected token", all, 258), false);
     }
     i++;
   }

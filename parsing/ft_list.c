@@ -108,14 +108,10 @@ void free_cmd(t_cmd *cmd)
 
 bool is_builtin(char *cmd)
 {
-	if(!ft_strcmp(cmd, "export"))
-		return true;
-	else if(!ft_strcmp(cmd, "unset"))
-		return true;
-	// else if(!ft_strcmp(cmd, "unset"))
-	// 	return true;
-	// else if(!ft_strcmp(cmd, "unset"))
-	// 	return true;
+	if(!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd") 
+		|| !ft_strcmp(cmd, "pwd") || !ft_strcmp(cmd, "export")
+		|| !ft_strcmp(cmd, "unset") || !ft_strcmp(cmd, "exit"))
+	return true;
 	return false;
 }
 
@@ -149,13 +145,20 @@ t_cmd	*ft_lstnew(t_all **all, char **args, int args_nbr, int pipe)
 		new_node->cmd = ft_strdup(new_node->args[0]);
 		// ft_free(new_node->args, args_nbr + 1);
 	// else
-	new_node->full_path = get_path(new_node->cmd);
+	new_node->full_path = get_path(new_node->cmd, (*all)->env);
 	if(!new_node->full_path)
 	{
+		// printf("%spath is null, maybe its executable%s\n", RED, NC);
 		new_node->full_path = get_executable(new_node->cmd);
-		if(!new_node->full_path)
+		if(!new_node->full_path && !is_builtin(new_node->cmd))
 			new_node->cmd_not_found = 1;
+		// {
+  		// new_node->full_path = search_at_curr_dir(cmd);
+			
+		// }
 	}
+	// else
+		// printf("%spath is %s%s\n", YELLOW, new_node->full_path, NC);
 	if((*all)->error)
 		return NULL;
 	return (new_node);

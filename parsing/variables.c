@@ -86,6 +86,7 @@ char *handle_variables(char *str, t_env *env, size_t length, t_all *all)
   char* var_value;
   output[0] = '\0';
 
+  // printf()
   while (i < len)
   {
     if (str[i] == '$') 
@@ -108,12 +109,10 @@ char *handle_variables(char *str, t_env *env, size_t length, t_all *all)
         var_name[var_len++] = str[i++];
         var_name[var_len] = '\0';
         var_value = get_var_value(ft_strdup(var_name), env);
-        printf("varname is : %s\n", var_name);
         strcat(output, var_value);
         free(var_value);
         var_value = NULL;
       }
-      
     }
     else
     {
@@ -123,9 +122,10 @@ char *handle_variables(char *str, t_env *env, size_t length, t_all *all)
       i++;
     }
   }
-  printf("-------> waaaaaaaaaaaaaaaaa3\n");
   free(var_value);
   free(str);
   str = NULL;
+  if(!ft_strlen(output))
+    return NULL;
   return ft_strdup(output);
 }

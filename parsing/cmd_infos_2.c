@@ -1,9 +1,11 @@
 #include <minishell.h>
 
-static char **get_all_paths(char *cmd)
+static char **get_all_paths(char *cmd, t_env *env)
 {
   char **all_paths;
-  char *path = ft_strdup(getenv("PATH"));
+  // char *path = ft_strdup(getenv("PATH"));
+  char *path = get_var_value(ft_strdup("PATH"), env);
+  
   
   all_paths = ft_split(path, ':');
   if(!all_paths)
@@ -68,7 +70,27 @@ int get_arr_len(char **arr)
   return i;
 }
 
-char  *get_path(char *cmd)
+
+char *search_at_curr_dir(char *cmd)
+{
+  int i;
+  char cwd[256];
+  char *path;
+
+  i = 0;
+  path = NULL;
+  getcwd(cwd, sizeof(cwd));
+  path = ft_strjoin(ft_strjoin(ft_strdup(cwd), "/"), cmd);
+  // printf("path >>>>> %s\n", path);
+  if(access(path, X_OK) == 0)
+  {
+    // printf("%spath was found%s\n", CYAN, NC);
+    return path;
+  }
+  return NULL;
+}
+
+char  *get_path(char *cmd, t_env *env)
 {
   int i;
   char *path;
@@ -83,7 +105,7 @@ char  *get_path(char *cmd)
   path = NULL;
   if(!cmd)
     return NULL;
-  all_paths = get_all_paths(cmd);
+  all_paths = get_all_paths(cmd, env);
   if(cmd[0] && cmd[0] == SLASH && cmd[ft_strlen(cmd) - 1])
   {
     line = isolate_cmd_from_path(cmd);
@@ -112,7 +134,8 @@ char  *get_path(char *cmd)
   }
   ft_free(all_paths, get_arr_len(all_paths));
   // printf("should return NULL\n");
-  return NULL;
+  path = search_at_curr_dir(cmd);
+  return path;
 }
 
 char **get_herdoc_delimiter(char **args, t_all *all)
@@ -134,7 +157,7 @@ char **get_herdoc_delimiter(char **args, t_all *all)
     {
       i++;
       if(!args[i + 1])
-        return (throw_error("syntax error near unexpected token `newline'", all), NULL);
+        return (throw_error("syntax error near unexpected token", all, 258), NULL);
       else
         delimiters[len++] = ft_strdup(args[i + 1]);
     }

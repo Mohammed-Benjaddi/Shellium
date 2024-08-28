@@ -28,15 +28,20 @@ char *get_executable(char *cmd)
   char cwd[256];
 
   i = 0;
+  // printf("---> %s\n", cmd);
   slash_index = 0;
   if(get_slash_index(cmd) == -1)
+  {
+    // printf("slash not found\n");
     return NULL;
+  }
   arr = ft_split(cmd, SLASH);
   if(!arr)
     return NULL;
   while(arr[i + 1] != NULL)
     i++;
   filename = ft_strdup(arr[i]);
+  // printf("path name ---> %s\n", filename);
   ft_free(arr, get_arr_len(arr));
   if(!filename)
     return NULL;

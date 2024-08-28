@@ -48,9 +48,9 @@ char *get_str_in_quotes(char *command, int *i, char c, t_all *all)
   if(len == -1)
   {
     if(c == SINGLE_QUOTE)
-      throw_error("single quote must be closed", all);
+      throw_error("single quote must be closed", all, 1);
     else
-      throw_error("double quote must be closed", all);
+      throw_error("double quote must be closed", all, 1);
     return NULL;
   }
   buffer = ft_substr(command + *i, 0, len);
@@ -85,6 +85,8 @@ char *get_str_without_quotes(char *command, int *i, t_env *env, t_all *all)
 
   len = find_len(command + *i, false);
   buffer = ft_substr(command, *i, len);
+  // printf("%s ---> %s --- %d%s\n", RED, buffer, len, NC);
+
   if(get_vars_length(buffer) > 0)
     buffer = handle_variables(buffer, env, get_vars_length(buffer), all);
   index = ft_strchr_pro(buffer, DOUBLE_QUOTE, SINGLE_QUOTE, false); 
@@ -93,7 +95,8 @@ char *get_str_without_quotes(char *command, int *i, t_env *env, t_all *all)
   else if (index != -1 && buffer[index - 1] == DOUBLE_QUOTE)
     buffer = find_and_remove(buffer, DOUBLE_QUOTE);
   *i += len;
-  // printf("%s ---> %s%s\n", RED, buffer, NC);
+  // if(!buffer)
+    // return ft_strdup("simo");
   return buffer;
 }
 
@@ -239,22 +242,35 @@ int check_command(t_lexer *lexer, t_all **all, char *command)
     else if(command[lexer->i] == DOUBLE_QUOTE)
       lexer->buffer = get_str_in_quotes(command, &lexer->i, DOUBLE_QUOTE, *all);
     else
+    {
       lexer->buffer = get_str_without_quotes(command, &lexer->i, (*all)->env, *all);
+    }
     if((*all)->error == true)
     {
-      printf("--------------> here");
       return (free(lexer->buffer), 0);
     }
     if(lexer->buffer == NULL || full_of_spaces(lexer->buffer) || !ft_strlen(lexer->buffer))
       return (free(lexer->buffer), 0);
-    if(!ft_strlen(lexer->buffer))
+    if(ft_strlen(lexer->buffer))
     {
+      lexer->args[lexer->j] = ft_strdup(lexer->buffer);
       free(lexer->buffer);
-      break;
+      lexer->buffer = NULL;
+      lexer->j++;
+      // free(lexer->buffer);
     }
-    lexer->args[lexer->j] = ft_strdup(lexer->buffer);
-    free(lexer->buffer);
-    lexer->j++;
+    else
+      lexer->words--;
+    // ------------------------------------------
+    // if(!ft_strlen(lexer->buffer))
+    // {
+    //   free(lexer->buffer);
+    //   break;
+    // }
+    // lexer->args[lexer->j] = ft_strdup(lexer->buffer);
+    // free(lexer->buffer);
+    // lexer->j++;
+    // ------------------------------------------
   }
   return 1;
 }
@@ -263,7 +279,7 @@ int handle_new_cmd(t_all **all, t_lexer *lexer, char *command)
 {
   if(lexer->words && (is_symbol(lexer->args[lexer->words - 1][0]) 
     || lexer->args[lexer->words - 1][0] == BACK_SLASH))
-      return (throw_error("syntax error near unexpected token `newline'", *all), 0);
+      return (throw_error("syntax error near unexpected token", *all, 258), 0);
   if(lexer->words)
   {
     if(is_pipe_after(command + lexer->i))
@@ -284,7 +300,7 @@ bool is_incorrect_cmd(char *cmd, int *pipe, t_all *all)
   if(cmd[i] == PIPE)
   {
     if(!cmd[i + 1])
-      return (throw_error("syntax error near unexpected token `|'", all), true);
+      return (throw_error("syntax error near unexpected token", all, 258), true);
   }
   if(cmd[i + 1] == PIPE && cmd[i + 2] != PIPE)
   {
@@ -293,7 +309,7 @@ bool is_incorrect_cmd(char *cmd, int *pipe, t_all *all)
     // return (throw_error("syntax error near unexpected token `|'", all), false);
   }
   else if(cmd[i + 1] == PIPE && cmd[i + 2] == PIPE)
-    return (throw_error("syntax error near unexpected token `|'", all), true);
+    return (throw_error("syntax error near unexpected token", all, 258), true);
   return false;
   
   // return (throw_error("syntax error near unexpected token `|'", all), false);
@@ -324,7 +340,6 @@ int ft_lexer(char *command, t_all **all)
     {
       if(lexer.args)
       {
-        printf("j ++++ %d\n", lexer.j);
         ft_free(lexer.args, lexer.j);
         lexer.args = NULL;
       }

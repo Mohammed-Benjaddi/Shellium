@@ -14,7 +14,7 @@ char *get_input_redirection_file(char **args, t_all *all)
       if(i == 0 || (i > 0 && ft_strcmp(args[i - 1], "<")))
       {
         if(!args[i + 1])
-          return (throw_error("syntax error near unexpected token `newline'", all), NULL);
+          return (throw_error("syntax error near unexpected token", all, 258), NULL);
         else
         {
           free(in_file);
@@ -42,8 +42,8 @@ char *get_output_redirection_file(char **args, t_all *all)
       // printf("search for redirection\n");
       if(!args[i + 1])
       {
-        printf("******\n");
-        return (throw_error("syntax error near unexpected token `newline'", all), NULL);
+        // printf("******\n");
+        return (throw_error("syntax error near unexpected token", all, 258), NULL);
       }
       else
       {
@@ -74,7 +74,7 @@ char *get_append_to_file(char **args, t_all *all)
     {
       i++;
       if(!args[i + 1])
-        return (throw_error("syntax error near unexpected token `newline'", all), NULL);
+        return (throw_error("syntax error near unexpected token", all, 258), NULL);
       else
       {
         free(file);
