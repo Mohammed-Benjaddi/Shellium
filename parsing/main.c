@@ -72,7 +72,7 @@ int main(int ac, char **av, char **env)
   set_lists(all, env); // 
   setup_signal_handlers();
   // atexit(check_leaks);
-  all->exit_status = 127;
+  all->exit_status = 0;
   while(1)
   {
     all->error = false;
@@ -100,7 +100,7 @@ int main(int ac, char **av, char **env)
         // check_leaks();
         continue;
       }
-      if(!ft_lexer(read, &all))
+      if(!ft_lexer(read, &all) || !all->cmd)
       {
         free(read);
         read = NULL;
@@ -110,11 +110,11 @@ int main(int ac, char **av, char **env)
       all->nums_of_cmds = count_commands(all->cmd);
       // print_list(all->cmd);
       // -------------------
-      if(!all->error)
-        execution(&all, env);
-      // -------------------
-      free(all->_vars->pids);
-      free(all->_vars);
+      // if(!all->error)
+      //   execution(&all, env);
+      // // -------------------
+      // free(all->_vars->pids);
+      // free(all->_vars);
       ft_lstclear(&all->cmd);
       // check_leaks();
     }

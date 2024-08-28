@@ -45,7 +45,11 @@ typedef struct s_command_line {
   int   pipe; // 1 if this command pipes to next, 0 otherwise
   struct s_command_line *next; // Pointer to next command in pipeline
   bool cmd_not_found;
+  char *varibale_name;//   $HOME
 } t_cmd;
+
+
+// /users/sfjls/
 
 // typedef struct s_exec
 // {

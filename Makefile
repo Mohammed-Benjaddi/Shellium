@@ -34,6 +34,5 @@ clean:
 	rm -f $(PARSING_OBJS) $(EXEC_OBJS) $(EXEC_RD)
 
 fclean: clean
-	rm -rf $(NAME)
 
 re: fclean all

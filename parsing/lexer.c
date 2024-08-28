@@ -77,6 +77,33 @@ bool str_has_quotes(char *str, char c)
   return false;
 }
 
+bool no_herdoc_delemiter(char *cmd, int i)
+{
+  printf("%s ===> %d\n", cmd, i);
+  while(i >= 0)
+  {
+    if(cmd[i] == SINGLE_QUOTE || cmd[i] == DOUBLE_QUOTE)
+    {
+      i--;
+      while(i >= 0 && cmd[i] != cmd[i + 1])
+        i--;
+    }
+    if(i >= 0 && cmd[i] == PIPE)
+      return true;
+    else if(cmd[i] == '<')
+    {
+      i--;
+      if(i >= 1 && cmd[i] == SPACE && cmd[i - 1] == '<')
+      {
+        printf("++++++++++++\n");
+        return 0;
+      }
+    }
+    i--;
+  }
+  return true;
+}
+
 char *get_str_without_quotes(char *command, int *i, t_env *env, t_all *all)
 {
   int len;
@@ -85,10 +112,13 @@ char *get_str_without_quotes(char *command, int *i, t_env *env, t_all *all)
 
   len = find_len(command + *i, false);
   buffer = ft_substr(command, *i, len);
-  // printf("%s ---> %s --- %d%s\n", RED, buffer, len, NC);
+  // printf("%s ---> %s --- %c%s\n", RED, command, command[*i], NC);
 
   if(get_vars_length(buffer) > 0)
+  {
+    // printf("%sherdoc --> %d%s\n", RED, no_herdoc_delemiter(command, *i - 1),  NC);
     buffer = handle_variables(buffer, env, get_vars_length(buffer), all);
+  }
   index = ft_strchr_pro(buffer, DOUBLE_QUOTE, SINGLE_QUOTE, false); 
   if(index != -1 && buffer[index - 1] == SINGLE_QUOTE)
     buffer = find_and_remove(buffer, SINGLE_QUOTE);    
@@ -107,6 +137,11 @@ int create_cmd(t_all **all, char **args, int words, int is_pipe)
   cmd = ft_lstnew(all, args, words, is_pipe);
   if(!cmd)
     return ft_free(args, get_arr_len(args)), 0;
+    // printf("---------> null\n");
+    // if(!cmd->cmd && !cmd->heredoc_delimiter)
+    // {
+    // exit(0);
+    // }
   ft_lstadd_back(&(*all)->cmd, cmd);
   ft_free(args, get_arr_len(args));
   return 1;
@@ -238,13 +273,11 @@ int check_command(t_lexer *lexer, t_all **all, char *command)
     while (command[lexer->i] && ft_isspace(command[lexer->i]))
       lexer->i++;
     if(command[lexer->i] == SINGLE_QUOTE)
-      lexer->buffer = get_str_in_quotes(command, &lexer->i, SINGLE_QUOTE, NULL);
+      lexer->buffer = get_str_in_quotes(command, &lexer->i, SINGLE_QUOTE, *all);
     else if(command[lexer->i] == DOUBLE_QUOTE)
       lexer->buffer = get_str_in_quotes(command, &lexer->i, DOUBLE_QUOTE, *all);
     else
-    {
       lexer->buffer = get_str_without_quotes(command, &lexer->i, (*all)->env, *all);
-    }
     if((*all)->error == true)
     {
       return (free(lexer->buffer), 0);
@@ -354,7 +387,7 @@ int ft_lexer(char *command, t_all **all)
     if(lexer.pipe == -1)
       return 1;
   }
-  free(command);
+  // free(command);
   return 1;
 }
 

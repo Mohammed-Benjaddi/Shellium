@@ -1,9 +1,10 @@
 #include "minishell.h"
 
-void throw_error(char *msg, t_all *all, int exit_status)
+void throw_error(char *msg, t_all *all, int nbr)
 {
   printf("%sError: %s%s\n", RED, msg, NC);
-  all->exit_status = exit_status;
+  // printf("%s%d%s\n", CYAN, nbr, NC);
+  all->exit_status = nbr;
   all->error = true;
   // exit(1);
 }
@@ -180,17 +181,23 @@ size_t get_vars_length(char *str)
   str_len = ft_strlen(str);
   if(!str)
     return length;
-  while(str[i])
+  while(i < str_len)
   {
-    while(str[i] && ft_isspace(str[i]))
+    while(i < str_len && ft_isspace(str[i]))
       i++;
+    if(i < str_len && str[i] == SINGLE_QUOTE)
+    {
+      i++;
+      // printf("-------> here\n");
+      skip_str_inside_quote(str, &i, str[i - 1]);
+    }
     // if(str[i] && str[i] == VAR_SIGN && str[i - 1] != BACK_SLASH)
     // printf("outside the func\n");
-    if(str[i] && str[i] == VAR_SIGN && (i == 0 || (i > 0 && str[i - 1] != BACK_SLASH)))
+    if(i < str_len && str[i] == VAR_SIGN && (i == 0 || (i > 0 && str[i - 1] != BACK_SLASH)))
     {
       // printf("inside the func\n");
       // if(i > 0 && str[i - 1] != BACK_SLASH)
-      while(str[i] && str[i] != DOUBLE_QUOTE && str[i] != PIPE)
+      while(i < str_len && str[i] != DOUBLE_QUOTE && str[i] != PIPE)
       {
         i++;
         length++;

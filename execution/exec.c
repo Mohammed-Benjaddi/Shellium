@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/08/27 18:12:16 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/08/28 17:22:14 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	executing_commands(t_all *all, int *pipe_sides, char **envpp)
 	exec_piped_built_ins(all, pipe_sides);
 	if (all->cmd->cmd_not_found)
 	{
+		// printf("---------------------------\n\n\n\n\n\n\n\n");
 		// printf("%s|\n\n\n",all->cmd->cmd);
 		// ft_write(all->cmd->cmd, 2);
 		ft_write("minishell: command not found\n", 2);
