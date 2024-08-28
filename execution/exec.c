@@ -37,7 +37,6 @@ void	executing_commands(t_all *all, int *pipe_sides, char **envpp)
 	exec_piped_built_ins(all, pipe_sides);
 	if (all->cmd->cmd_not_found)
 	{
-		printf("%s|\n\n\n",all->cmd->cmd);
 		ft_write("minishell: command not found\n", 2);
 		ft_error(all);
 	}
