@@ -57,12 +57,9 @@ void	ft_echo(char **str, int fd)
 	flag = 0;
 	i = 0;
 	index_to_txt = 0;
-	while (n_flaged(str[i]))
-		{
-			i++;
-			index_to_txt++;
-		}
-	i = 0;
+	while (n_flaged(str[index_to_txt]))
+		index_to_txt++
+		;
 	if (index_to_txt > 0)
 	{
 		if (str[1] == NULL)
