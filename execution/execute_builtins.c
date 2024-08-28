@@ -23,14 +23,62 @@ void	handle_export(t_all *all)
 		i++;
 	}
 }
+int	sh_atoi(char *s)
+{
+	int	res;
+	int	i;
+	int sign;
+
+	sign = 1;
+	i = 0;
+	res = 0;
+	while (s[i] != 0)
+	{
+		if (s[i] == '+' || s[i] == '-')
+		{
+			if (!(s[i + 1] >= '0' && s[i + 1] <= '9'))
+				return (-1);
+				sign *= -1;
+			i++;
+		}
+		if (!(s[i] >= '0' && s[i] <= '9'))
+			return (-1);
+		res = (res * 10) + (s[i] - 48);
+		i++;
+	}
+	return (res*sign);
+}
+
 void	handle_exit(t_all *all)
 {
+	int exit_num;
+	int exit_;
+
 	if (!all->cmd->pipe)
 	{
-		int o;
-		o = all->exit_status;
+		if (all->cmd->args[1] != NULL)
+			{
+				exit_num = sh_atoi(all->cmd->args[1]);
+				if (exit_num == -1)
+				{
+					ft_write("minishell: numeric argument required", 2);
+					return ;
+				}
+				if (all->cmd->args[2])
+				{
+					ft_write("minishell: too many arguments", 2);
+					return ;
+				}
+				printf("%d]]",exit_num );
+				if (exit_num < 0)
+					exit_num = (char)exit_num;
+				if (exit_num > 255)
+					exit_num = (exit_num%256);
+				exit(exit_num);
+			}
+		exit_ = all->exit_status;
 		env_exp_lists_clear(all);
-		exit(o);
+		exit(exit_);
 	}
 }
 int	exec_built_ins(t_all *all)
