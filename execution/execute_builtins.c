@@ -62,6 +62,7 @@ void	handle_exit(t_all *all)
 	ft_write("exit\n", 2);
 	if (all->cmd->args[1] != NULL)
 		{
+			exit(atoi(all->cmd->args[1]));
 			exit_num = sh_atoi(all->cmd->args[1]);
 			if (exit_num == -1 && (all->cmd->args[1][0] != '-' &&  all->cmd->args[1][0] != '1'))
 			{
