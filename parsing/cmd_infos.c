@@ -39,12 +39,8 @@ char *get_output_redirection_file(char **args, t_all *all)
   {
     if(!ft_strcmp(args[i], ">"))
     {
-      // printf("search for redirection\n");
       if(!args[i + 1])
-      {
-        // printf("******\n");
         return (throw_error("syntax error near unexpected token", all, 258), NULL);
-      }
       else
       {
         if(!ft_strcmp(args[i + 1], ">"))
@@ -80,7 +76,6 @@ char *get_append_to_file(char **args, t_all *all)
         free(file);
         file = ft_strdup(args[i + 1]);
         fd = open(file, O_CREAT | O_RDWR | O_APPEND, 0777);
-        // protect file!
         close(fd);
       }
     }

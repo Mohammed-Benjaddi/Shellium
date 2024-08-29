@@ -151,6 +151,7 @@ char **allocate_args(char *command, int *pipe_idx, int *words, int i)
   args = (char **)malloc(sizeof(char *) * (*words + 1));
   if(!args)
     return NULL;
+  printf("----> %d\n", *words + 1);
   return args;
 }
 
@@ -344,15 +345,7 @@ int ft_lexer(char *command, t_all **all)
       return (0);
     lexer.args = allocate_args(command, &lexer.pipe_idx, &lexer.words, lexer.i);
     if(!lexer.args || !check_command(&lexer, all, command))
-    {
-      if(lexer.args)
-      {
-        ft_free(lexer.args, lexer.j);
-        lexer.args = NULL;
-      }
-      return 0;
-    }
-      
+      return (ft_free(lexer.args, lexer.j), 0);
     lexer.args[lexer.j] = NULL;
     if(!handle_new_cmd(all, &lexer, command))
       return 0;

@@ -10,7 +10,6 @@ char *ft_strtok(char *str)
   i = 0;
   j = 0;
   len = ft_strlen(str);
-  // printf("len : %zu\n", len);
   if(!str)
     return NULL;
   while(str[i] && ft_isspace(str[i]))
@@ -35,9 +34,7 @@ char *get_only_var(char *str)
   len = 0;
   while(str[len] && !is_symbol(str[len]) && str[len] != SPACE && str[len] != SINGLE_QUOTE)
     len++;
-  // result = malloc(len + 1);
   result = ft_substr(str, 0, len);
-  // printf("only variable: %s\n", result);
   return result;
 }
 
@@ -77,15 +74,12 @@ int	ft_isalnum(int c)
 
 char *handle_variables(char *str, t_env *env, size_t length, t_all *all)
 {
-  // free();
   size_t i = 0;
   size_t len = strlen(str);
-  // char* output = malloc(len * 3);
   char output[1024];
   char* var_value;
   output[0] = '\0';
 
-  // printf()
   while (i < len)
   {
     if (str[i] == '$') 

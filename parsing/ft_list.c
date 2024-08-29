@@ -1,13 +1,5 @@
 #include "minishell.h"
 
-// void ft_init(t_shell *shell)
-// {
-//   shell = malloc(sizeof(t_shell));
-//   shell->head = NULL;
-//   shell->size = 0;
-//   shell->state = NORMAL;
-// }
-
 static int is_redirection(char *str, char *next)
 {
 	if(!ft_strcmp(str, ">") && ft_strcmp(next, ">"))
@@ -62,26 +54,12 @@ char **ft_args_dup(char **args)
 			i += is_redirection(args[i], args[i + 1]);
 		if(!args[i])
 			break;
-		// arg = check_arg(args[i]);
 		result[j++] = ft_strdup(args[i]);
 		i++;
 	}
 	result[j] = NULL;
 	return result;
 }
-
-// bool check_args(char **args)
-// {
-// 	int i;
-
-// 	i = 0;
-// 	if(!args)
-// 		return false;
-// 	while(args[i])
-// 	{
-// 		if(!args[i + 1] && is_not_valid_symbol(args))
-// 	}
-// }
 
 void free_cmd(t_cmd *cmd)
 {
@@ -101,9 +79,6 @@ void free_cmd(t_cmd *cmd)
 		free(cmd->full_path);
 	if(cmd->append_file)
 		free(cmd->append_file);
-	// if(cmd)
-	// free(cmd);
-	// cmd = NULL;
 }
 
 bool is_builtin(char *cmd)
@@ -116,11 +91,18 @@ bool is_builtin(char *cmd)
 	return true;
 	return false;
 }
-
-// bool is_executable(char *cmd)
-// {
-
-// }
+void fill_node(t_all **all, t_cmd *new_node)
+{
+	if(new_node->args)
+		new_node->cmd = ft_strdup(new_node->args[0]);
+	new_node->full_path = get_path(new_node->cmd, (*all)->env);
+	if(!new_node->full_path)
+	{
+		new_node->full_path = get_executable(new_node->cmd);
+		if(!new_node->full_path && !is_builtin(new_node->cmd))
+			new_node->cmd_not_found = 1;
+	}
+}
 
 t_cmd	*ft_lstnew(t_all **all, char **args, int args_nbr, int pipe)
 {
@@ -140,15 +122,7 @@ t_cmd	*ft_lstnew(t_all **all, char **args, int args_nbr, int pipe)
 	new_node->next = NULL;
 	new_node->cmd = NULL;
 	new_node->cmd_not_found = false;
-	if(new_node->args)
-		new_node->cmd = ft_strdup(new_node->args[0]);
-	new_node->full_path = get_path(new_node->cmd, (*all)->env);
-	if(!new_node->full_path)
-	{
-		new_node->full_path = get_executable(new_node->cmd);
-		if(!new_node->full_path && !is_builtin(new_node->cmd))
-			new_node->cmd_not_found = 1;
-	}
+	fill_node(all, new_node);
 	if((*all)->error || (!new_node->args && !new_node->heredoc_delimiter))
 		return NULL;
 	return (new_node);

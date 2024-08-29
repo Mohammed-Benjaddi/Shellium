@@ -78,18 +78,14 @@ void ft_free(char **args, int len)
 
   i = 0;
   // int j = 0;
+  if(!args)
+    return;
   while(i < len)
   {
-    // printf("%s%s%s\n", YELLOW, args[i], NC);
     if(args[i] != NULL)
       free(args[i]);
     i++;
   }
-  // if(args)
-  // {
-  //   free(args);
-  //   args = NULL;
-  // }
   free(args);
   args = NULL;
 }
@@ -188,15 +184,10 @@ size_t get_vars_length(char *str)
     if(i < str_len && str[i] == SINGLE_QUOTE)
     {
       i++;
-      // printf("-------> here\n");
       skip_str_inside_quote(str, &i, str[i - 1]);
     }
-    // if(str[i] && str[i] == VAR_SIGN && str[i - 1] != BACK_SLASH)
-    // printf("outside the func\n");
     if(i < str_len && str[i] == VAR_SIGN && (i == 0 || (i > 0 && str[i - 1] != BACK_SLASH)))
     {
-      // printf("inside the func\n");
-      // if(i > 0 && str[i - 1] != BACK_SLASH)
       while(i < str_len && str[i] != DOUBLE_QUOTE && str[i] != PIPE)
       {
         i++;
@@ -206,7 +197,6 @@ size_t get_vars_length(char *str)
     }
     i++;
   }
-  // printf("length should returned : %zu\n", length);
   return length;
 }
 
@@ -235,24 +225,8 @@ char *find_variable(char *str)
     }
     i++;
   }
-  // printf("%sall vars: %s%s\n", YELLOW, vars, NC);
   return vars;
 }
-
-// char *get_variable(char *str)
-// {
-//   size_t i;
-//   char var;
-
-//   i = 0;
-//   while()
-//   {
-
-//   }
-//   return  var
-// }
-
-
 
 char *find_and_remove(char *str, char c)
 {
@@ -267,7 +241,6 @@ char *find_and_remove(char *str, char c)
   len = ft_strlen(str) - nums_of_chars(str, c) + 1;
   if(!str)
     return NULL;
-  // printf("%s --------> %s%s\n", RED, str, NC);
   res = (char *)malloc(sizeof(char) * len);
   while(str[i])
   {
@@ -281,6 +254,5 @@ char *find_and_remove(char *str, char c)
   res[j] = '\0';
   free(str);
   str = NULL;
-  // printf("after fixing: %s\n", res);
   return res;
 }
