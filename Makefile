@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = #-fsanitize=address -g #-Wall -Wextra -Werror
+CFLAGS = -fsanitize=address -g #-Wall -Wextra -Werror
 XFLAGS = -I ~/.brew/opt/readline/include
 
 
@@ -34,5 +34,6 @@ clean:
 	rm -f $(PARSING_OBJS) $(EXEC_OBJS) $(EXEC_RD)
 
 fclean: clean
+	rm -rf $(NAME)
 
 re: fclean all

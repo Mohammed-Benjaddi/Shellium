@@ -21,7 +21,6 @@ char *ft_strtok(char *str)
   while(i < len)
     result[j++] = str[i++];
   result[j] = '\0';
-  // printf("%sft_strtok:%s---> %zu%s\n", MAGENTA, result, ft_strlen(result), NC);
   free(str);
   return result;
 }

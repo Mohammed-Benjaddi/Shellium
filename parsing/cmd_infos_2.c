@@ -3,10 +3,9 @@
 static char **get_all_paths(char *cmd, t_env *env)
 {
   char **all_paths;
-  // char *path = ft_strdup(getenv("PATH"));
-  char *path = get_var_value(ft_strdup("PATH"), env);
+  char *path; 
   
-  
+  path = get_var_value(ft_strdup("PATH"), env);
   all_paths = ft_split(path, ':');
   if(!all_paths)
     return NULL;
@@ -43,8 +42,6 @@ char *isolate_cmd_from_path(char *cmd)
   while(path[i + 1] != NULL)
     i++;
   command = ft_strdup(path[i]);
-  // free(cmd);
-  // cmd = NULL;
   ft_free(path, i + 1);
   return command;
 }
@@ -83,25 +80,43 @@ char *search_at_curr_dir(char *cmd)
   path = ft_strjoin(ft_strjoin(ft_strdup(cwd), "/"), cmd);
   // printf("path >>>>> %s\n", path);
   if(access(path, X_OK) == 0)
-  {
-    // printf("%spath was found%s\n", CYAN, NC);
     return path;
-  }
   return NULL;
+}
+
+
+char *get_right_path(char **all_paths, char *cmd, char *line, bool is_path)
+{
+  int i;
+  char *path;
+  char *curr_path;
+
+  i = 0;
+  path = NULL;
+  while (all_paths[i])
+  {
+    curr_path = ft_strjoin(ft_strdup(all_paths[i]), "/");
+    path = ft_strjoin(curr_path, line);
+    if(access(path, X_OK) == 0)
+    {
+      if (correct_path(path, cmd, is_path))
+        return path;
+    }
+    free(path);
+    path = NULL;
+    i++;
+  }
+  return path;
 }
 
 char  *get_path(char *cmd, t_env *env)
 {
-  int i;
   char *path;
-  char *command;
   char **all_paths;
   char *line;
   bool is_path;
 
-  i = 0;
   is_path = false;
-  command = NULL;
   path = NULL;
   if(!cmd)
     return NULL;
@@ -113,28 +128,10 @@ char  *get_path(char *cmd, t_env *env)
   }
   else
     line = cmd;
-  while (all_paths[i])
-  {
-    char *curr_path = ft_strdup(all_paths[i]);
-    command = ft_strjoin(curr_path, "/");
-    path = ft_strjoin(command, line);
-    // free(command);
-    // command = NULL;
-    if(access(path, X_OK) == 0)
-    {
-      ft_free(all_paths, get_arr_len(all_paths));
-      if (correct_path(path, cmd, is_path))
-        return path;
-      return (free(path), NULL);
-      // return path;
-    }
-    free(path);
-    path = NULL;
-    i++;
-  }
+  path = get_right_path(all_paths, cmd, line, is_path);
   ft_free(all_paths, get_arr_len(all_paths));
-  // printf("should return NULL\n");
-  path = search_at_curr_dir(cmd);
+  if(!path)
+    path = search_at_curr_dir(cmd);
   return path;
 }
 
@@ -153,7 +150,7 @@ char **get_herdoc_delimiter(char **args, t_all *all)
   len = 0;
   while(args[i])
   {
-    if(!ft_strcmp(args[i], "<") && !ft_strcmp(args[i + 1], "<")) // and [i+1] != '\0'
+    if(!ft_strcmp(args[i], "<") && !ft_strcmp(args[i + 1], "<"))
     {
       i++;
       if(!args[i + 1])

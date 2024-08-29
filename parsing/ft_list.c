@@ -151,22 +151,8 @@ t_cmd	*ft_lstnew(t_all **all, char **args, int args_nbr, int pipe)
 	}
 	if((*all)->error || (!new_node->args && !new_node->heredoc_delimiter))
 		return NULL;
-
-	// int i = 0;
-	// while(new_node->args[i])
-	// 	printf("---> %s\n", args[i++]);
-
 	return (new_node);
 }
-
-// t_node *ft_lstlast(t_node *head)
-// {
-//   if(!head)
-//     return NULL;
-//   while (head->next != NULL)
-//     head = head->next;  
-//   return head;
-// }
 
 void	ft_lstadd_back(t_cmd **cmd, t_cmd *new)
 {

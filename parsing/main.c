@@ -60,19 +60,41 @@ bool is_correct_cmd(char *cmd, t_all *all)
   return true;
 }
 
+void shell_init(t_all *all, char **env)
+{
+  using_history();
+  set_lists(all, env);
+  setup_signal_handlers();
+  all->exit_status = 0;
+}
+
+int start_shell(char *read, t_all *all, char **env)
+{
+  add_history(read);
+  read = fix_cmd(read, all);
+  if(all->error || !is_correct_cmd(read, all) || !ft_lexer(read, &all) || !all->cmd)
+  {
+    free(read);
+    read = NULL;
+    return 0;
+  }
+  all->nums_of_cmds = count_commands(all->cmd);
+  // print_list(all->cmd);
+  if(!all->error)
+    execution(&all, env);
+  free(all->_vars->pids);
+  free(all->_vars);
+  ft_lstclear(&all->cmd);
+  return 1;
+}
+
 int main(int ac, char **av, char **env)
 {
   t_all *all;
 
   all = malloc(sizeof(t_all));
   all->cmd = NULL;
-  // all->nums_of_cmds = 1;
-  // ft_init(shell);
-  using_history();
-  set_lists(all, env); // 
-  setup_signal_handlers();
-  // atexit(check_leaks);
-  all->exit_status = 0;
+  shell_init(all, env);
   while(1)
   {
     all->error = false;
@@ -84,42 +106,11 @@ int main(int ac, char **av, char **env)
     }
     if (ft_strlen(read))
     {
-      add_history(read);
-      read = fix_cmd(read, all);
-      if(all->error)
-      {
-        free(read);
-        read = NULL;
-        // check_leaks();
+      if(!start_shell(read, all, env))
         continue;
-      }
-      if(!is_correct_cmd(read, all))
-      {
-        free(read);
-        read = NULL;
-        // check_leaks();
-        continue;
-      }
-      if(!ft_lexer(read, &all) || !all->cmd)
-      {
-        free(read);
-        read = NULL;
-        // check_leaks();
-        continue;
-      }
-      all->nums_of_cmds = count_commands(all->cmd);
-      // print_list(all->cmd);
-      // -------------------
-      // if(!all->error)
-      //   execution(&all, env);
-      // // -------------------
-      // free(all->_vars->pids);
-      // free(all->_vars);
-      ft_lstclear(&all->cmd);
-      // check_leaks();
     }
     else
       free(read);
   }
-    return 0;
+  return 0;
 }
