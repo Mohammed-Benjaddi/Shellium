@@ -75,6 +75,7 @@ typedef struct s_vars
 	pid_t	*pids;
   
 } t_vars;
+
 typedef struct s_env{
   char *variable;
   char *value;

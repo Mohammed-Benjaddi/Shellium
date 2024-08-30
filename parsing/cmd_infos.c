@@ -27,6 +27,18 @@ char *get_input_redirection_file(char **args, t_all *all)
   return in_file;
 }
 
+bool valid_filename(char **args, char *filename)
+{
+  int i;
+
+  i = 0;
+  if(!ft_strcmp(filename, "export"))
+    printf("%s%s%s\n", RED, args[0], NC);
+  else
+    printf("%s%s%s\n", CYAN, args[0], NC);
+  return true;
+}
+
 char *get_output_redirection_file(char **args, t_all *all)
 {
   int i;
@@ -47,6 +59,8 @@ char *get_output_redirection_file(char **args, t_all *all)
           return NULL;
         free(out_file);
         out_file = ft_strdup(args[i + 1]);
+        if(!valid_filename(args, out_file))
+          throw_error("ambiguous redirect", all, 1);
         fd = open(out_file, O_CREAT | O_RDWR, 0777);
         close(fd);
       }

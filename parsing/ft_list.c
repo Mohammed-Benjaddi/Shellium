@@ -102,6 +102,7 @@ void fill_node(t_all **all, t_cmd *new_node)
 		if(!new_node->full_path && !is_builtin(new_node->cmd))
 			new_node->cmd_not_found = 1;
 	}
+	// printf("%s------> %s%s\n", CYAN, new_node->cmd, NC);
 }
 
 t_cmd	*ft_lstnew(t_all **all, char **args, int args_nbr, int pipe)

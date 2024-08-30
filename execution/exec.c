@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/08/28 17:22:14 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/08/30 11:09:54 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ void	execution(t_all **alll, char *envpp[])
 	int		i;
 	t_vars	*vars;
 
-	// printf("wa 3la 9waaada");
 	all = *alll;
 	i = 0;
 	cmd_ = all->cmd;

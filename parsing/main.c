@@ -34,6 +34,7 @@ bool is_symbol_in_cmd(char c)
 bool is_correct_cmd(char *cmd, t_all *all)
 {
   int i;
+  int len;
 
   i = 0;
   skip_spaces(cmd, &i);
@@ -45,6 +46,9 @@ bool is_correct_cmd(char *cmd, t_all *all)
     if(cmd[i] == SINGLE_QUOTE || cmd[i] == DOUBLE_QUOTE)
     {
       i++;
+      len = ft_strchr(cmd + i, cmd[i - 1]);
+      if(len == -1)
+        return throw_error("single quote must be closed", all, 1), 0;
       skip_str_inside_quote(cmd, &i, cmd[i - 1]);
     }
     else if(cmd[i] == PIPE)
@@ -71,15 +75,21 @@ void shell_init(t_all *all, char **env)
 int start_shell(char *read, t_all *all, char **env)
 {
   add_history(read);
+  if(!is_correct_cmd(read, all))
+  {
+    free(read);
+    read = NULL;
+    return 0;
+  }
   read = fix_cmd(read, all);
-  if(all->error || !is_correct_cmd(read, all) || !ft_lexer(read, &all) || !all->cmd)
+  if(all->error || !ft_lexer(read, &all) || !all->cmd)
   {
     free(read);
     read = NULL;
     return 0;
   }
   all->nums_of_cmds = count_commands(all->cmd);
-  // print_list(all->cmd);
+  print_list(all->cmd);
   if(!all->error)
     execution(&all, env);
   free(all->_vars->pids);

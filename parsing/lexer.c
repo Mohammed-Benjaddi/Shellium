@@ -43,6 +43,7 @@ char *get_str_in_quotes(char *command, int *i, char c, t_all *all)
   char *rest;
   char *var_value;
 
+	printf("%s------> %s%s\n", CYAN, command + *i, NC);
   *i += 1;
   len = ft_strchr(command + *i, c);
   if(len == -1)
@@ -111,6 +112,7 @@ char *get_str_without_quotes(char *command, int *i, t_env *env, t_all *all)
   char *buffer;
   int index;
 
+	// printf("%s------> %s%s\n", MAGENTA, command + *i, NC);
   len = find_len(command + *i, false);
   buffer = ft_substr(command, *i, len);
   if(get_vars_length(buffer) > 0)
@@ -148,10 +150,10 @@ char **allocate_args(char *command, int *pipe_idx, int *words, int i)
   if(*pipe_idx == -1)
     *pipe_idx = ft_strlen(command);
   *words = args_counter(command + i, *pipe_idx);
-  args = (char **)malloc(sizeof(char *) * (*words + 1));
+  args = (char **)malloc(sizeof(char *) * (*words + 2));
   if(!args)
     return NULL;
-  printf("----> %d\n", *words + 1);
+  // printf("----> %d\n", *words + 1);
   return args;
 }
 
@@ -194,6 +196,7 @@ size_t reds_counter(char *cmd, t_all *all)
     if(i < ft_strlen(cmd) && (cmd[i] == SINGLE_QUOTE || cmd[i] == DOUBLE_QUOTE))
     {
       i++;
+      counter += 2;
       skip_str_inside_quote(cmd, &i, cmd[i - 1]);
     }
     if(cmd[i] == PIPE)
@@ -213,15 +216,16 @@ char *fix_cmd(char *cmd, t_all *all)
 {
   int i;
   int j;
+  int k;
   char *line;
   char quote;
   int reds_nums = reds_counter(cmd, all);
-
+  printf("allocated: %lu\n", ft_strlen(cmd) + reds_nums + 1);
   if(!reds_nums)
     return cmd;
   i = 0;
   j = 0;
-  line = malloc(ft_strlen(cmd) + reds_nums + 1);
+  line = malloc(ft_strlen(cmd) + reds_nums + 5);
   if(!line)
     return NULL;
   while (i < ft_strlen(cmd))
@@ -229,9 +233,19 @@ char *fix_cmd(char *cmd, t_all *all)
     if(cmd[i] == SINGLE_QUOTE || cmd[i] == DOUBLE_QUOTE)
     {
       quote = cmd[i];
+      k = i;
       i++;
+      line[j++] = quote;
+      // line[j++] = ' ';
       while(i < ft_strlen(cmd) && cmd[i] != quote)
+      {
+        // printf("--------------> here\n");
         line[j++] = cmd[i++];
+      }
+      if(i - k == 1)
+        line[j++] = ' ';
+        // printf("empty inside quotes\n");
+      line[j++] = quote;
       i++;
     }
     else if(((cmd[i] == IN_RED || cmd[i] == OUT_RED || cmd[i] == PIPE)
@@ -241,9 +255,11 @@ char *fix_cmd(char *cmd, t_all *all)
       }
     else if (i > 0 && (cmd[i - 1] == IN_RED || cmd[i - 1] == OUT_RED) && cmd[i] != SPACE)
       line[j++] = ' ';
+    printf("----------> %d ----- %d\n", j, i);
     line[j++] = cmd[i++];
   }
   line[j] = '\0';
+  // printf("%s-----> %s%s\n", RED, line, NC);
   return free(cmd),line;
 }
 
@@ -266,16 +282,24 @@ int check_command(t_lexer *lexer, t_all **all, char *command)
     while (command[lexer->i] && ft_isspace(command[lexer->i]))
       lexer->i++;
     if(command[lexer->i] == SINGLE_QUOTE)
+    {
       lexer->buffer = get_str_in_quotes(command, &lexer->i, SINGLE_QUOTE, *all);
+    }
     else if(command[lexer->i] == DOUBLE_QUOTE)
+    {
       lexer->buffer = get_str_in_quotes(command, &lexer->i, DOUBLE_QUOTE, *all);
+    }
     else
+    {
       lexer->buffer = get_str_without_quotes(command, &lexer->i, (*all)->env, *all);
+    }
     if((*all)->error == true)
       return (free(lexer->buffer), 0);
     if(ft_strlen(lexer->buffer))
     {
+      // printf("%s%s%s\n", RED, lexer->buffer, NC);
       lexer->args[lexer->j] = ft_strdup(lexer->buffer);
+	    // printf("%s------> %s%s\n", CYAN, lexer->buffer, NC);
       free(lexer->buffer);
       lexer->buffer = NULL;
       lexer->j++;
