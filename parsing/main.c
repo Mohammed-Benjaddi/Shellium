@@ -114,7 +114,7 @@ int main(int ac, char **av, char **env)
       free(all->_vars->pids);
       free(all->_vars);
       ft_lstclear(&all->cmd);
-      // check_leaks();
+      
     }
     else
       free(read);

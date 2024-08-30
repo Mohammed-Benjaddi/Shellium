@@ -62,13 +62,13 @@ void	handle_exit(t_all *all)
 	ft_write("exit\n", 2);
 	if (all->cmd->args[1] != NULL)
 		{
-			exit(atoi(all->cmd->args[1]));
+			
 			exit_num = sh_atoi(all->cmd->args[1]);
 			if (exit_num == -1 && (all->cmd->args[1][0] != '-' &&  all->cmd->args[1][0] != '1'))
 			{
 				ft_write("minishell: numeric argument required\n", 2);
 				free_and_exit(all, 255);
-				// env_exp_lists_clear(all);
+				env_exp_lists_clear(all);
 				// free all
 			}
 			if (all->cmd->args[2])
@@ -76,13 +76,8 @@ void	handle_exit(t_all *all)
 				ft_write("minishell: too many arguments\n", 2);
 				return ;
 			}
-			if (exit_num < 0 && exit_num > -256)
-				exit_num = (unsigned char)exit_num;
-			if (exit_num > 255)
-				exit_num = (exit_num%256);
 			free_and_exit(all, exit_num);
 		}
-	// all->exit_status = exit_num;
 	if (all->cmd->pipe)
 		return ;
 	exit_ = all->exit_status;

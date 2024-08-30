@@ -22,31 +22,30 @@ int iss_empty(char *s)
 		return (0);
 	return (1);
 }
+int get_line_index(char *p_file, int i)
+{
+
+	while (p_file[i] && p_file[i] != ' ')
+			i++
+			;
+	return (i);
+}
 char *fix_file_name(char *p_file)
 {
 	int i;
 	int j;
 
-	j = 0;
 	i = 0;
-	
-	return (NULL);
 	if (iss_empty(p_file) || !ft_strlen(p_file))
 		return (NULL);
 	while (*p_file)
 	{
 		if (*p_file != ' ')
 		{
-		i = 0;
-		while (p_file[i] && p_file[i] != ' ')
-			i++
-			;
+		i = get_line_index(p_file, i);
 		if (p_file[i] == 0)
 			break;
-		j = i;
-		while (p_file[j] != 0 && p_file[j] == ' ')
-			j++
-			;
+		j = get_line_index(p_file, i);
 		if (p_file[j] == '\0')
 			break;
 		else

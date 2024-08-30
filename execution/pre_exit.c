@@ -34,6 +34,8 @@ void	free_exp_list(t_all *all)
 	{
 		tmp = all->exp;
 		all->exp = all->exp->next;
+		free(tmp->value);
+		free(tmp->variable);
 		free(tmp);
 	}
 }

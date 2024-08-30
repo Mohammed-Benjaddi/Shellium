@@ -82,6 +82,10 @@ void	add_it_to_env(t_all *all, char *new, t_exp *new_exp)
 	free(new);
 	env_addback(all->env, new_env);
 	exp_addback(all->exp, new_exp);
+	// free(new_exp->value);
+	// free(new_exp->variable);
+	// free(new_exp);
+
 }
 void	identifier_error(char *indentifer)
 {
@@ -117,6 +121,7 @@ void	parse_indetifier(t_all *all, char *str)
 			free(tmp_str); // check ...
 			return ;
 		}
+		//free(tmp_str);
 		exp_addback(all->exp, last); 
 		return ;
 	}
