@@ -59,8 +59,8 @@ char *get_output_redirection_file(char **args, t_all *all)
           return NULL;
         free(out_file);
         out_file = ft_strdup(args[i + 1]);
-        if(!valid_filename(args, out_file))
-          throw_error("ambiguous redirect", all, 1);
+        // if(!valid_filename(args, out_file))
+        //   throw_error("ambiguous redirect", all, 1);
         fd = open(out_file, O_CREAT | O_RDWR, 0777);
         close(fd);
       }

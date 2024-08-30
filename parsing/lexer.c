@@ -13,8 +13,6 @@ int find_len(char *str, bool inside_quotes)
   int i;
   size_t str_len;
 
-  // printf("==> %c <==\n", str[0]);
-  // len = ft_strchr_pro(str + 1, ' ', '|', inside_quotes);
   i = 0;
   // if(!str)
   //   return -1;
@@ -120,6 +118,7 @@ char *get_str_without_quotes(char *command, int *i, t_env *env, t_all *all)
     // printf("%sherdoc --> %d%s\n", RED, ,  NC);
     if(no_herdoc_delemiter(command, *i - 1))
       buffer = handle_variables(buffer, env, get_vars_length(buffer), all);
+    printf("%s%s%s\n", RED, buffer, NC);
   }
   index = ft_strchr_pro(buffer, DOUBLE_QUOTE, SINGLE_QUOTE, false); 
   if(index != -1 && buffer[index - 1] == SINGLE_QUOTE)
@@ -220,7 +219,7 @@ char *fix_cmd(char *cmd, t_all *all)
   char *line;
   char quote;
   int reds_nums = reds_counter(cmd, all);
-  printf("allocated: %lu\n", ft_strlen(cmd) + reds_nums + 1);
+  // printf("allocated: %lu\n", ft_strlen(cmd) + reds_nums + 1);
   if(!reds_nums)
     return cmd;
   i = 0;
@@ -255,7 +254,7 @@ char *fix_cmd(char *cmd, t_all *all)
       }
     else if (i > 0 && (cmd[i - 1] == IN_RED || cmd[i - 1] == OUT_RED) && cmd[i] != SPACE)
       line[j++] = ' ';
-    printf("----------> %d ----- %d\n", j, i);
+    // printf("----------> %d ----- %d\n", j, i);
     line[j++] = cmd[i++];
   }
   line[j] = '\0';
@@ -298,6 +297,7 @@ int check_command(t_lexer *lexer, t_all **all, char *command)
     if(ft_strlen(lexer->buffer))
     {
       // printf("%s%s%s\n", RED, lexer->buffer, NC);
+      
       lexer->args[lexer->j] = ft_strdup(lexer->buffer);
 	    // printf("%s------> %s%s\n", CYAN, lexer->buffer, NC);
       free(lexer->buffer);

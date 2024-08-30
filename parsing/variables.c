@@ -2,7 +2,7 @@
 
 char *ft_strtok(char *str)
 {
-  size_t i;
+  int i;
   size_t j;
   size_t len;
   char *result;
@@ -17,8 +17,16 @@ char *ft_strtok(char *str)
   while(str[len - 1] && ft_isspace(str[len - 1]))
     len--;
   result = malloc((len - i) + 1);
+  printf("-----> %s\n", str + i);
   while(i < len)
+  {
     result[j++] = str[i++];
+    if(str[i] == ' ')
+    {
+      result[j++] = str[i++];
+      skip_spaces(str, &i);
+    }
+  }
   result[j] = '\0';
   free(str);
   return result;
@@ -120,5 +128,5 @@ char *handle_variables(char *str, t_env *env, size_t length, t_all *all)
   str = NULL;
   if(!ft_strlen(output))
     return NULL;
-  return ft_strdup(output);
+  return ft_strtok(ft_strdup(output));
 }

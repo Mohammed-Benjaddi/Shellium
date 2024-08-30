@@ -45,18 +45,9 @@ typedef struct s_command_line {
   int   pipe; // 1 if this command pipes to next, 0 otherwise
   struct s_command_line *next; // Pointer to next command in pipeline
   bool cmd_not_found;
-  char *varibale_name;//   $HOME
+  char *varibale;
 } t_cmd;
 
-
-// /users/sfjls/
-
-// typedef struct s_exec
-// {
-//   int i;
-//   int		pipe_sides[2];
-  
-// }
 typedef struct s_lexer
 {
   int i;
@@ -149,6 +140,7 @@ char *get_append_to_file(char **args, t_all *all);
 // executables.c
 char *get_executable(char *cmd);
 char *handle_variables(char *str, t_env *env, size_t length, t_all *all);
+void skip_spaces(char *cmd, int *i);
 
 // ----------------------------------------------
 void    *shell_calloc(size_t size , int count);

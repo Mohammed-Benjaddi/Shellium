@@ -78,7 +78,6 @@ char *search_at_curr_dir(char *cmd)
   path = NULL;
   getcwd(cwd, sizeof(cwd));
   path = ft_strjoin(ft_strjoin(ft_strdup(cwd), "/"), cmd);
-  // printf("path >>>>> %s\n", path);
   if(access(path, X_OK) == 0)
     return path;
   return NULL;
