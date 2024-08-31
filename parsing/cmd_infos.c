@@ -27,6 +27,17 @@ char *get_input_redirection_file(char **args, t_all *all)
   return in_file;
 }
 
+// bool is_valid_filename(char **args, char *filename)
+// {
+//   int i;
+
+//   i = 0;
+//   // printf("%s%s%s\n", CYAN, args[0], NC);
+//   if(!fix_file_name(filename) && args[0] && !ft_strcmp(args[0]))
+//     return false;
+//   return true;
+// }
+
 char *get_output_redirection_file(char **args, t_all *all)
 {
   int i;
@@ -47,6 +58,9 @@ char *get_output_redirection_file(char **args, t_all *all)
           return NULL;
         free(out_file);
         out_file = ft_strdup(args[i + 1]);
+        printf("%s%s%s\n", RED, fix_file_name(out_file), NC);
+        // if(!is_valid_filename(args, out_file))
+        //   return throw_error("ambiguous redirect", all, 1), NULL;
         fd = open(out_file, O_CREAT | O_RDWR, 0777);
         close(fd);
       }

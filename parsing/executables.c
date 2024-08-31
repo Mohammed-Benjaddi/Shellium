@@ -26,12 +26,15 @@ char *get_executable_path(char *cmd, char *filename)
   char cwd[256];
 
   slash_index = get_slash_index(cmd);
+  if(slash_index == -1)
+    return NULL;
   path = ft_strndup(cmd, slash_index + 1);
   chdir(path);
   free(path);
   path = NULL;
   getcwd(cwd, sizeof(cwd));
   path = ft_strjoin(ft_strjoin(ft_strdup(cwd), "/"), filename);
+  printf("%s-------> %s%s\n", CYAN, path, NC);
   free(filename);
   filename = NULL;
   return path;

@@ -46,6 +46,7 @@ typedef struct s_command_line {
   struct s_command_line *next; // Pointer to next command in pipeline
   bool cmd_not_found;
   char *varibale;
+  bool is_red_to_var;
 } t_cmd;
 
 typedef struct s_lexer
@@ -141,6 +142,7 @@ char *get_append_to_file(char **args, t_all *all);
 char *get_executable(char *cmd);
 char *handle_variables(char *str, t_env *env, size_t length, t_all *all);
 void skip_spaces(char *cmd, int *i);
+char *fix_file_name(char *p_file);
 
 // ----------------------------------------------
 void    *shell_calloc(size_t size , int count);

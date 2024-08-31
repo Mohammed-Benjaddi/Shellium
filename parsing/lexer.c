@@ -318,6 +318,14 @@ bool is_incorrect_cmd(char *cmd, int *pipe, t_all *all)
   return false;
 }
 
+void free_lexer(t_lexer *lexer)
+{
+  if(lexer->buffer)
+    free(lexer->buffer);
+  if(lexer->args)
+    ft_free(lexer->args, get_arr_len(lexer->args));
+}
+
 void init_lexer(t_lexer *lexer, char *command)
 {
   lexer->i = 0;
@@ -343,7 +351,10 @@ int ft_lexer(char *command, t_all **all)
       return (ft_free(lexer.args, lexer.j), 0);
     lexer.args[lexer.j] = NULL;
     if(!handle_new_cmd(all, &lexer, command))
+    {
+      free_lexer(&lexer);
       return 0;
+    }
     lexer.i++;
     if(lexer.pipe == -1)
       return 1;

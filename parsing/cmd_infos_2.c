@@ -67,7 +67,6 @@ int get_arr_len(char **arr)
   return i;
 }
 
-
 char *search_at_curr_dir(char *cmd)
 {
   int i;
@@ -80,9 +79,10 @@ char *search_at_curr_dir(char *cmd)
   path = ft_strjoin(ft_strjoin(ft_strdup(cwd), "/"), cmd);
   if(access(path, X_OK) == 0)
     return path;
+  free(path);
+  path = NULL;
   return NULL;
 }
-
 
 char *get_right_path(char **all_paths, char *cmd, char *line, bool is_path)
 {

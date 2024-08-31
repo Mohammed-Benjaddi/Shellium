@@ -98,8 +98,13 @@ void fill_node(t_all **all, t_cmd *new_node)
 	new_node->full_path = get_path(new_node->cmd, (*all)->env);
 	if(!new_node->full_path)
 	{
+		if(is_builtin(new_node->cmd))
+		{
+			printf("%s-------> %s%s\n", RED, new_node->cmd, NC);
+			return;
+		}
 		new_node->full_path = get_executable(new_node->cmd);
-		if(!new_node->full_path && !is_builtin(new_node->cmd))
+		if(!new_node->full_path)
 			new_node->cmd_not_found = 1;
 	}
 	// printf("%s------> %s%s\n", CYAN, new_node->cmd, NC);
