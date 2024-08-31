@@ -72,29 +72,32 @@ void shell_init(t_all *all, char **env)
   all->exit_status = 0;
 }
 
-int start_shell(char *read, t_all *all, char **env)
+int start_shell(char *read, t_all **all, char **env)
 {
   add_history(read);
-  if(!is_correct_cmd(read, all))
+  if(!is_correct_cmd(read, *all))
   {
     free(read);
     read = NULL;
     return 0;
   }
-  read = fix_cmd(read, all);
-  if(all->error || !ft_lexer(read, &all) || !all->cmd)
+  read = fix_cmd(read, *all);
+  if((*all)->error || !ft_lexer(read, all) || !(*all)->cmd)
   {
     free(read);
     read = NULL;
     return 0;
   }
-  all->nums_of_cmds = count_commands(all->cmd);
-  print_list(all->cmd);
-  if(!all->error)
-    execution(&all, env);
-  free(all->_vars->pids);
-  free(all->_vars);
-  ft_lstclear(&all->cmd);
+  (*all)->nums_of_cmds = count_commands((*all)->cmd);
+  // print_list((*all)->cmd);
+  if(!(*all)->error)
+    execution(all, env);
+  free((*all)->_vars->pids);
+  free((*all)->_vars);
+  free(read);
+  read = NULL;
+  ft_lstclear(&(*all)->cmd);
+  check_leaks();
   return 1;
 }
 
@@ -105,6 +108,7 @@ int main(int ac, char **av, char **env)
   all = malloc(sizeof(t_all));
   all->cmd = NULL;
   shell_init(all, env);
+  atexit(check_leaks);
   while(1)
   {
     all->error = false;
@@ -112,15 +116,22 @@ int main(int ac, char **av, char **env)
     if(!read)
     {
       env_exp_lists_clear(all);
+      check_leaks();
       exit(0);
     }
     if (ft_strlen(read))
     {
-      if(!start_shell(read, all, env))
+      if(!start_shell(read, &all, env))
+      {
+        check_leaks();
         continue;
+      }
     }
     else
       free(read);
+    check_leaks();
+    // ft_lstclear(&all->cmd);
   }
+  check_leaks();
   return 0;
 }

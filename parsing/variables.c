@@ -17,7 +17,6 @@ char *ft_strtok(char *str)
   while(str[len - 1] && ft_isspace(str[len - 1]))
     len--;
   result = malloc((len - i) + 1);
-  printf("-----> %s\n", str + i);
   while(i < len)
   {
     result[j++] = str[i++];

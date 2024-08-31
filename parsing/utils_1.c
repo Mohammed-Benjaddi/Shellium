@@ -3,10 +3,14 @@
 void throw_error(char *msg, t_all *all, int nbr)
 {
   printf("%sError: %s%s\n", RED, msg, NC);
-  // printf("%s%d%s\n", CYAN, nbr, NC);
+  // int i;
+
+  // i = 0;
+  // write(2, "Error: ", 7);
+  // while(msg[i])
+  //   write(2, &msg[i], 1);
   all->exit_status = nbr;
   all->error = true;
-  // exit(1);
 }
 
 int find_pipe_index(char *str)
