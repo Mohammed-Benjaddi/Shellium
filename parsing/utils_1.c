@@ -242,6 +242,8 @@ char *find_and_remove(char *str, char c)
   i = 0;
   j = 0;
 
+  // printf("------------> here %s\n", str);
+
   len = ft_strlen(str) - nums_of_chars(str, c) + 1;
   if(!str)
     return NULL;

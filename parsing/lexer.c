@@ -41,8 +41,8 @@ char *get_str_in_quotes(char *command, int *i, char c, t_all *all)
   char *rest;
   char *var_value;
 
-  *i += 1;
-  len = ft_strchr(command + *i, c);
+  // *i += 1;
+  len = ft_strchr(command + *i + 1, c);
   if(len == -1)
   {
     if(c == SINGLE_QUOTE)
@@ -51,11 +51,11 @@ char *get_str_in_quotes(char *command, int *i, char c, t_all *all)
       throw_error("double quote must be closed", all, 1);
     return NULL;
   }
-  buffer = ft_substr(command + *i, 0, len);
-  if(c == DOUBLE_QUOTE && get_vars_length(buffer) > 0)
-    buffer = handle_variables(buffer, all->env, get_vars_length(buffer), all);
+  buffer = ft_substr(command + *i, 0, len + 1);
+  // if(c == DOUBLE_QUOTE && get_vars_length(buffer) > 0)
+  //   buffer = handle_variables(buffer, all->env, get_vars_length(buffer), all);
   *i += len;
-  buffer = find_and_remove(buffer, c);
+  // buffer = find_and_remove(buffer, c);
   return buffer;
 }
 
@@ -106,16 +106,16 @@ char *get_str_without_quotes(char *command, int *i, t_env *env, t_all *all)
 
   len = find_len(command + *i, false);
   buffer = ft_substr(command, *i, len);
-  if(get_vars_length(buffer) > 0)
-  {
-    if(no_herdoc_delemiter(command, *i - 1))
-      buffer = handle_variables(buffer, env, get_vars_length(buffer), all);
-  }
-  index = ft_strchr_pro(buffer, DOUBLE_QUOTE, SINGLE_QUOTE, false); 
-  if(index != -1 && buffer[index - 1] == SINGLE_QUOTE)
-    buffer = find_and_remove(buffer, SINGLE_QUOTE);    
-  else if (index != -1 && buffer[index - 1] == DOUBLE_QUOTE)
-    buffer = find_and_remove(buffer, DOUBLE_QUOTE);
+  // if(get_vars_length(buffer) > 0)
+  // {
+  //   if(no_herdoc_delemiter(command, *i - 1))
+  //     buffer = handle_variables(buffer, env, get_vars_length(buffer), all);
+  // }
+  // index = ft_strchr_pro(buffer, DOUBLE_QUOTE, SINGLE_QUOTE, false); 
+  // if(index != -1 && buffer[index - 1] == SINGLE_QUOTE)
+  //   buffer = find_and_remove(buffer, SINGLE_QUOTE);    
+  // else if (index != -1 && buffer[index - 1] == DOUBLE_QUOTE)
+  //   buffer = find_and_remove(buffer, DOUBLE_QUOTE);
   *i += len;
   return buffer;
 }
@@ -126,7 +126,10 @@ int create_cmd(t_all **all, char **args, int words, int is_pipe)
 
   cmd = ft_lstnew(all, args, words, is_pipe);
   if(!cmd)
-    return ft_free(args, get_arr_len(args)), 0;
+  {
+    // ft_free(args, get_arr_len(args))
+    return 0;
+  }
   ft_lstadd_back(&(*all)->cmd, cmd);
   ft_free(args, get_arr_len(args));
   return 1;
@@ -214,7 +217,7 @@ char *fix_cmd(char *cmd, t_all *all)
     return cmd;
   i = 0;
   j = 0;
-  line = malloc(ft_strlen(cmd) + reds_nums + 1);
+  line = malloc(ft_strlen(cmd) + reds_nums + 10);
   if(!line)
     return NULL;
   while (i < ft_strlen(cmd))

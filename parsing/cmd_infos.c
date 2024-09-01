@@ -38,6 +38,44 @@ char *get_input_redirection_file(char **args, t_all *all)
 //   return true;
 // }
 
+
+// void is_herdoc_delemiter(char **args, int i)
+// {
+//   if(i > 2)
+//   {
+//     if(ft_strcmp(args[i], "<"))
+//   }
+// }
+
+char *check_filename(char **args, int i, t_all *all)
+{
+  char *buffer;
+  char *result;
+  char **words;
+  int index;
+
+  if(get_vars_length(args[i + 1]) > 0)
+  {
+    buffer = handle_variables(args[i + 1], all->env, get_vars_length(args[i + 1]), all);
+    words = ft_split(buffer, ' ');
+    if(!words)
+      return free(buffer), throw_error("ambiguous redirect", all, 1), NULL;
+    int i = 0;
+    while (words[i])
+      i++;
+    if(i > 1)
+      return ft_free(words, get_arr_len(words)), free(buffer), throw_error("ambiguous redirect", all, 1), NULL;
+    else
+      return buffer;
+  }
+  index = ft_strchr_pro(args[i + 1], DOUBLE_QUOTE, SINGLE_QUOTE, false); 
+  if(index != -1 && args[i + 1][index - 1] == SINGLE_QUOTE)
+    return find_and_remove(ft_strdup(args[i + 1]), SINGLE_QUOTE);    
+  else if (index != -1 && args[i + 1][index - 1] == DOUBLE_QUOTE)
+    return find_and_remove(ft_strdup(args[i + 1]), DOUBLE_QUOTE);
+  return ft_strdup(args[i + 1]);
+}
+
 char *get_output_redirection_file(char **args, t_all *all)
 {
   int i;
@@ -57,8 +95,10 @@ char *get_output_redirection_file(char **args, t_all *all)
         if(!ft_strcmp(args[i + 1], ">"))
           return NULL;
         free(out_file);
-        out_file = ft_strdup(args[i + 1]);
-        printf("%s%s%s\n", RED, fix_file_name(out_file), NC);
+        out_file = NULL;
+        out_file = check_filename(args, i, all);
+        // out_file = ft_strdup(args[i + 1]);
+        // printf("%s%s%s\n", RED, fix_file_name(out_file), NC);
         // if(!is_valid_filename(args, out_file))
         //   return throw_error("ambiguous redirect", all, 1), NULL;
         fd = open(out_file, O_CREAT | O_RDWR, 0777);
@@ -67,6 +107,7 @@ char *get_output_redirection_file(char **args, t_all *all)
     }
     i++;
   }
+  // printf("------------> get outfile: %s\n", out_file);
   return out_file;
 }
 

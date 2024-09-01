@@ -15,8 +15,8 @@ PARSING_OBJS = ${PARSING_SRCS:.c=.o}
 
 EXEC_SRCS = ./execution/execute_piped_ins.c ./execution/lst_utils.c ./execution/redirs_heredoc.c  ./execution/env_utils.c ./execution/ft_chdir.c ./execution/exec.c  ./execution/pre_exit.c ./execution/execute_builtins.c ./execution/unset_vars.c \
  						./execution/export_list.c  ./execution/ft_heredoc.c ./execution/utils.c \
-						./execution/ft__export.c 
-EXEC_RD = ./exec/signals_utils.o 
+						./execution/ft__export.c
+EXEC_RD = ./exec/signals_utils.o
 EXEC_OBJS = ${EXEC_SRCS:.c=.o}
 
 all: $(NAME)

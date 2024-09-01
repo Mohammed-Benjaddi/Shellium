@@ -22,12 +22,16 @@ char *ft_strtok(char *str)
     result[j++] = str[i++];
     if(str[i] == ' ')
     {
+      // if(str[i] == SPACE && str[i + 1] == '\0')
+      //   break;
       result[j++] = str[i++];
       skip_spaces(str, &i);
     }
   }
   result[j] = '\0';
   free(str);
+  str = NULL;
+  printf("%sstrtok: |%s|%s\n", YELLOW, result, NC);
   return result;
 }
 
@@ -123,8 +127,8 @@ char *handle_variables(char *str, t_env *env, size_t length, t_all *all)
     }
   }
   free(var_value);
-  free(str);
-  str = NULL;
+  // free(str);
+  // str = NULL;
   if(!ft_strlen(output))
     return NULL;
   return ft_strtok(ft_strdup(output));

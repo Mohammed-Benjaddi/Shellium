@@ -89,11 +89,11 @@ int start_shell(char *read, t_all **all, char **env)
     return 0;
   }
   (*all)->nums_of_cmds = count_commands((*all)->cmd);
-  // print_list((*all)->cmd);
-  // if(!(*all)->error)
-  //   execution(all, env);
-  // free((*all)->_vars->pids);
-  // free((*all)->_vars);
+  print_list((*all)->cmd);
+  if(!(*all)->error)
+    execution(all, env);
+  free((*all)->_vars->pids);
+  free((*all)->_vars);
   free(read);
   read = NULL;
 
@@ -112,7 +112,7 @@ int main(int ac, char **av, char **env)
   all = malloc(sizeof(t_all));
   all->cmd = NULL;
   shell_init(all, env);
-  atexit(check_leaks);
+  // atexit(check_leaks);
   while(1)
   {
     all->error = false;
@@ -120,20 +120,20 @@ int main(int ac, char **av, char **env)
     if(!read)
     {
       env_exp_lists_clear(all);
-      check_leaks();
+      // check_leaks();
       exit(0);
     }
     if (ft_strlen(read))
     {
       if(!start_shell(read, &all, env))
       {
-        check_leaks();
+        // check_leaks();
         continue;
       }
     }
     else
       free(read);
-    check_leaks();
+    // check_leaks();
   }
   // check_leaks();
   return 0;

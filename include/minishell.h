@@ -105,7 +105,7 @@ int ft_isalpha(char c);
 int ft_strchr(char *str, char c);
 int ft_strchr_pro(char *str, char c1, char c2, bool inside_quotes);
 int ft_isspace(char c);
-char *ft_strndup(char *str, size_t n);
+char *ft_strndup(char *str, int n);
 char	*ft_itoa(int n);
 // ft_list.c
 t_cmd	*ft_lstnew(t_all **all, char **args, int args_nbr, int pipe);
@@ -143,6 +143,8 @@ char *get_executable(char *cmd);
 char *handle_variables(char *str, t_env *env, size_t length, t_all *all);
 void skip_spaces(char *cmd, int *i);
 char *fix_file_name(char *p_file);
+// char *handle_variables(char *str, t_env *env, size_t length, t_all *all);
+char *ft_strtok(char *str);
 
 // ----------------------------------------------
 void    *shell_calloc(size_t size , int count);

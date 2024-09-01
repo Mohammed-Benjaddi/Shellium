@@ -192,13 +192,14 @@ int ft_strchr_pro(char *str, char c1, char c2, bool inside_quotes)
 	return i + 1;
 }
 
-char *ft_strndup(char *str, size_t n)
+char *ft_strndup(char *str, int n)
 {
-	size_t i;
+	int i;
 	char *result;
 
 	if(!str)
 		return NULL;
+	printf("string: %s ----- i: %d\n", str, n);
 	i = 0;
 	result = (char *)malloc(n + 1);
 	while(i < n)
