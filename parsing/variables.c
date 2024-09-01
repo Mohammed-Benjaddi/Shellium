@@ -175,3 +175,98 @@ char *handle_variables(char *str, t_env *env, size_t length, t_all *all)
     return NULL;
   return ft_strtok(ft_strdup(output));
 }
+
+
+
+
+
+
+
+// -----------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <string.h>
+// #include <ctype.h>
+
+size_t extract_var_name(const char *str, size_t i, char *var_name) {
+    size_t var_len = 0;
+    while (str[i] && (isalnum((unsigned char)str[i]) || str[i] == '_')) {
+        var_name[var_len++] = str[i++];
+    }
+    var_name[var_len] = '\0';
+    return i;
+}
+
+
+
+char *handle_exit_status(t_all *all, char *output) {
+    char *var_value = ft_itoa(all->exit_status);
+    strcat(output, var_value);
+    free(var_value);
+    return output;
+}
+
+
+
+char *handle_regular_variable(char *var_name, t_env *env, char *output) {
+    char *var_value = get_var_value(ft_strdup(var_name), env);
+    strcat(output, var_value);
+    free(var_value);
+    return output;
+}
+
+
+
+void append_regular_char(char *output, char c) {
+    size_t j = strlen(output);
+    output[j] = c;
+    output[j + 1] = '\0';
+}
+
+
+char *handle_variables_2(char *str, t_env *env, size_t length, t_all *all) {
+    size_t i = 0;
+    size_t len = strlen(str);
+    char output[1024] = { '\0' };
+
+    while (i < len) {
+        if (str[i] == '$') {
+            i++;
+            if (i < len && str[i] == '?') {
+                output = handle_exit_status(all, output);
+                i++;
+            } else {
+                char var_name[1024];
+                i = extract_var_name(str, i, var_name);
+                output = handle_regular_variable(var_name, env, output);
+            }
+        } else {
+            append_regular_char(output, str[i]);
+            i++;
+        }
+    }
+
+    if (!strlen(output)) {
+        return NULL;
+    }
+    return ft_strtok(strdup(output));
+}
