@@ -33,6 +33,48 @@ char *ft_strtok(char *str)
   str = NULL;
   printf("%sstrtok: |%s|%s\n", YELLOW, result, NC);
   return result;
+
+    // Skip leading spaces
+    // while (*str && isspace((unsigned char)*str)) {
+    //     str++;
+    // }
+
+    // // If the string is empty after removing leading spaces, return an empty string
+    // if (*str == '\0') {
+    //     char *result = (char *)malloc(1);
+    //     if (result != NULL) {
+    //         result[0] = '\0';
+    //     }
+    //     return result;
+    // }
+
+    // // Calculate the length of the string without leading and trailing spaces
+    // const char *end = str + strlen(str) - 1;
+    // while (end > str && isspace((unsigned char)*end)) {
+    //     end--;
+    // }
+    // size_t new_len = end - str + 1;
+
+    // // Allocate memory for the new string
+    // char *result = (char *)malloc(new_len + 1); // +1 for the null terminator
+    // if (result == NULL) {
+    //     return NULL; // Memory allocation failed
+    // }
+
+    // // Copy characters while collapsing spaces
+    // char *dest = result;
+    // while (str <= end) {
+    //     if (!isspace((unsigned char)*str) || (dest != result && !isspace((unsigned char)*(dest - 1)))) {
+    //         *dest++ = *str;
+    //     }
+    //     str++;
+    // }
+
+    // // Null-terminate the new string
+    // *dest = '\0';
+
+    // return result;
+
 }
 
 char *get_only_var(char *str)
