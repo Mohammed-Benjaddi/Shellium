@@ -46,14 +46,10 @@ typedef struct s_command_line {
   int   pipe; // 1 if this command pipes to next, 0 otherwise
   struct s_command_line *next; // Pointer to next command in pipeline
   bool cmd_not_found;
+  char *varibale;
+  bool is_red_to_var;
 } t_cmd;
 
-// typedef struct s_exec
-// {
-//   int i;
-//   int		pipe_sides[2];
-  
-// }
 typedef struct s_lexer
 {
   int i;
@@ -71,6 +67,7 @@ typedef struct s_vars
   char **envpp;
 	pid_t	*pids;
 } t_vars;
+
 typedef struct s_env{
   char *variable;
   char *value;
@@ -110,46 +107,42 @@ int ft_strchr_pro(char *str, char c1, char c2, bool inside_quotes);
 int ft_isspace(char c);
 char *ft_strndup(char *str, size_t n);
 char	*ft_itoa(int n);
-
 // ft_list.c
 t_cmd	*ft_lstnew(t_all **all, char **args, int args_nbr, int pipe);
 void	ft_lstadd_back(t_cmd **lst, t_cmd *new);
 // void  ft_init(t_shell *shell);
 void    ft_lstclear(t_cmd **lst);
-
 // ft_lexer.c
 int ft_lexer(char *command, t_all **all);
 bool is_symbol(char c);
 void skip_str_inside_quote(char *cmd, int *i, char c);
 char *fix_cmd(char *cmd, t_all *all);
-
+bool no_herdoc_delemiter(char *cmd, int i);
 // utils_1.c
-void throw_error(char *msg, t_all *all);
+void throw_error(char *msg, t_all *all, int exit_status);
 int find_pipe_index(char *str);
 size_t args_counter(char *str, int len);
-void ft_free(char **args);
+void ft_free(char **args, int len);
 void print_list(t_cmd *head);
 char *find_and_remove(char *str, char c);
 int skip_reds(char *str, int *i, char c, t_all *all);
 size_t get_vars_length(char *str);
-
+char *get_var_value(char *str, t_env *env);
 // cmd_infos.c
-char *get_path(char *cmd);
+char *get_path(char *cmd, t_env *env);
 char *get_input_redirection_file(char **args, t_all *all);
 char *get_output_redirection_file(char **args, t_all *all);
 char **get_herdoc_delimiter(char **args, t_all *all);
-
+int get_arr_len(char **arr);
 // char *get_herdoc_delimiter(char **args);
 // char *get_append_from_file(char **args);
 char *get_append_to_file(char **args, t_all *all);
 // char *handle_variables(char *str, t_env *env, size_t length);
-
-
 // executables.c
 char *get_executable(char *cmd);
-
 char *handle_variables(char *str, t_env *env, size_t length, t_all *all);
-
+void skip_spaces(char *cmd, int *i);
+char *fix_file_name(char *p_file);
 
 // ----------------------------------------------
 void    unset_exp_list(t_all *all, char *var);

@@ -69,6 +69,8 @@ void	unset_env_list(t_all *all, char *var)
 				env->prev->next = env->next;
 				env->next->prev = env->prev;
 			}
+			free(env->value);
+			free(env->variable);
 			free(env);
 			break ;
 		}
@@ -112,7 +114,6 @@ void	unset_env(t_all *all)
 				env = env->next;
 			if (exp != NULL)
 				exp = exp->next;
-
 		}
 		i++;
 	}

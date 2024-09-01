@@ -45,6 +45,8 @@ void	unset_exp_list(t_all *all, char *var)
 				exp->prev->next = exp->next;
 				exp->next->prev = exp->prev;
 			}
+			free(exp->value);
+			free(exp->variable);
 			free(exp);
 			break ;
 		}
@@ -71,14 +73,25 @@ void	mirroring_exp_and_env(t_all *all)
 	t_exp	*exp;
 	t_env	*env_last;
 	t_exp	*exp_last;
-
+	char *prv;
+	
+			
 	env = all->env;
 	exp = all->exp;
 	while (env != NULL && exp != NULL)
 	{
 		if (match_word(env->variable, exp->variable) & !match_word(env->value,
 				exp->value))
-			env->value = exp->value;
+		{
+			// prv = exp->value;
+			prv = env->value;
+			env->value = ft_strdup(exp->value);
+			free(prv);
+
+			// free(prv);//
+
+				}
+		
 		exp = exp->next;
 		env = env->next;
 		if (env == NULL && exp != NULL)

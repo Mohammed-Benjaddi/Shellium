@@ -48,16 +48,19 @@ void	env_exp_lists_clear(t_all *all)
 		free_exp_list(all);
 	ft_lstclear(&all->cmd);
 }
+
 void	free_vars(t_all *all)
 {
 	free(all->_vars->pids);
 }
+
 void	exit_way(t_all *all)
 {
-	int cause_exit;
+	int	cause_exit;
 
 	env_exp_lists_clear(all);
 	free_vars(all);
+	all->exit_status = 1;
 	free(all);
 	if (errno == 22)
 		exit(127);
@@ -65,6 +68,7 @@ void	exit_way(t_all *all)
 	write(2, "\n", 1);
 	exit(1);
 }
+
 void	ft_error(t_all *all)
 {
 	exit_way(all);

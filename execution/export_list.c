@@ -75,6 +75,7 @@ void	exp_addback(t_exp *head, t_exp *new)
 	tmp->next = new;
 	new->prev = tmp;
 }
+
 t_exp	*new_exp_(t_env *env)
 {
 	t_exp	*new;
@@ -88,6 +89,7 @@ t_exp	*new_exp_(t_env *env)
 	new->prev = NULL;
 	return (new);
 }
+
 t_exp	*set_export_list(t_all *all)
 {
 	t_env *env;
