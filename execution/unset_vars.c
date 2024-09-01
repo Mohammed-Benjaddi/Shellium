@@ -44,14 +44,20 @@ void	mirroring_exp_and_env(t_all *all)
 {
 	t_env	*env;
 	t_exp	*exp;
-
+	char *prv;
 	env = all->env;
 	exp = all->exp;
 	while (env != NULL && exp != NULL)
 	{
 		if (match_word(env->variable, exp->variable) & !match_word(env->value,
 				exp->value))
-			env->value = exp->value;
+		{
+			prv = exp->value;
+			env->value = ft_strdup(exp->value);
+			free(prv);
+
+				}
+		
 		exp = exp->next;
 		env = env->next;
 	}
@@ -65,8 +71,11 @@ int	unset_exp(t_all *all, t_exp *exp_, int ret)
 	{
 		if (match_word(exp_->variable, exp->variable))
 		{
+			printf("HELLO 2 \n\n\n");
 			if (ret == -1)
 				return (1);
+			printf("HELLO 2000## \n\n\n");
+			
 			exp->value = ft_strdup(exp_->value);
 			//if (exp_->value != NULL)
 			mirroring_exp_and_env(all);
@@ -104,6 +113,7 @@ void	unset_env_list(t_all *all, char *var)
 		env = env->next;
 	}
 }
+
 void	unset_env(t_all *all)
 {
 	t_env	*env;

@@ -24,12 +24,13 @@ void	mirroring_env_and_exp(t_all *all)
 		if (match_word(env->variable, exp->variable) & !match_word(env->value,
 				exp->value))
 		{
-			exp->value = env->value;
+			exp->value = ft_strdup(env->value);
 		}
 		exp = exp->next;
 		env = env->next;
 	}
 }
+
 void	set_old_pwd(t_all *all, char *old_dir)
 {
 	t_env	*a;
@@ -42,6 +43,7 @@ void	set_old_pwd(t_all *all, char *old_dir)
 		a = a->next;
 	}
 }
+
 void	add_to_env(t_all *all, char *new_dir)
 {
 	t_env	*tmp;
@@ -70,6 +72,7 @@ void	add_to_env(t_all *all, char *new_dir)
 	}
 	mirroring_env_and_exp(all);
 }
+
 char	*get_home_wd(t_all *all)
 {
 	t_env	*tmp;
@@ -83,15 +86,16 @@ char	*get_home_wd(t_all *all)
 	}
 	return (NULL);
 }
-void cd_error_exit(t_all *all)
+
+void	cd_error_exit(t_all *all)
 {
 	ft_write("minishell: ", 2);
 	ft_write(strerror(errno), 2);
 	ft_write("\n", 1);
 	all->exit_status = 1;
 	return ;
-
 }
+
 void	change_dir(t_all *all, char *new_dir)
 {
 	char buff[1024];
