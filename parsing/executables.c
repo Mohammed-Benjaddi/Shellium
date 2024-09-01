@@ -1,5 +1,17 @@
 #include <minishell.h>
 
+size_t ft_strlen(char *str)
+{
+  size_t i;
+
+  i = 0;
+  if(!str)
+    return (i);
+  while (str[i])
+    i++;
+  return i;  
+}
+
 size_t get_slash_index(char *cmd)
 {
   size_t i;
@@ -17,7 +29,6 @@ size_t get_slash_index(char *cmd)
   }
   return index;
 }
-
 
 char *get_executable_path(char *cmd, char *filename)
 {

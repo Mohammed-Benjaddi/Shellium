@@ -75,6 +75,7 @@ void	exp_addback(t_exp *head, t_exp *new)
 	tmp->next = new;
 	new->prev = tmp;
 }
+
 t_exp	*new_exp_(t_env *env)
 {
 	t_exp	*new;
@@ -82,12 +83,13 @@ t_exp	*new_exp_(t_env *env)
 	new = (t_exp *)malloc(sizeof(t_exp));
 	if (!new)
 		return (NULL);
-	new->value = env->value;
-	new->variable = env->variable;
+	new->value = ft_strdup(env->value);
+	new->variable = ft_strdup(env->variable);
 	new->next = NULL;
 	new->prev = NULL;
 	return (new);
 }
+
 t_exp	*set_export_list(t_all *all)
 {
 	t_env *env;

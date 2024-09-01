@@ -12,6 +12,7 @@
 #include <string.h>
 #include <signal.h>
 #include <errno.h>
+#include <dirent.h>
 
 #define SINGLE_QUOTE '\''
 #define DOUBLE_QUOTE '\"'
@@ -145,12 +146,25 @@ int get_arr_len(char **arr);
 char *get_append_to_file(char **args, t_all *all);
 // char *handle_variables(char *str, t_env *env, size_t length);
 // executables.c
+int	ft_isalnum(int c);
 char *get_executable(char *cmd);
 char *handle_variables(char *str, t_env *env, size_t length, t_all *all);
 void skip_spaces(char *cmd, int *i);
-char *fix_file_name(char *p_file);
+// char *fix_file_name(char *p_file);
 // char *handle_variables(char *str, t_env *env, size_t length, t_all *all);
 char *ft_strtok(char *str);
+bool correct_path(char *path, char *cmd, bool is_path);
+size_t nums_of_chars(char *str, char c);
+char *get_str_in_quotes(char *command, int *i, char c, t_all *all);
+char *get_str_without_quotes(char *command, int *i, t_env *env, t_all *all);
+bool is_pipe_after(char *str);
+int create_cmd(t_all **all, char **args, int words, int is_pipe);
+char **allocate_args(char *command, int *pipe_idx, int *words, int i);
+char **ft_args_dup(char **args, t_all *all);
+void handle_var_as_cmd(char **result, char *arg, int *j, t_all *all);
+char *catch_arg(char *arg, t_all *all, int i);
+int is_redirection(char *str, char *next);
+size_t count_valid_args(char **args);
 
 // ----------------------------------------------
 void    *shell_calloc(size_t size , int count);
@@ -192,5 +206,10 @@ void    ft_echo(char **str, int fd);
 char    *heredoc(char *heredoc_str, int fd, t_all *all);
 void execution(t_all **all, char *envp[]);
 int match_word(char *neadle, char *str);
+void	mirroring_exp_and_env(t_all *all);
+void	unset_exp_list(t_all *all, char *var);
+bool is_incorrect_cmd(char *cmd, int *pipe, t_all *all);
+int find_len(char *str, bool inside_quotes);
+size_t reds_counter(char *cmd, t_all *all);
 
 #endif

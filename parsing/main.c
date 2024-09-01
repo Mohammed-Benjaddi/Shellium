@@ -90,10 +90,10 @@ int start_shell(char *read, t_all **all, char **env)
   }
   (*all)->nums_of_cmds = count_commands((*all)->cmd);
   // print_list((*all)->cmd);
-  // if(!(*all)->error)
-  //   execution(all, env);
-  // free((*all)->_vars->pids);
-  // free((*all)->_vars);
+  if(!(*all)->error)
+    execution(all, env);
+  free((*all)->_vars->pids);
+  free((*all)->_vars);
   free(read);
   read = NULL;
   ft_lstclear(&(*all)->cmd);
@@ -129,7 +129,7 @@ int main(int ac, char **av, char **env)
     else
       free(read);
     // check_leaks();
-    system("leaks -q minishell");
+    // system("leaks -q minishell");
   }
   // check_leaks();
   return 0;

@@ -31,25 +31,42 @@ int	match_word(char *neadle, char *str)
 		return (0);
 	return (1);
 }
-int no_expand(char *s)
-{
-	int i;
-	i = 0 ;
 
+int	no_expand(char *s)
+{
+	int	i;
+
+	i = 0;
 	while (s[i])
 	{
-		if (s[i] == '$' && (s[i+1] != 0 || s[i+1] != ' '))
+		if (s[i] == '$' && (s[i + 1] != 0 || s[i + 1] != ' '))
 			return (0);
 		i++;
 	}
 	return (1);
-	
 }
+
+char	*fill_full_str(char *full_str, char *input, t_all *all)
+{
+	full_str = ft_strjoin(full_str, input);
+	if (full_str == NULL)
+		ft_error(all);
+	//if (!ft_strlen(full_str))//|| no_expand(full_str))
+	full_str = ft_strjoin(full_str, "\n");
+	// else
+	// 	full_str = ft_strjoin(
+	// 	handle_variables(full_str, all->env, get_vars_length(full_str), all),
+			//"\n");
+	free(input);
+	return (full_str);
+}
+
 char	*heredoc(char *heredoc_str, int fd, t_all *all)
 {
 	char	*full_str;
 	char	*input;
 
+	// dont expand the herdoc delimeter
 	full_str = (char *)malloc(1);
 	if (!full_str)
 		ft_error(all);
@@ -60,22 +77,12 @@ char	*heredoc(char *heredoc_str, int fd, t_all *all)
 		if (!input)
 			exit(0);
 		if (!match_word(input, heredoc_str))
-		{
-			full_str = ft_strjoin(full_str, input);
-			if (full_str == NULL)
-				ft_error(all);
-			if (!ft_strlen(full_str) || no_expand(full_str))
-				full_str = ft_strjoin(full_str, "\n");
-			else
-				full_str = ft_strjoin(
-					handle_variables(full_str, all->env, get_vars_length(full_str), all), "\n");
-			free(input);
-		}
+			full_str = fill_full_str(full_str, input, all);
 		else
-			{
-				free(input);
-				break ;
-			}
+		{
+			free(input);
+			break ;
+		}
 	}
 	return (full_str);
 }
@@ -87,7 +94,6 @@ void	heredoc_(t_cmd *doc, t_all *all)
 	int		last_hrdoc;
 	char	*here_tmp2;
 
-
 	doc->heredoc_content = ft_strdup("");
 	i = 0;
 	while (doc->heredoc_delimiter[i])
@@ -95,17 +101,17 @@ void	heredoc_(t_cmd *doc, t_all *all)
 		here_tmp = ft_strdup("");
 		here_tmp = heredoc(doc->heredoc_delimiter[i], 1, all);
 		last_hrdoc = ft_strlen(here_tmp);
-		
 		doc->heredoc_content = ft_strjoin(doc->heredoc_content, here_tmp);
 		free(here_tmp);
 		i++;
 	}
-	if (doc->out_file || doc->in_file )
-		{
-			here_tmp2 = doc->heredoc_content;	
-			doc->heredoc_content = ft_strdup( here_tmp2+(ft_strlen(here_tmp2)-last_hrdoc));
-			free(here_tmp2);
-		}
+	if (doc->out_file || doc->in_file)
+	{
+		here_tmp2 = doc->heredoc_content;
+		doc->heredoc_content = ft_strdup(here_tmp2 + (ft_strlen(here_tmp2)
+					- last_hrdoc));
+		free(here_tmp2);
+	}
 }
 void	heredoc_child(int *_pipe, t_cmd *cmd, t_all *all)
 {

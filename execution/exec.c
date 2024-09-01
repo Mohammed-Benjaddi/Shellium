@@ -11,9 +11,10 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <sys/wait.h> 
-#include <sys/signal.h>         /* [XSI] for siginfo_t */
-#include <sys/resource.h> 
+
+// #include <sys/wait.h>
+// #include <sys/signal.h>         /* [XSI] for siginfo_t */
+// #include <sys/resource.h>
 void	wait_ps(pid_t *pids, t_all *all)
 {
 	int	i;
@@ -24,12 +25,13 @@ void	wait_ps(pid_t *pids, t_all *all)
 	{
 		waitpid(pids[i], &status, 0);
 		if (WIFEXITED(status))
-            all->exit_status = WEXITSTATUS(status);
-        else if (WIFSIGNALED(status))
-            all->exit_status = WTERMSIG(status) + 128;
+			all->exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			all->exit_status = WTERMSIG(status) + 128;
 		i++;
 	}
 }
+
 void	executing_commands(t_all *all, int *pipe_sides, char **envpp)
 {
 	redirections_set(all);
@@ -37,19 +39,27 @@ void	executing_commands(t_all *all, int *pipe_sides, char **envpp)
 	exec_piped_built_ins(all, pipe_sides);
 	if (all->cmd->cmd_not_found)
 	{
-		// printf("---------------------------\n\n\n\n\n\n\n\n");
-		// printf("%s|\n\n\n",all->cmd->cmd);
-		// ft_write(all->cmd->cmd, 2);
 		ft_write("minishell: command not found\n", 2);
 		ft_error(all);
 	}
 	if (execve(all->cmd->full_path, all->cmd->args, envpp) == -1)
 		ft_write(strerror(errno), 2);
-	if (errno == 13)
+	printf("%d]n", errno);
+	if (errno == 13 || errno == 2)
 		exit(127);
 	exit(1);
 }
-
+void handler(int sig)
+{
+	if (sig == SIGINT)
+		{
+			printf("\n");
+		}
+	if (sig == SIGQUIT)
+		{
+			printf("QUIT 3:\n");
+		}
+}
 void	execution_loop(t_vars *vars, int i, t_all *all, t_cmd *cmd)
 {
 	int	pipe_sides[2];
@@ -60,9 +70,14 @@ void	execution_loop(t_vars *vars, int i, t_all *all, t_cmd *cmd)
 	vars->pids[i] = fork();
 	if (vars->pids[i] < 0)
 		ft_error(all);
+	signal(SIGINT, handler);
+	signal(SIGQUIT, handler);
+
 	if (vars->pids[i] == 0)
 	{
 		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+
 		redirect_in_out_to_pipe(i, pipe_sides, &pr_fd, all);
 		executing_commands(all, pipe_sides, vars->envpp);
 	}
@@ -74,6 +89,7 @@ void	execution_loop(t_vars *vars, int i, t_all *all, t_cmd *cmd)
 	close(pipe_sides[1]);
 	close(pipe_sides[0]);
 }
+
 t_vars	*set_envp_pids(t_all *all, char **env)
 {
 	t_vars	*vars;
@@ -82,7 +98,7 @@ t_vars	*set_envp_pids(t_all *all, char **env)
 	if (!vars)
 		ft_error(all);
 	vars->envpp = env;
-	vars->pids = (pid_t *) malloc(sizeof(pid_t)*all->nums_of_cmds);
+	vars->pids = (pid_t *)malloc(sizeof(pid_t) * all->nums_of_cmds);
 	if (!vars->pids)
 		ft_error(all);
 	all->_vars = vars;
@@ -101,6 +117,8 @@ void	execution(t_all **alll, char *envpp[])
 	cmd_ = all->cmd;
 	vars = set_envp_pids(all, envpp);
 	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+
 	heredoc_check(all);
 	if (exec_built_ins(all))
 	{

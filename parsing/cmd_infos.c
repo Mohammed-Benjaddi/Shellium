@@ -82,9 +82,9 @@ char *get_output_redirection_file(char **args, t_all *all)
   int fd;
   char *out_file;
 
-  i = 0;
+  i = -1;
   out_file = NULL;
-  while(args[i])
+  while(args[++i])
   {
     if(!ft_strcmp(args[i], ">"))
     {
@@ -97,17 +97,11 @@ char *get_output_redirection_file(char **args, t_all *all)
         free(out_file);
         out_file = NULL;
         out_file = check_filename(args, i, all);
-        // out_file = ft_strdup(args[i + 1]);
-        // printf("%s%s%s\n", RED, fix_file_name(out_file), NC);
-        // if(!is_valid_filename(args, out_file))
-        //   return throw_error("ambiguous redirect", all, 1), NULL;
         fd = open(out_file, O_CREAT | O_RDWR, 0777);
         close(fd);
       }
     }
-    i++;
   }
-  // printf("------------> get outfile: %s\n", out_file);
   return out_file;
 }
 
