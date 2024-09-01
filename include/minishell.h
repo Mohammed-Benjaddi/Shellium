@@ -93,6 +93,12 @@ typedef struct s_all
   int exit_status;
 } t_all;
 
+
+
+void check_leaks();
+
+
+
 // libc functions
 char *ft_strdup(char *str);
 char	*ft_strjoin(char   *s1, char   *s2);

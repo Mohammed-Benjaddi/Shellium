@@ -106,16 +106,6 @@ char *get_str_without_quotes(char *command, int *i, t_env *env, t_all *all)
 
   len = find_len(command + *i, false);
   buffer = ft_substr(command, *i, len);
-  // if(get_vars_length(buffer) > 0)
-  // {
-  //   if(no_herdoc_delemiter(command, *i - 1))
-  //     buffer = handle_variables(buffer, env, get_vars_length(buffer), all);
-  // }
-  // index = ft_strchr_pro(buffer, DOUBLE_QUOTE, SINGLE_QUOTE, false); 
-  // if(index != -1 && buffer[index - 1] == SINGLE_QUOTE)
-  //   buffer = find_and_remove(buffer, SINGLE_QUOTE);    
-  // else if (index != -1 && buffer[index - 1] == DOUBLE_QUOTE)
-  //   buffer = find_and_remove(buffer, DOUBLE_QUOTE);
   *i += len;
   return buffer;
 }
@@ -126,10 +116,7 @@ int create_cmd(t_all **all, char **args, int words, int is_pipe)
 
   cmd = ft_lstnew(all, args, words, is_pipe);
   if(!cmd)
-  {
-    // ft_free(args, get_arr_len(args))
     return 0;
-  }
   ft_lstadd_back(&(*all)->cmd, cmd);
   ft_free(args, get_arr_len(args));
   return 1;

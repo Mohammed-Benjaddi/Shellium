@@ -39,17 +39,15 @@ char *catch_arg(char *arg, t_all *all, int i)
 	int index;
 
   if(get_vars_length(arg) > 0)
-	{
 		buffer = handle_variables(arg, all->env, get_vars_length(arg), all);
-	}
 	else
 		buffer = ft_strdup(arg);
-	// printf("%s-----> %s%s\n", CYAN, buffer, NC);
 	index = ft_strchr_pro(buffer, DOUBLE_QUOTE, SINGLE_QUOTE, false);
   if (index != -1 && buffer[index - 1] == SINGLE_QUOTE)
     buffer = find_and_remove(buffer, SINGLE_QUOTE);
   else if (index != -1 && buffer[index - 1] == DOUBLE_QUOTE)
     buffer = find_and_remove(buffer, DOUBLE_QUOTE);
+	// system("leaks -q minishell");
 	return buffer;
 }
 
@@ -78,21 +76,20 @@ void handle_var_as_cmd(char **result, char *arg, int *j, t_all *all)
 		return;
 	words = ft_split(buffer, ' ');
 	len = get_arr_len(words);
-	printf("arr_len: %d\n", len);
 	index = get_first_word_index(buffer);
 	if(len == 1)
 	{
 		result[0] = ft_strdup(words[0]);
+		ft_free(words, len);
+		free(buffer);
 		return;
 	}
-		// printf("buffer ---> %s\n", buffer);
-	printf("%sindex ===> %d%s\n", RED, index, NC);
 	result[0] = ft_strndup(buffer, index);
-	printf("one ----> %s\n", result[0]);
 	if(len > 1)
 		result[1] = ft_strtok(ft_strdup(buffer + index + 1));
 	*j += 1;
-	printf("two ----> |%s|\n", result[1]);
+	ft_free(words, len);
+	free(buffer);
 }
 
 char **ft_args_dup(char **args, t_all *all)
@@ -100,18 +97,15 @@ char **ft_args_dup(char **args, t_all *all)
 	int i;
 	int j;
 	char **result;
-	char *arg;
-	int index;
 
-	i = 0;
+	i = -1;
 	j = 0;
-	arg = NULL;
 	if(!count_valid_args(args))
 		return NULL;
 	result = malloc(sizeof(char *) * (count_valid_args(args) + 2));
 	if(!result)
 		return NULL;
-	while (args[i])
+	while (args[++i])
 	{
 		while(args[i] && is_redirection(args[i], args[i + 1]))
 			i += is_redirection(args[i], args[i + 1]);
@@ -122,7 +116,6 @@ char **ft_args_dup(char **args, t_all *all)
 		else
 			result[j] = catch_arg(args[i], all, i);
 		j++;
-		i++;
 	}
 	result[j] = NULL;
 	return result;
@@ -185,6 +178,7 @@ t_cmd	*ft_lstnew(t_all **all, char **args, int args_nbr, int pipe)
 	if (!new_node)
 		return (NULL);
 	new_node->arg_count = args_nbr;
+
 	new_node->args = ft_args_dup(args, *all);
 	new_node->in_file = get_input_redirection_file(args, *all);
 	new_node->out_file = get_output_redirection_file(args, *all);
@@ -196,18 +190,11 @@ t_cmd	*ft_lstnew(t_all **all, char **args, int args_nbr, int pipe)
 	new_node->cmd = NULL;
 	new_node->cmd_not_found = false;
 	fill_node(all, new_node);
-
-	// if(new_node->heredoc_delimiter)
-	// {
-	// 	int i = 0;
-	// 	while(new_node->heredoc_delimiter[i])
-	// 		printf("-------> %s\n", new_node->heredoc_delimiter[i++]);
-	// }
-
+	// system("leaks -q minishell");
 	if((*all)->error || (!new_node->args && !new_node->heredoc_delimiter))
 	{
-		// printf("%s-----> error here%s\n", RED, NC);
 		ft_lstclear(&new_node);
+		free(new_node);
 		return NULL;
 	}
 	return (new_node);

@@ -199,7 +199,6 @@ char *ft_strndup(char *str, int n)
 
 	if(!str)
 		return NULL;
-	printf("string: %s ----- i: %d\n", str, n);
 	i = 0;
 	result = (char *)malloc(n + 1);
 	while(i < n)

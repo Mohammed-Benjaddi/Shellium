@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-char *ft_strtok(char *str)
+char *ft_strtok_2(char *str)
 {
   int i;
   size_t j;
@@ -33,48 +33,35 @@ char *ft_strtok(char *str)
   str = NULL;
   printf("%sstrtok: |%s|%s\n", YELLOW, result, NC);
   return result;
+  }
 
-    // Skip leading spaces
-    // while (*str && isspace((unsigned char)*str)) {
-    //     str++;
-    // }
-
-    // // If the string is empty after removing leading spaces, return an empty string
-    // if (*str == '\0') {
-    //     char *result = (char *)malloc(1);
-    //     if (result != NULL) {
-    //         result[0] = '\0';
-    //     }
-    //     return result;
-    // }
-
-    // // Calculate the length of the string without leading and trailing spaces
-    // const char *end = str + strlen(str) - 1;
-    // while (end > str && isspace((unsigned char)*end)) {
-    //     end--;
-    // }
-    // size_t new_len = end - str + 1;
-
-    // // Allocate memory for the new string
-    // char *result = (char *)malloc(new_len + 1); // +1 for the null terminator
-    // if (result == NULL) {
-    //     return NULL; // Memory allocation failed
-    // }
-
-    // // Copy characters while collapsing spaces
-    // char *dest = result;
-    // while (str <= end) {
-    //     if (!isspace((unsigned char)*str) || (dest != result && !isspace((unsigned char)*(dest - 1)))) {
-    //         *dest++ = *str;
-    //     }
-    //     str++;
-    // }
-
-    // // Null-terminate the new string
-    // *dest = '\0';
-
-    // return result;
-
+char *ft_strtok(char *str)
+{
+    char *result;
+    char *end;
+    char *dest;
+    while (*str && ft_isspace((unsigned char)*str)) 
+      str++;
+    if (*str == '\0')
+      return ft_strdup("\0");
+    end = str + ft_strlen(str) - 1;
+    while (end > str && ft_isspace((unsigned char)*end))
+      end--;
+    size_t new_len = end - str + 1;
+    result = (char *)malloc(new_len + 1);
+    if (result == NULL) 
+      return NULL;
+    dest = result;
+    while (str <= end) 
+    {
+      if (!ft_isspace(*str) || (dest != result && !ft_isspace(*(dest - 1)))) 
+        *dest++ = *str;
+      str++;
+    }
+    *dest = '\0';
+    // free(str);
+    // str = NULL;
+    return result;
 }
 
 char *get_only_var(char *str)
@@ -125,148 +112,82 @@ int	ft_isalnum(int c)
 	return (0);
 }
 
-char *handle_variables(char *str, t_env *env, size_t length, t_all *all)
+char *extract_var_name(char *str, int *i) 
 {
-  size_t i = 0;
-  size_t len = strlen(str);
-  char output[1024];
-  char* var_value;
-  output[0] = '\0';
+  size_t var_len = 0;
+  char var_name[1024];
 
-  while (i < len)
+  while (str[*i] && (ft_isalnum((unsigned char)str[*i]) || str[*i] == '_'))
+  {
+    var_name[var_len++] = str[*i];
+    *i += 1;
+  }
+  var_name[var_len] = '\0';
+  return ft_strdup(var_name);
+}
+
+char *handle_exit_status(t_all *all, char *output) 
+{
+  char *var_value;
+  
+  var_value = ft_itoa(all->exit_status);
+  output = ft_strjoin(output, var_value);
+  free(var_value);
+  var_value = NULL;
+  return output;
+}
+
+char *handle_regular_variable(char *str, int *i, t_env *env, char *output) 
+{
+  char *var_name;
+  char *var_value;
+  var_name = extract_var_name(str, i);
+  var_value = get_var_value(ft_strdup(var_name), env);
+  output = ft_strjoin(output, var_value);
+  free(var_value);
+  var_value = NULL;
+  return output;
+}
+
+char *append_regular_char(char *output, char c) 
+{
+  char *result;
+
+  result = malloc(ft_strlen(output) + 2);
+  size_t j = ft_strlen(output);
+  ft_strlcpy(result, output, j + 1);
+  j = ft_strlen(result);
+  result[j] = c;
+  result[j + 1] = '\0';
+  free(output);
+  output = NULL;
+  return result;
+}
+
+char *handle_variables(char *str, t_env *env, size_t length, t_all *all) 
+{
+  int i = 0;
+  size_t len = ft_strlen(str);
+  char *output;
+
+  output = ft_strdup("");
+  while (i < len) 
   {
     if (str[i] == '$') 
     {
       i++;
-      if(i < len && str[i] == '?')
+      if (i < len && str[i] == '?') 
       {
-
-        var_value = ft_itoa(all->exit_status);
-        strcat(output, var_value);
-        free(var_value);
-        var_value = NULL;
+        output = handle_exit_status(all, output);
         i++;
       }
-      else
-      {
-        char var_name[1024];
-        size_t var_len = 0;
-        while (i < len && (ft_isalnum(str[i]) || str[i] == '_'))
-        var_name[var_len++] = str[i++];
-        var_name[var_len] = '\0';
-        var_value = get_var_value(ft_strdup(var_name), env);
-        strcat(output, var_value);
-        free(var_value);
-        var_value = NULL;
-      }
-    }
-    else
-    {
-      size_t j = ft_strlen(output);
-      output[j] = str[i];
-      output[j + 1] = '\0';
-      i++;
-    }
+      else 
+        output = handle_regular_variable(str, &i, env, output);
+    } 
+    else 
+      output = append_regular_char(output, str[i++]);
   }
-  free(var_value);
-  // free(str);
-  // str = NULL;
-  if(!ft_strlen(output))
-    return NULL;
-  return ft_strtok(ft_strdup(output));
-}
-
-
-
-
-
-
-
-// -----------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <string.h>
-// #include <ctype.h>
-
-size_t extract_var_name(const char *str, size_t i, char *var_name) {
-    size_t var_len = 0;
-    while (str[i] && (isalnum((unsigned char)str[i]) || str[i] == '_')) {
-        var_name[var_len++] = str[i++];
-    }
-    var_name[var_len] = '\0';
-    return i;
-}
-
-
-
-char *handle_exit_status(t_all *all, char *output) {
-    char *var_value = ft_itoa(all->exit_status);
-    strcat(output, var_value);
-    free(var_value);
-    return output;
-}
-
-
-
-char *handle_regular_variable(char *var_name, t_env *env, char *output) {
-    char *var_value = get_var_value(ft_strdup(var_name), env);
-    strcat(output, var_value);
-    free(var_value);
-    return output;
-}
-
-
-
-void append_regular_char(char *output, char c) {
-    size_t j = strlen(output);
-    output[j] = c;
-    output[j + 1] = '\0';
-}
-
-
-char *handle_variables_2(char *str, t_env *env, size_t length, t_all *all) {
-    size_t i = 0;
-    size_t len = strlen(str);
-    char output[1024] = { '\0' };
-
-    while (i < len) {
-        if (str[i] == '$') {
-            i++;
-            if (i < len && str[i] == '?') {
-                output = handle_exit_status(all, output);
-                i++;
-            } else {
-                char var_name[1024];
-                i = extract_var_name(str, i, var_name);
-                output = handle_regular_variable(var_name, env, output);
-            }
-        } else {
-            append_regular_char(output, str[i]);
-            i++;
-        }
-    }
-
-    if (!strlen(output)) {
-        return NULL;
-    }
-    return ft_strtok(strdup(output));
+  if (!ft_strlen(output))
+      return free(output), NULL;
+  return ft_strtok(output);
 }
