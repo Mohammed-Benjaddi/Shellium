@@ -66,7 +66,7 @@ void	handle_exit(t_all *all)
 	{
 		exit_num = sh_atoi(all->cmd->args[1]);
 		if (exit_num == -1 && (all->cmd->args[1][0] != '-'
-				&& all->cmd->args[1][0] != '1'))
+			&& all->cmd->args[1][0] != '1'))
 		{
 			ft_write("minishell: numeric argument required\n", 2);
 			free_and_exit(all, 255);

@@ -43,6 +43,7 @@ int	n_flaged(char *str)
 
 void	echo_to_file(char **str, int i, int fd)
 {
+	printf("[%s]", str[i]);
 	while (str[i])
 	{
 		ft_write(str[i], fd);
@@ -58,7 +59,6 @@ void	ft_echo(char **str, int fd)
 	int	flag;
 	int	index_to_txt;
 
-	printf("\t\t\t########\n");
 	flag = 0;
 	i = 0;
 	index_to_txt = 0;

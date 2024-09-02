@@ -115,21 +115,21 @@ int main(int ac, char **av, char **env)
     if(!read)
     {
       env_exp_lists_clear(all);
-      //check_leaks();
+     // check_leaks();
       exit(0);
     }
     if (ft_strlen(read))
     {
       if(!start_shell(read, &all, env))
       {
-    //    check_leaks();
+       // check_leaks();
         continue;
       }
     }
     else
       free(read);
-  //  check_leaks();
+    //check_leaks();
   }
-  // check_leaks();
+   //check_leaks();
   return 0;
 }

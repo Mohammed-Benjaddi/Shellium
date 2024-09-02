@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lists_utils.c                                           :+:      :+:    :+:   */
+/*   lists_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -28,9 +28,9 @@ t_exp	*new_exp_(t_env *env)
 
 t_exp	*set_export_list(t_all *all)
 {
-	t_env *env;
-	t_exp *exp;
-	t_exp *new;
+	t_env	*env;
+	t_exp	*exp;
+	t_exp	*new;
 
 	env = all->env;
 	exp = new_exp_(env);

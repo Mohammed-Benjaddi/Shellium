@@ -145,6 +145,8 @@ void skip_spaces(char *cmd, int *i);
 char *fix_file_name(char *p_file);
 
 // ----------------------------------------------
+void    cd_error_exit(t_all *all);
+void    unset_env_list(t_all *all, char *var);
 void    heredoc_(t_cmd *doc, t_all *all);
 void    add_it_to_env(t_all *all, char *new, t_exp *new_exp);
 int     check_before_env(char *s);

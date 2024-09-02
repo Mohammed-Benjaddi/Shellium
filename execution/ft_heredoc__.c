@@ -51,12 +51,7 @@ char	*fill_full_str(char *full_str, char *input, t_all *all)
 	full_str = ft_strjoin(full_str, input);
 	if (full_str == NULL)
 		ft_error(all);
-	//if (!ft_strlen(full_str))//|| no_expand(full_str))
 	full_str = ft_strjoin(full_str, "\n");
-	// else
-	// 	full_str = ft_strjoin(
-	// 	handle_variables(full_str, all->env, get_vars_length(full_str), all),
-	//"\n");
 	free(input);
 	return (full_str);
 }
@@ -66,7 +61,6 @@ char	*heredoc(char *heredoc_str, int fd, t_all *all)
 	char	*full_str;
 	char	*input;
 
-	// dont expand the herdoc delimeter
 	full_str = (char *)malloc(1);
 	if (!full_str)
 		ft_error(all);
@@ -89,10 +83,10 @@ char	*heredoc(char *heredoc_str, int fd, t_all *all)
 
 void	heredoc_(t_cmd *doc, t_all *all)
 {
-	char *here_tmp;
-	int i;
-	int last_hrdoc;
-	char *here_tmp2;
+	char	*here_tmp;
+	int		i;
+	int		last_hrdoc;
+	char	*here_tmp2;
 
 	doc->heredoc_content = ft_strdup("");
 	i = 0;

@@ -75,6 +75,7 @@ void	add_it_to_env(t_all *all, char *new, t_exp *new_exp)
 {
 	t_env	*new_env;
 
+	printf("\t\t\t@@@@@@@env@@@@@@\n");
 	new_env = env_new(new);
 	if (new_env == NULL)
 	{
@@ -90,5 +91,4 @@ void	add_it_to_env(t_all *all, char *new, t_exp *new_exp)
 		all->exp = new_exp;
 	else
 		exp_addback(all->exp, new_exp);
-
 }

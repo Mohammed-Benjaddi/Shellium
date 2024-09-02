@@ -25,10 +25,10 @@ int	__unset_exp(t_all *all, t_exp *last, int ret, char *tmp_str)
 			return (1);
 		}
 		free(tmp_str);
-        if (all->exp == NULL)
-		    all->exp= last;
+		if (all->exp == NULL)
+			all->exp = last;
 		else
-            exp_addback(all->exp, last);
+			exp_addback(all->exp, last);
 		return (1);
 	}
 	return (0);
@@ -36,10 +36,10 @@ int	__unset_exp(t_all *all, t_exp *last, int ret, char *tmp_str)
 
 void	parse_indetifier(t_all *all, char *str)
 {
-	int     i;
-	int     ret;
-	t_exp   *last;
-	char    *tmp_str;
+	int		i;
+	int		ret;
+	t_exp	*last;
+	char	*tmp_str;
 
 	i = 0;
 	tmp_str = ft_strdup(str);

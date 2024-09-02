@@ -37,6 +37,7 @@ int	ambig_outed(t_all *all)
 	}
 	return (0);
 }
+
 void	redirections_set(t_all *all)
 {
 	int	fd;

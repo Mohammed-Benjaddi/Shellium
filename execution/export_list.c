@@ -72,7 +72,7 @@ t_exp	*exp_new(char *new_line)
 void	exp_addback(t_exp *head, t_exp *new)
 {
 	t_exp	*tmp;
-	
+
 	tmp = exp_getlast(head);
 	tmp->next = new;
 	new->prev = tmp;

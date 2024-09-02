@@ -54,12 +54,11 @@ void	add_to_env(t_all *all, char *new_dir)
 	t_all	*al;
 
 	tmp = all->env;
-	//more checks here for SEGV
 	while (tmp != NULL)
 	{
-		if (ft_strlen(tmp->variable) > 2 &&
-			tmp->variable[0] == 'P' && tmp->variable[1] == 'W'
-				&& tmp->variable[2] == 'D')
+		if (ft_strlen(tmp->variable) > 2
+			&& tmp->variable[0] == 'P' && tmp->variable[1] == 'W'
+			&& tmp->variable[2] == 'D')
 		{
 			if (tmp->next != NULL)
 			{
@@ -90,20 +89,11 @@ char	*get_home_wd(t_all *all)
 	return (NULL);
 }
 
-void	cd_error_exit(t_all *all)
-{
-	ft_write("minishell: ", 2);
-	ft_write(strerror(errno), 2);
-	ft_write("\n", 1);
-	all->exit_status = 1;
-	return ;
-}
-
 void	change_dir(t_all *all, char *new_dir)
 {
-	char buff[1024];
-	char *path;
-	DIR *dir;
+	char	buff[1024];
+	char	*path;
+	DIR		*dir;
 
 	if (new_dir == NULL)
 		new_dir = get_home_wd(all);
