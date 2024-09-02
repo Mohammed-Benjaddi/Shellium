@@ -53,12 +53,17 @@ void	env_addback(t_env *head, t_env *new)
 {
 	t_env	*tmp;
 
-	if (head == NULL)
-		head = new;
+	// if (head == NULL)
+	// 	{
+	// 		printf("hlloeoennvvs\n\n\n\n\n\n\n");
+	// 		head = new;
+	// 		head->next = NULL;
+	// 		head->prev = NULL;
+	// 		return ;
+	// 	}
 	tmp = env_getlast(head);
 	tmp->next = new;
 	new->prev = tmp;
-	printf("%s<", new->variable);
 }
 
 t_env	*create_env_list(char **envp)

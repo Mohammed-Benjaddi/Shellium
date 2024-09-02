@@ -16,7 +16,8 @@ void	mirroring_env_and_exp(t_all *all)
 {
 	t_env	*env;
 	t_exp	*exp;
-	char *prv;
+	char	*prv;
+
 	env = all->env;
 	exp = all->exp;
 	while (env != NULL && exp != NULL)

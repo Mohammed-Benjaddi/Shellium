@@ -58,6 +58,7 @@ void	ft_echo(char **str, int fd)
 	int	flag;
 	int	index_to_txt;
 
+	printf("\t\t\t########\n");
 	flag = 0;
 	i = 0;
 	index_to_txt = 0;
@@ -66,7 +67,9 @@ void	ft_echo(char **str, int fd)
 	if (index_to_txt > 0)
 	{
 		if (str[1] == NULL)
+		{
 			return ;
+		}
 		flag = 1;
 		i++;
 	}

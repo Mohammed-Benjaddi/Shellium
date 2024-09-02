@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "minishell.h"
-
 
 int	unset_exp(t_all *all, t_exp *exp_, int ret)
 {
@@ -34,18 +32,22 @@ int	unset_exp(t_all *all, t_exp *exp_, int ret)
 	}
 	return (0);
 }
-int unset_env_from_beg(t_env *env, t_all *all)
+int	unset_env_from_beg(t_env *env, t_all *all)
 {
+
+	t_env *tmp;
+
 	if (env->prev == NULL)
 	{
 		if (env->next != NULL)
 		{
+			tmp = all->env;
 			all->env = env->next;
-
-			free(env->value);
-			free(env->variable);
-			free(env);
-			return 1;
+			all->env->prev = NULL;
+			free(tmp->value);
+			free(tmp->variable);
+			free(tmp);
+			return (1);
 		}
 	}
 	return (0);
@@ -55,17 +57,22 @@ void	unset_env_list(t_all *all, char *var)
 	t_env	*env;
 
 	env = all->env;
+	printf("|%p|\t\t\t\n\n\n||\n", env);
 	while (env != NULL)
 	{
 		if (match_word(var, env->variable))
 		{
-			if (unset_env_from_beg(env , all))
+			if (unset_env_from_beg(env, all))
 				return ;
 			else if (env->next == NULL)
-				env->prev->next = NULL;
+				{
+					if (env->prev != NULL)
+						env->prev->next = NULL;
+					else
+						all->env = NULL;
+				}
 			else
 			{
-				
 				env->prev->next = env->next;
 				env->next->prev = env->prev;
 			}
@@ -77,14 +84,14 @@ void	unset_env_list(t_all *all, char *var)
 		env = env->next;
 	}
 }
-int exp_and_env_unset(t_env *env, t_exp *exp, t_all *all, int i)
+int	exp_and_env_unset(t_env *env, t_exp *exp, t_all *all, int i)
 {
-	int break_;
+	int	break_;
 
 	break_ = 0;
-	if (env && match_word(all->cmd->args[i], env->variable) )
+	if (env && match_word(all->cmd->args[i], env->variable))
 	{
-		
+		// printf("|%p|\n\n\n\t\t\t\n\n\n|%s|\n", all->env, all->env);
 		unset_env_list(all, env->variable);
 		break_ = 1;
 	}
@@ -97,9 +104,9 @@ int exp_and_env_unset(t_env *env, t_exp *exp, t_all *all, int i)
 }
 void	unset_env(t_all *all)
 {
-	t_env	*env;
-	t_exp	*exp;
-	int		i;
+	t_env *env;
+	t_exp *exp;
+	int i;
 
 	i = 1;
 	while (all->cmd->args[i])
@@ -109,7 +116,7 @@ void	unset_env(t_all *all)
 		while (env != NULL || exp != NULL)
 		{
 			if (exp_and_env_unset(env, exp, all, i))
-				break;
+				break ;
 			if (env != NULL)
 				env = env->next;
 			if (exp != NULL)

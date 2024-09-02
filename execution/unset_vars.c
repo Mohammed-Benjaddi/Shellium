@@ -12,21 +12,27 @@
 
 #include "minishell.h"
 
-int unset_exp_from_beg(t_exp *exp, t_all *all)
+int	unset_exp_from_beg(t_exp *exp, t_all *all)
 {
+	t_exp *tmp;
+	printf("%p\n\n\n", exp->prev);
 	if (exp->prev == NULL)
 	{
 		if (exp->next != NULL)
 		{
+			printf("\thello%s\n\n\n\n", all->exp->variable);
+			tmp = all->exp;
 			all->exp = exp->next;
-			free(exp->value);
-			free(exp->variable);
-			free(exp);
-			return 1;
+			all->exp->prev = NULL;
+			free(tmp->value);
+			free(tmp->variable);
+			free(tmp);
+			return (1);
 		}
 	}
 	return (0);
 }
+// unset SECURITYSESSIONID USER MallocNanoZone  COMMAND_MODE  PATH SSH_AUTH_SOCK LOGNAME ORIGINAL_XDG_CURRENT_DESKTOP SHLVL PWD OLDPWD LIBRARY_PATH HOMEBREW_CACHE TERM_PROGRAM TERM_PROGRAM_VERSION LANG COLORTERM GIT_ASKPASS VSCODE_GIT_ASKPASS_NODE VSCODE_GIT_ASKPASS_EXTRA_ARGS VSCODE_GIT_ASKPASS_MAIN VSCODE_GIT_IPC_HANDLE VSCODE_INJECTION VSCODE_INJECTION ZDOTDIR USER_ZDOTDIR TERM HOME SHELL LaunchInstanceID __CF_USER_TEXT_ENCODING XPC_SERVICE_NAME XPC_FLAGS TMPDIR HOMEBREW_TEMP
 void	unset_exp_list(t_all *all, char *var)
 {
 	t_exp	*exp;
@@ -36,10 +42,15 @@ void	unset_exp_list(t_all *all, char *var)
 	{
 		if (match_word(var, exp->variable))
 		{
-			if (unset_exp_from_beg(exp , all))
+			if (unset_exp_from_beg(exp, all))
 				return ;
 			else if (exp->next == NULL)
-				exp->prev->next = NULL;
+				{
+					if (exp->prev != NULL)
+						exp->prev->next = NULL;
+					else
+						all->exp = NULL;
+				}
 			else
 			{
 				exp->prev->next = exp->next;
@@ -71,15 +82,28 @@ void	mirroring_exp_and_env(t_all *all)
 {
 	t_env	*env;
 	t_exp	*exp;
+	t_env	*env_new;
 	t_env	*env_last;
-	t_exp	*exp_last;
-	char *prv;
-	
-			
+	char	*prv;
+
 	env = all->env;
 	exp = all->exp;
+	printf("$$$$$$$$$$$$$\n\n\n");
+	if (env == NULL && exp != NULL)
+	{
+		env_new = (t_env *) malloc(sizeof(t_env));
+		if (!env_new)
+			ft_error(all);
+		env_new->variable = ft_strdup(exp->variable);
+		env_new->value = ft_strdup(exp->value);
+		env_new->prev = NULL;
+		env_new->next = NULL;
+		all->env = env_new;
+	}
 	while (env != NULL && exp != NULL)
 	{
+		printf("$$@@@@@@@@@$$\n\n\n");
+
 		if (match_word(env->variable, exp->variable) & !match_word(env->value,
 				exp->value))
 		{
@@ -87,19 +111,17 @@ void	mirroring_exp_and_env(t_all *all)
 			prv = env->value;
 			env->value = ft_strdup(exp->value);
 			free(prv);
-
 			// free(prv);//
-
-				}
-		
+		}
 		exp = exp->next;
 		env = env->next;
 		if (env == NULL && exp != NULL)
 		{
 			env_last = env_getlast(all->env);
-			env_last->next = new_env_(exp); 
+			env_last->next = new_env_(exp);
 			env_last->next->prev = env_last;
 		}
 	}
-}
+	
 
+}

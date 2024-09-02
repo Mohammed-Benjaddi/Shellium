@@ -51,8 +51,8 @@ void	print_env_list(t_all *all)
 
 void	exec_piped_built_ins(t_all *all, int pipes[2])
 {
-	int i;
-	char *str;
+	int		i;
+	char	*str;
 
 	i = 0;
 	if (match_word(all->cmd->cmd, "echo"))

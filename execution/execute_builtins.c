@@ -55,6 +55,7 @@ void	free_and_exit(t_all *all, int exit_)
 	env_exp_lists_clear(all);
 	exit(exit_);
 }
+
 void	handle_exit(t_all *all)
 {
 	int	exit_num;
@@ -70,7 +71,6 @@ void	handle_exit(t_all *all)
 			ft_write("minishell: numeric argument required\n", 2);
 			free_and_exit(all, 255);
 			env_exp_lists_clear(all);
-			// free all
 		}
 		if (all->cmd->args[2])
 		{

@@ -145,6 +145,12 @@ void skip_spaces(char *cmd, int *i);
 char *fix_file_name(char *p_file);
 
 // ----------------------------------------------
+void    heredoc_(t_cmd *doc, t_all *all);
+void    add_it_to_env(t_all *all, char *new, t_exp *new_exp);
+int     check_before_env(char *s);
+void    parse_indetifier(t_all *all, char *str);
+int     __unset_exp(t_all *all , t_exp	*last, int		ret, char	*tmp_str);
+void    executing_commands(t_all *all, int *pipe_sides, char **envpp);
 void    unset_exp_list(t_all *all, char *var);
 void    mirroring_exp_and_env(t_all *all);
 t_exp   *exp_getlast(t_exp *exp);
@@ -169,14 +175,14 @@ int     spliter_index(char *str);
 t_exp   *exp_new(char *new_line);// not used
 void    exp_addback(t_exp    *head, t_exp    *new);
 t_exp   *set_export_list(t_all *all);
-void    identifier_error(char *indentifer);
+// void    identifier_error(char *indentifer);
 void    ft_write(char *str, int fd);
 void    change_dir(t_all *all, char *new_dir);
 void    ft_pwd(t_all *all);
 void    parse_indetifier(t_all *all, char *str);
 void    unset_env(t_all *all);
 int    unset_exp(t_all *all, t_exp *exp_, int ret);
-void    env_addback(t_env *head, t_env *);
+void    env_addback(t_env *head, t_env *new);
 char    *ft_strjoin(char *s1, char *s2);
 t_env   *env_new(char *new_line);
 t_env   *env_getlast(t_env *env);
@@ -184,7 +190,6 @@ t_env   *create_env_list(char **env);
 size_t	ft_strlen(char *s);
 void    ft_echo(char **str, int fd);
 char    *heredoc(char *heredoc_str, int fd, t_all *all);
-void execution(t_all **all, char *envp[]);
-int match_word(char *neadle, char *str);
-
+void    execution(t_all **all, char *envp[]);
+int     match_word(char *neadle, char *str);
 #endif
