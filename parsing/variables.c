@@ -13,7 +13,7 @@ char *ft_strtok(char *str)
       return ft_strdup("\0");
     while (end > i && ft_isspace(str[end]))
       end--;
-    size_t new_len = end - i + 1;
+    int new_len = end - i + 1;
     result = (char *)malloc(new_len + 1);
     if (result == NULL)
         return NULL;
@@ -31,8 +31,8 @@ char *ft_strtok(char *str)
 
 char *get_only_var(char *str)
 {
-  size_t i;
-  size_t len;
+  int i;
+  int len;
   char *result;
 
   i = 0;

@@ -1,103 +1,108 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_libc2.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/02 19:38:54 by mben-jad          #+#    #+#             */
+/*   Updated: 2024/09/02 19:39:32 by mben-jad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
-char *ft_strncpy(char *str, int size)
+char	*ft_strncpy(char *str, int size)
 {
-  int i;
-  char *result;
+	int		i;
+	char	*result;
 
-  i = 0;
-  result = malloc(sizeof(char) * size + 1);
-  while (i < size)
-  {
-    result[i] = str[i];
-    i++;
-  }
-  result[i] = '\0';
-  return result;
+	i = 0;
+	result = malloc(sizeof(char) * size + 1);
+	while (i < size)
+	{
+		result[i] = str[i];
+		i++;
+	}
+	result[i] = '\0';
+	return (result);
 }
 
-int ft_isalpha(char c)
+bool	search_for_2nd_quote(char *str, char c)
 {
-	if((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-		return 1;
-	return 0;
-}
-
-bool search_for_2nd_quote(char *str, char c)
-{
-	int i;
-	int counter;
+	int	i;
+	int	counter;
 
 	i = 0;
 	counter = 0;
-	while(str[i])
+	while (str[i])
 	{
-		if(str[i] == c)
+		if (str[i] == c)
 			counter++;
 		i++;
 	}
-	if(counter % 2 == 1)
-		return true;
-	return false;
+	if (counter % 2 == 1)
+		return (true);
+	return (false);
 }
 
-int ft_strchr(char *str, char c)
+int	ft_strchr(char *str, char c)
 {
-	int i;
-	int in_quotes;
-	int count_quotes;
+	int	i;
+	int	in_quotes;
+	int	count_quotes;
 
 	i = 0;
 	in_quotes = 1;
 	count_quotes = 0;
-	if(!search_for_2nd_quote(str, c))
-		return -1;
-	while(str[i])
+	if (!search_for_2nd_quote(str, c))
+		return (-1);
+	while (str[i])
 	{
-		if(!in_quotes && (str[i] == SPACE || str[i] == PIPE))
-			return i;
-		if(str[i] == c)
+		if (!in_quotes && (str[i] == SPACE || str[i] == PIPE))
+			return (i);
+		if (str[i] == c)
 		{
-			if(in_quotes == 1)
+			if (in_quotes == 1)
 				in_quotes = 0;
 			else
 				in_quotes = 1;
 		}
 		i++;
 	}
-	return i;
+	return (i);
 }
 
-int ft_strchr_pro(char *str, char c1, char c2, bool inside_quotes)
+int	ft_strchr_pro(char *str, char c1, char c2, bool inside_quotes)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	if(!str)
-		return -1;
-	while(str[i] && str[i] != c1 && str[i] != c2)
+	if (!str)
+		return (-1);
+	while (str[i] && str[i] != c1 && str[i] != c2)
 	{
 		i++;
-		if(str[i] == '\0')
-			return -1;
+		if (str[i] == '\0')
+			return (-1);
 	}
-	return i + 1;
+	return (i + 1);
 }
 
-char *ft_strndup(char *str, int n)
+char	*ft_strndup(char *str, int n)
 {
-	int i;
-	char *result;
+	int		i;
+	char	*result;
 
-	if(!str)
-		return NULL;
+	if (!str)
+		return (NULL);
 	i = 0;
 	result = (char *)malloc(n + 1);
-	while(i < n)
-	{	
+	while (i < n)
+	{
 		result[i] = str[i];
 		i++;
 	}
 	result[i] = '\0';
-	return result;
+	return (result);
 }

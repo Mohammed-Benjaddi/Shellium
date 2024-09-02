@@ -7,7 +7,8 @@ void throw_error(char *msg, t_all *all, int nbr)
   i = 0;
   write(2, "Error: ", 7);
   while(msg[i])
-    write(2, &msg[i], 1);
+    write(2, &msg[i++], 1);
+  write(2, "\n", 1);
   all->exit_status = nbr;
   all->error = true;
 }
@@ -15,7 +16,7 @@ void throw_error(char *msg, t_all *all, int nbr)
 int find_pipe_index(char *str)
 {
   int i;
-  size_t len;
+  int len;
 
   i = 0;
   len = ft_strlen(str);
@@ -40,12 +41,12 @@ int find_pipe_index(char *str)
   return -1;
 }
 
-size_t args_counter(char *str, int len)
+int args_counter(char *str, int len)
 {
   int i;
   int s_quote;
   int d_quote;
-  size_t words;
+  int words;
 
   i = 0;
   s_quote = 0;
@@ -80,7 +81,6 @@ void ft_free(char **args, int len)
   int i;
 
   i = 0;
-  // int j = 0;
   if(!args)
     return;
   while(i < len)
@@ -93,7 +93,7 @@ void ft_free(char **args, int len)
   args = NULL;
 }
 
-size_t nums_of_chars(char *str, char c)
+int nums_of_chars(char *str, char c)
 {
   int i;
   int counter;

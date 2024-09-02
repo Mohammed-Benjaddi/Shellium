@@ -5,13 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/14 17:38:52 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/08/26 20:46:39 by mben-jad         ###   ########.fr       */
+/*   Created: 2024/09/02 19:37:19 by mben-jad          #+#    #+#             */
+/*   Updated: 2024/09/02 19:37:40 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 static	int	numlen(long int num)
 {

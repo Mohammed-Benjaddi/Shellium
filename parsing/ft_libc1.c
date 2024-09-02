@@ -1,25 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_libc1.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/02 19:37:57 by mben-jad          #+#    #+#             */
+/*   Updated: 2024/09/02 19:38:30 by mben-jad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-
-char *ft_strdup(char *str)
+char	*ft_strdup(char *str)
 {
-  char *buf;
-  int i;
+	char	*buf;
+	int		i;
 
-  i = 0;
-  if(!str)  
-    return NULL;
-  buf = malloc(sizeof(char) * (ft_strlen(str) + 1));
-  while(str[i])
-  {
-    buf[i] = str[i];
-    i++;
-  }
-  buf[i] = '\0';
-  return buf;
+	i = 0;
+	if (!str)
+		return (NULL);
+	buf = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	while (str[i])
+	{
+		buf[i] = str[i];
+		i++;
+	}
+	buf[i] = '\0';
+	return (buf);
 }
 
-char	*ft_substr(char   *s, unsigned int start, size_t len)
+char	*ft_substr(char *s, unsigned int start, int len)
 {
 	int				i;
 	unsigned int	slen;
@@ -52,12 +63,12 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
-	if(!s1 && s2)
-		return ft_strdup(s2);
-	else if(!s2 && s1)
-		return ft_strdup(s1);
+	if (!s1 && s2)
+		return (ft_strdup(s2));
+	else if (!s2 && s1)
+		return (ft_strdup(s1));
 	else if (!s1 && !s2)
-		return NULL;
+		return (NULL);
 	res = (char *)malloc(s1_len + s2_len + 1);
 	if (!res)
 		return (NULL);
@@ -68,13 +79,15 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (res);
 }
 
-size_t	ft_strlcpy(char *dst,   char *src, size_t dstsize)
+size_t	ft_strlcpy(char *dst, char *src, int dstsize)
 {
 	size_t	src_size;
 	size_t	i;
 
 	i = 0;
 	src_size = ft_strlen(src);
+	if (!src)
+		return (0);
 	if (dstsize)
 	{
 		while (src[i] && i < dstsize - 1)
@@ -87,9 +100,9 @@ size_t	ft_strlcpy(char *dst,   char *src, size_t dstsize)
 	return (src_size);
 }
 
-int ft_strcmp(char *s1, char *s2)
+int	ft_strcmp(char *s1, char *s2)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (s1[i] && s2[i] && s1[i] == s2[i])

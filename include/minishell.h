@@ -58,7 +58,7 @@ typedef struct s_lexer
   int pipe_idx;
   int words;
   char **args;
-  size_t length;
+  int length;
   int pipe;
 } t_lexer;
 
@@ -88,12 +88,21 @@ typedef struct s_all
   t_cmd    *cmd; // our parsing struct
   t_env      *env; // environment variables list
   t_exp     *exp; // exported variables list
-  size_t     nums_of_cmds;
+  int     nums_of_cmds;
   t_vars    *_vars;
   bool error;
   int exit_status;
 } t_all;
 
+typedef struct s_fix_cmd
+{
+  int		i;
+	int		j;
+	int		k;
+	char	*line;
+	char	quote;
+	int		reds_nums;
+} t_fix_cmd;
 
 
 void check_leaks();
@@ -103,9 +112,9 @@ void check_leaks();
 // libc functions
 char *ft_strdup(char *str);
 char	*ft_strjoin(char   *s1, char   *s2);
-size_t ft_strlen(char *str);
-char	*ft_substr(char   *s, unsigned int start, size_t len);
-size_t	ft_strlcpy(char *dst,   char *src, size_t dstsize);
+int ft_strlen(char *str);
+char	*ft_substr(char   *s, unsigned int start, int len);
+size_t	ft_strlcpy(char *dst,   char *src, int dstsize);
 char    **ft_split(char   *s, char c);
 int ft_strcmp(char *s1, char *s2);
 int ft_isalpha(char c);
@@ -128,12 +137,12 @@ bool no_herdoc_delemiter(char *cmd, int i);
 // utils_1.c
 void throw_error(char *msg, t_all *all, int exit_status);
 int find_pipe_index(char *str);
-size_t args_counter(char *str, int len);
+int args_counter(char *str, int len);
 void ft_free(char **args, int len);
 void print_list(t_cmd *head);
 char *find_and_remove(char *str, char c);
 int skip_reds(char *str, int *i, char c, t_all *all);
-size_t get_vars_length(char *str);
+int get_vars_length(char *str);
 char *get_var_value(char *str, t_env *env);
 // cmd_infos.c
 char *get_path(char *cmd, t_env *env);
@@ -144,17 +153,17 @@ int get_arr_len(char **arr);
 // char *get_herdoc_delimiter(char **args);
 // char *get_append_from_file(char **args);
 char *get_append_to_file(char **args, t_all *all);
-// char *handle_variables(char *str, t_env *env, size_t length);
+// char *handle_variables(char *str, t_env *env, int length);
 // executables.c
 int	ft_isalnum(int c);
 char *get_executable(char *cmd);
-char *handle_variables(char *str, t_env *env, size_t length, t_all *all);
+char *handle_variables(char *str, t_env *env, int length, t_all *all);
 void skip_spaces(char *cmd, int *i);
 // char *fix_file_name(char *p_file);
-// char *handle_variables(char *str, t_env *env, size_t length, t_all *all);
+// char *handle_variables(char *str, t_env *env, int length, t_all *all);
 char *ft_strtok(char *str);
 bool correct_path(char *path, char *cmd, bool is_path);
-size_t nums_of_chars(char *str, char c);
+int nums_of_chars(char *str, char c);
 char *get_str_in_quotes(char *command, int *i, char c, t_all *all);
 char *get_str_without_quotes(char *command, int *i, t_env *env, t_all *all);
 bool is_pipe_after(char *str);
@@ -164,10 +173,15 @@ char **ft_args_dup(char **args, t_all *all);
 void handle_var_as_cmd(char **result, char *arg, int *j, t_all *all);
 char *catch_arg(char *arg, t_all *all, int i);
 int is_redirection(char *str, char *next);
-size_t count_valid_args(char **args);
+int count_valid_args(char **args);
+char	*check_filename(char **args, int i, t_all *all);
+char	*fix_cmd(char *cmd, t_all *all);
+int	count_commands(t_cmd *cmd);
+bool	is_correct_cmd(char *cmd, t_all *all);
 
 // ----------------------------------------------
 void    *shell_calloc(size_t size , int count);
+
 void    ft_error(t_all *all);
 void    mirroring_env_and_exp(t_all *all);
 void    heredoc_pipe(t_all *all);
@@ -201,7 +215,7 @@ char    *ft_strjoin(char *s1, char *s2);
 t_env   *env_new(char *new_line);
 t_env   *env_getlast(t_env *env);
 t_env   *create_env_list(char **env);
-size_t	ft_strlen(char *s);
+// size_t	ft_strlen(char *s);
 void    ft_echo(char **str, int fd);
 char    *heredoc(char *heredoc_str, int fd, t_all *all);
 void execution(t_all **all, char *envp[]);
@@ -210,6 +224,6 @@ void	mirroring_exp_and_env(t_all *all);
 void	unset_exp_list(t_all *all, char *var);
 bool is_incorrect_cmd(char *cmd, int *pipe, t_all *all);
 int find_len(char *str, bool inside_quotes);
-size_t reds_counter(char *cmd, t_all *all);
+int reds_counter(char *cmd, t_all *all);
 
 #endif

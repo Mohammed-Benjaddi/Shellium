@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/09/01 20:04:29 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/01 22:46:12 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	redirections_set(t_all *all)
 	}
 	if (all->cmd->out_file || all->cmd->append_file)
 	{
-		printf("%zu\n\n", ft_strlen(all->cmd->out_file));
+		// printf("%zu\n\n", ft_strlen(all->cmd->out_file));
 		// if (ambig_outed(all))
 		// {
 		// 	ft_write("minishell: ambiguous redirect\n", 2);
