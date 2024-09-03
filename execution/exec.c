@@ -29,14 +29,6 @@ void	wait_ps(pid_t *pids, t_all *all)
 	}
 }
 
-void	handler(int sig)
-{
-	if (sig == SIGINT)
-		printf("\n");
-	if (sig == SIGQUIT)
-		printf("QUIT 3:\n");
-}
-
 void	execution_loop(t_vars *vars, int i, t_all *all, t_cmd *cmd)
 {
 	int	pipe_sides[2];
@@ -47,8 +39,8 @@ void	execution_loop(t_vars *vars, int i, t_all *all, t_cmd *cmd)
 	vars->pids[i] = fork();
 	if (vars->pids[i] < 0)
 		ft_error(all);
-	signal(SIGINT, handler);
-	signal(SIGQUIT, handler);
+	signal(SIGINT, handle_sigs);
+	signal(SIGQUIT, handle_sigs);
 	if (vars->pids[i] == 0)
 	{
 		signal(SIGINT, SIG_DFL);
@@ -91,8 +83,7 @@ void	execution(t_all **alll, char *envpp[])
 	i = 0;
 	cmd_ = all->cmd;
 	vars = set_envp_pids(all, envpp);
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
+	ignore_sigs();
 	heredoc_check(all);
 	if (exec_built_ins(all))
 	{
@@ -105,8 +96,7 @@ void	execution(t_all **alll, char *envpp[])
 		i++;
 		all->cmd = all->cmd->next;
 	}
-	wait_ps(vars->pids, all);
-	setup_signal_handlers();
+	exiting_execution_loop(vars, all);
 	all = *alll;
 	all->cmd = cmd_;
 }

@@ -12,6 +12,33 @@
 
 #include "minishell.h"
 
+// int find_exp_in_env()
+// {
+
+// }
+// void more_matching(t_all *all)
+// {
+// 	t_env	*env;
+// 	t_exp	*exp;
+// 	char	*prv;
+
+// 	env = all->env;
+// 	exp = all->exp;
+// 	while (env != NULL && exp != NULL)
+// 	{
+// 		printf("");
+// 		if (match_word(env->variable, exp->variable) & !match_word(env->value,
+// 				exp->value))
+// 		{
+// 			prv = exp->value;
+// 			exp->value = ft_strdup(env->value);
+// 			free(prv);
+// 		}
+// 		exp = exp->next;
+// 		env = env->next;
+// 	}
+
+// }
 void	mirroring_env_and_exp(t_all *all)
 {
 	t_env	*env;
@@ -22,6 +49,7 @@ void	mirroring_env_and_exp(t_all *all)
 	exp = all->exp;
 	while (env != NULL && exp != NULL)
 	{
+		printf("");
 		if (match_word(env->variable, exp->variable) & !match_word(env->value,
 				exp->value))
 		{

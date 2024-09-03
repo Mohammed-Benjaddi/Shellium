@@ -145,6 +145,10 @@ void skip_spaces(char *cmd, int *i);
 char *fix_file_name(char *p_file);
 
 // ----------------------------------------------
+void    wait_ps(pid_t *pids, t_all *all);
+void    ignore_sigs();
+void    exiting_execution_loop(t_vars *vars, t_all *all);
+void  	handle_sigs(int sig);
 void    cd_error_exit(t_all *all);
 void    unset_env_list(t_all *all, char *var);
 void    heredoc_(t_cmd *doc, t_all *all);
@@ -183,7 +187,7 @@ void    change_dir(t_all *all, char *new_dir);
 void    ft_pwd(t_all *all);
 void    parse_indetifier(t_all *all, char *str);
 void    unset_env(t_all *all);
-int    unset_exp(t_all *all, t_exp *exp_, int ret);
+int     unset_exp(t_all *all, t_exp *exp_, int ret);
 void    env_addback(t_env *head, t_env *new);
 char    *ft_strjoin(char *s1, char *s2);
 t_env   *env_new(char *new_line);

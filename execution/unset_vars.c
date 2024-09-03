@@ -145,6 +145,7 @@ void	mirroring_exp_and_env(t_all *all)
 		env = env->next;
 		if (env == NULL && exp != NULL)
 		{
+			printf("ahhahahha\n");
 			env_last = env_getlast(all->env);
 			env_last->next = new_env_(exp);
 			env_last->next->prev = env_last;
