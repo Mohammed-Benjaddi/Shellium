@@ -16,11 +16,18 @@ void	executing_commands(t_all *all, int *pipe_sides, char **envpp)
 {
 	redirections_set(all);
 	heredoc_pipe(all);
+	if (exec_built_ins(all))
+		exit(0);
 	exec_piped_built_ins(all, pipe_sides);
 	if (all->cmd->cmd_not_found)
 	{
 		ft_write("minishell: command not found\n", 2);
 		ft_error(all);
+	}
+	if (match_word(all->cmd->cmd, "exit"))
+	{
+		handle_exit(all);
+		exit(0);
 	}
 	if (execve(all->cmd->full_path, all->cmd->args, envpp) == -1)
 		ft_write(strerror(errno), 2);

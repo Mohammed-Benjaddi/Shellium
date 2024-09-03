@@ -84,9 +84,8 @@ void	add_to_env(t_all *all, char *new_dir)
 	tmp = all->env;
 	while (tmp != NULL)
 	{
-		if (ft_strlen(tmp->variable) > 2
-			&& tmp->variable[0] == 'P' && tmp->variable[1] == 'W'
-			&& tmp->variable[2] == 'D')
+		if (ft_strlen(tmp->variable) > 2 && tmp->variable[0] == 'P'
+			&& tmp->variable[1] == 'W' && tmp->variable[2] == 'D')
 		{
 			if (tmp->next != NULL)
 			{

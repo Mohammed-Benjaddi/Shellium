@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:35:38 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/02 19:36:03 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/03 17:31:22 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,16 @@ static int	get_delimiters_len(char **args)
 	return (len);
 }
 
+char	*get_delimiter(char *arg)
+{
+	int		index;
+	char	*buffer;
+
+	buffer = find_and_remove(ft_strdup(arg), DOUBLE_QUOTE);
+	buffer = find_and_remove(buffer, SINGLE_QUOTE);
+	return (buffer);
+}
+
 char	**get_herdoc_delimiter(char **args, t_all *all)
 {
 	int		i;
@@ -72,7 +82,7 @@ char	**get_herdoc_delimiter(char **args, t_all *all)
 			if (!args[i + 1])
 				return (throw_error("syntax error", all, 258), NULL);
 			else
-				delimiters[len++] = ft_strdup(args[i + 1]);
+				delimiters[len++] = get_delimiter(args[i + 1]);
 		}
 		i++;
 	}

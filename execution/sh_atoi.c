@@ -1,33 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_utils.c                                       :+:      :+:    :+:   */
+/*   sh_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-krid <ael-krid@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/08/30 11:09:54 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/03 22:11:38 by ael-krid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_sigs(int sig)
+int	sh_atoi(char *s)
 {
-	if (sig == SIGINT)
-		printf("\n");
-	if (sig == SIGQUIT)
-		printf("QUIT 3:\n");
-}
+	int	res;
+	int	i;
+	int	sign;
 
-void	ignore_sigs(void)
-{
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-void	exiting_execution_loop(t_vars *vars, t_all *all)
-{
-	wait_ps(vars->pids, all);
-	setup_signal_handlers();
+	sign = 1;
+	i = 0;
+	res = 0;
+	while (s[i] != 0)
+	{
+		if (s[i] == '+' || s[i] == '-')
+		{
+			if (!(s[i + 1] >= '0' && s[i + 1] <= '9'))
+				return (-1);
+			sign *= -1;
+			i++;
+		}
+		if (!(s[i] >= '0' && s[i] <= '9'))
+			return (-1);
+		res = (res * 10) + (s[i] - 48);
+		i++;
+	}
+	return (res * sign);
 }

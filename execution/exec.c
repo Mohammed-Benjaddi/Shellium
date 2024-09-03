@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/08/30 11:09:54 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/03 22:43:54 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,12 @@ void	wait_ps(pid_t *pids, t_all *all)
 	}
 }
 
+void	close_pipe_sides(int pipe_sides[2])
+{
+	close(pipe_sides[1]);
+	close(pipe_sides[0]);
+}
+
 void	execution_loop(t_vars *vars, int i, t_all *all, t_cmd *cmd)
 {
 	int	pipe_sides[2];
@@ -43,6 +49,7 @@ void	execution_loop(t_vars *vars, int i, t_all *all, t_cmd *cmd)
 	signal(SIGQUIT, handle_sigs);
 	if (vars->pids[i] == 0)
 	{
+		close(pipe_sides[0]);
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		redirect_in_out_to_pipe(i, pipe_sides, &pr_fd, all);
@@ -53,8 +60,8 @@ void	execution_loop(t_vars *vars, int i, t_all *all, t_cmd *cmd)
 	pr_fd = dup(pipe_sides[0]);
 	if (pr_fd < 0)
 		ft_error(all);
-	close(pipe_sides[1]);
-	close(pipe_sides[0]);
+	vars->pr_fd = pr_fd;
+	close_pipe_sides(pipe_sides);
 }
 
 t_vars	*set_envp_pids(t_all *all, char **env)
@@ -85,11 +92,8 @@ void	execution(t_all **alll, char *envpp[])
 	vars = set_envp_pids(all, envpp);
 	ignore_sigs();
 	heredoc_check(all);
-	if (exec_built_ins(all))
-	{
-		all->nums_of_cmds--;
-		all->cmd = all->cmd->next;
-	}
+	if (!all->pipes_num)
+		exec_built_ins(all);
 	while (i < all->nums_of_cmds)
 	{
 		execution_loop(vars, i, all, all->cmd);
@@ -97,6 +101,6 @@ void	execution(t_all **alll, char *envpp[])
 		all->cmd = all->cmd->next;
 	}
 	exiting_execution_loop(vars, all);
-	all = *alll;
-	all->cmd = cmd_;
+	close(all->_vars->pr_fd);
+	(*alll)->cmd = cmd_;
 }

@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 09:48:46 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/03 10:24:08 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/03 23:45:12 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	args_counter(char *str, int len)
 	words = 0;
 	if (len == -1)
 		len = ft_strlen(str);
-	while (str[i] && i < len)
+	while (i < len && str[i])
 	{
 		skip_spaces(str, &i);
 		if (i < len && (str[i] == DOUBLE_QUOTE || str[i] == SINGLE_QUOTE))
@@ -72,7 +72,7 @@ int	args_counter(char *str, int len)
 		}
 		if (i < len && str[i] != SPACE)
 			words++;
-		while (i < len && str[i] != SPACE)
+		while (i < len && str[i] && str[i] != SPACE)
 			i++;
 	}
 	return (words);

@@ -12,6 +12,7 @@
 #include <string.h>
 #include <signal.h>
 #include <errno.h>
+#include <dirent.h>
 
 #define SINGLE_QUOTE '\''
 #define DOUBLE_QUOTE '\"'
@@ -64,6 +65,7 @@ typedef struct s_lexer
 typedef struct s_vars
 {
   char **envpp;
+  int	pr_fd;
 	pid_t	*pids;
   
 } t_vars;
@@ -88,6 +90,7 @@ typedef struct s_all
   t_env      *env; // environment variables list
   t_exp     *exp; // exported variables list
   int     nums_of_cmds;
+  int        pipes_num;
   t_vars    *_vars;
   bool error;
   int exit_status;
@@ -182,6 +185,25 @@ bool	is_incorrect_cmd(char *cmd, int *pipe, t_all *all);
 int	find_len(char *str, bool inside_quotes);
 
 // ----------------------------------------------
+t_env   *new_env_(t_exp *exp);
+t_env   *new_empty_env(t_all *all);
+int     handle_exit(t_all *all);
+void    wait_ps(pid_t *pids, t_all *all);
+void    ignore_sigs();
+void    exiting_execution_loop(t_vars *vars, t_all *all);
+void  	handle_sigs(int sig);
+int     sh_atoi(char *s);
+void    cd_error_exit(t_all *all);
+void    unset_env_list(t_all *all, char *var);
+void    heredoc_(t_cmd *doc, t_all *all);
+void    add_it_to_env(t_all *all, char *new, t_exp *new_exp);
+int     check_before_env(char *s);
+void    parse_indetifier(t_all *all, char *str);
+int     __unset_exp(t_all *all , t_exp	*last, int		ret, char	*tmp_str);
+void    executing_commands(t_all *all, int *pipe_sides, char **envpp);
+void    unset_exp_list(t_all *all, char *var);
+void    mirroring_exp_and_env(t_all *all);
+t_exp   *exp_getlast(t_exp *exp);
 void    *shell_calloc(size_t size , int count);
 void    ft_error(t_all *all);
 void    mirroring_env_and_exp(t_all *all);
@@ -195,31 +217,28 @@ void    setup_signal_handlers();
 void    env_exp_lists_clear(t_all *all);
 void    free_env_list(t_all *all);
 int     exec_built_ins(t_all *all);
-void    setup_signal_handlers();
 void    set_lists(t_all *all, char **env);
 void    exec_piped_built_ins(t_all *all, int pipes[2]);
 void    heredoc_check(t_all *all);
 t_exp   *new_exp_(t_env *env);
 int     spliter_index(char *str);
 t_exp   *exp_new(char *new_line);// not used
-void    exp_addback(t_exp    *head, t_exp    *);
+void    exp_addback(t_exp    *head, t_exp    *new);
 t_exp   *set_export_list(t_all *all);
-void    identifier_error(char *indentifer);
+// void    identifier_error(char *indentifer);
 void    ft_write(char *str, int fd);
 void    change_dir(t_all *all, char *new_dir);
 void    ft_pwd(t_all *all);
 void    parse_indetifier(t_all *all, char *str);
 void    unset_env(t_all *all);
-int    unset_exp(t_all *all, t_exp *exp_, int ret);
-void    env_addback(t_env *head, t_env *);
+int     unset_exp(t_all *all, t_exp *exp_, int ret);
+void    env_addback(t_env *head, t_env *new);
 char    *ft_strjoin(char *s1, char *s2);
 t_env   *env_new(char *new_line);
 t_env   *env_getlast(t_env *env);
 t_env   *create_env_list(char **env);
-// size_t	ft_strlen(char *s);
 void    ft_echo(char **str, int fd);
-char    *heredoc(char *heredoc_str, int fd, t_all *all);
-void execution(t_all **all, char *envp[]);
-int match_word(char *neadle, char *str);
-
+char    *heredoc(char *heredoc_str, t_all *all);
+void    execution(t_all **all, char *envp[]);
+int     match_word(char *neadle, char *str);
 #endif

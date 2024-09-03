@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 20:17:09 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/03 13:19:01 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/03 23:29:30 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,35 @@ void	shell_init(t_all *all, char **env)
 	all->exit_status = 0;
 }
 
+void	print_list(t_cmd *head)
+{
+	int	i;
+		int i;
+
+	i = 0;
+	if (!head)
+		printf("head is null\n");
+	printf("-----------------------------\n");
+	while (head)
+	{
+		i = 0;
+		printf("%s --> ", head->cmd);
+		while (head->args[i])
+		{
+			printf("%s{ %s } %s", YELLOW, head->args[i], NC);
+			i++;
+		}
+		printf("%s %s %s", CYAN, head->full_path, NC);
+		printf("%s %d %s", RED, head->cmd_not_found, NC);
+		// printf("%s %s %s", RED, head->in_file, NC);
+		// printf("%s %s %s", GREEN, head->out_file, NC);
+		// printf("%s %s %s", RED, head->append_file, NC);
+		// printf("%s %d %s", GREEN, head->pipe, NC);
+		head = head->next;
+	}
+	printf("\n-----------------------------\n");
+}
+
 int	start_shell(char *read, t_all **all, char **env)
 {
 	add_history(read);
@@ -43,6 +72,8 @@ int	start_shell(char *read, t_all **all, char **env)
 		return (0);
 	}
 	(*all)->nums_of_cmds = count_commands((*all)->cmd);
+	(*all)->pipes_num = (*all)->nums_of_cmds - 1;
+	// print_list((*all)->cmd);
 	if (!(*all)->error)
 		execution(all, env);
 	free((*all)->_vars->pids);
@@ -53,6 +84,11 @@ int	start_shell(char *read, t_all **all, char **env)
 	return (1);
 }
 
+void	check_leaks(void)
+{
+	system("leaks -q minishell");
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_all	*all;
@@ -61,6 +97,7 @@ int	main(int ac, char **av, char **env)
 	all = malloc(sizeof(t_all));
 	all->cmd = NULL;
 	shell_init(all, env);
+	// atexit(check_leaks);
 	while (1)
 	{
 		all->error = false;
@@ -73,10 +110,14 @@ int	main(int ac, char **av, char **env)
 		if (ft_strlen(read))
 		{
 			if (!start_shell(read, &all, env))
+			{
+				// system("leaks -q minishell");
 				continue ;
+			}
 		}
 		else
 			free(read);
+		// system("leaks -q minishell");
 	}
 	return (0);
 }

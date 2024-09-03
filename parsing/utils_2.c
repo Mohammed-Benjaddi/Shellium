@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 20:19:52 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/02 20:20:04 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/03 22:21:52 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,15 +94,17 @@ char	*get_path(char *cmd, t_env *env)
 	if (!cmd)
 		return (NULL);
 	all_paths = get_all_paths(cmd, env);
+	line = NULL;
 	if (cmd[0] && cmd[0] == SLASH && cmd[ft_strlen(cmd) - 1])
 	{
 		line = isolate_cmd_from_path(cmd);
 		is_path = true;
 	}
 	else
-		line = cmd;
+		line = ft_strdup(cmd);
 	path = get_right_path(all_paths, cmd, line, is_path);
 	ft_free(all_paths, get_arr_len(all_paths));
+	free(line);
 	if (!path)
 		path = search_at_curr_dir(cmd);
 	return (path);

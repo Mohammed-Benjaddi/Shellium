@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 21:53:15 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/03 13:08:31 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/03 23:47:21 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ char	*get_str_in_quotes(char *command, int *i, char c, t_all *all)
 	}
 	buffer = ft_substr(command + *i, 0, len + 1);
 	*i += len + 1;
-	printf("buffer ---> %s\n", buffer);
 	return (buffer);
 }
 

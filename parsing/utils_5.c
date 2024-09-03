@@ -19,7 +19,7 @@ void	skip_str_inside_quote(char *cmd, int *i, char c)
 }
 
 bool	is_symbol(char c)
-{	
+{
 	if (c == PIPE || c == IN_RED || c == OUT_RED)
 		return (true);
 	return (false);

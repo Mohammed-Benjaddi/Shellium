@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:59:09 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/03 13:29:16 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/03 23:49:28 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,8 @@ int	check_command(t_lexer *lexer, t_all **all, char *command)
 
 int	handle_new_cmd(t_all **all, t_lexer *lexer, char *command)
 {
-	// printf("lexer->words: %s\n", lexer->args[lexer->words - 1]);
-	if (lexer->words && lexer->args[lexer->words - 1] != NULL 
-	&& (is_symbol(lexer->args[lexer->words - 1][0]) 
-	|| lexer->args[lexer->words - 1][0] == BACK_SLASH))
+	if (lexer->words && lexer->args[lexer->words - 1] != NULL
+		&& (is_symbol(lexer->args[lexer->words - 1][0])))
 		return (throw_error("syntax error", *all, 258), 0);
 	if (lexer->words)
 	{
@@ -55,7 +53,7 @@ int	handle_new_cmd(t_all **all, t_lexer *lexer, char *command)
 			return (0);
 	}
 	else
-		ft_free(lexer->args, lexer->j);	
+		ft_free(lexer->args, lexer->j);
 	return (1);
 }
 

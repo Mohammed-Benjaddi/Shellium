@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 22:25:32 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/02 22:26:03 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/03 23:48:22 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	handle_s_d_quotes(t_fix_cmd *vars, char *cmd)
 	vars->line[vars->j++] = cmd[vars->i++];
 	while (vars->i < ft_strlen(cmd) && cmd[vars->i] != vars->quote)
 		vars->line[vars->j++] = cmd[vars->i++];
-	if (vars->i - vars->k == 1)
+	if (vars->i - vars->k == 1 && cmd[vars->i + 1] == SPACE && cmd[vars->k
+			- 1] == SPACE)
 		vars->line[vars->j++] = ' ';
 }
 
@@ -30,7 +31,6 @@ void	vars_init(t_fix_cmd *vars, char *cmd, t_all *all)
 	vars->k = 0;
 	vars->quote = 0;
 	vars->reds_nums = reds_counter(cmd, all);
-	vars->line = malloc(ft_strlen(cmd) + vars->reds_nums + 10);
 }
 
 char	*fix_cmd(char *cmd, t_all *all)
