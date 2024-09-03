@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 21:25:22 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/02 22:20:30 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/03 13:13:19 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	skip_str_inside_quote(char *cmd, int *i, char c)
 }
 
 bool	is_symbol(char c)
-{
+{	
 	if (c == PIPE || c == IN_RED || c == OUT_RED)
 		return (true);
 	return (false);

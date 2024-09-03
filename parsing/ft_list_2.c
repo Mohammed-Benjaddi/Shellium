@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:41:52 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/02 19:42:09 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/03 13:21:45 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ t_cmd	*ft_lstnew(t_all **all, char **args, int args_nbr, int pipe)
 	new_node = malloc(sizeof(t_cmd));
 	if (!new_node)
 		return (NULL);
+		
 	new_node->arg_count = args_nbr;
 	new_node->args = ft_args_dup(args, *all);
 	new_node->in_file = get_input_redirection_file(args, *all);

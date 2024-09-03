@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:38:54 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/02 19:39:32 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/03 12:58:16 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@ bool	search_for_2nd_quote(char *str, char c)
 		i++;
 	}
 	if (counter % 2 == 1)
+	{
 		return (true);
+	}
 	return (false);
 }
 
