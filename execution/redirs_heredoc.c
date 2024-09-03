@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/09/03 13:49:15 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:54:27 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	ambig_outed(t_all *all)
 	}
 	return (0);
 }
+
 void	redirections_set(t_all *all)
 {
 	int	fd;
@@ -52,19 +53,6 @@ void	redirections_set(t_all *all)
 	}
 	if (all->cmd->out_file || all->cmd->append_file)
 	{
-		// printf("%zu\n\n", ft_strlen(all->cmd->out_file));
-		// if (ambig_outed(all))
-		// {
-		// 	ft_write("minishell: ambiguous redirect\n", 2);
-		// 	exit(1);
-		// }
-		// printf("\t{%s}\n", fix_file_name(all->cmd->out_file));
-		if (ambig_outed(all))
-		{
-			ft_write("minishell: ambiguous redirect", 2);
-			//free();
-			exit(1);
-		}
 		if (all->cmd->append_file)
 			fd = open(all->cmd->append_file, O_CREAT | O_RDWR | O_APPEND);
 		else
@@ -95,7 +83,6 @@ void	heredoc_pipe(t_all *all)
 		redirections_set(all);
 		ft_write(all->cmd->heredoc_content, p[1]);
 		close(p[1]);
-		write(1, "\n", 1);
 		exit(1);
 	}
 	close(p[1]);

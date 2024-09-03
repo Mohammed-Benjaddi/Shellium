@@ -23,10 +23,13 @@ void	print_exp_list(t_all *all, int pipe[2])
 	{
 		ft_write("declare -x ", STDOUT_FILENO);
 		ft_write(tmp->variable, STDOUT_FILENO);
-		ft_write("=", STDOUT_FILENO);
-		ft_write("\"", STDOUT_FILENO);
+		if (tmp->value != NULL)
+			ft_write("=", STDOUT_FILENO);
+		if (tmp->value != NULL)
+			ft_write("\"", STDOUT_FILENO);
 		ft_write(tmp->value, STDOUT_FILENO);
-		ft_write("\"", STDOUT_FILENO);
+		if (tmp->value != NULL)
+			ft_write("\"", STDOUT_FILENO);
 		write(STDOUT_FILENO, "\n", STDOUT_FILENO);
 		tmp = tmp->next;
 		i++;
@@ -51,8 +54,8 @@ void	print_env_list(t_all *all)
 
 void	exec_piped_built_ins(t_all *all, int pipes[2])
 {
-	int i;
-	char *str;
+	int		i;
+	char	*str;
 
 	i = 0;
 	if (match_word(all->cmd->cmd, "echo"))

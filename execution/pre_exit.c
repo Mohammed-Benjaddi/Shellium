@@ -54,7 +54,7 @@ void	free_vars(t_all *all)
 	free(all->_vars->pids);
 }
 
-void	exit_way(t_all *all)
+void	ft_error(t_all *all)
 {
 	int	cause_exit;
 
@@ -67,9 +67,4 @@ void	exit_way(t_all *all)
 	ft_write(strerror(errno), 2);
 	write(2, "\n", 1);
 	exit(1);
-}
-
-void	ft_error(t_all *all)
-{
-	exit_way(all);
 }
