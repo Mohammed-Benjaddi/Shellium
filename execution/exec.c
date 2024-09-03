@@ -6,15 +6,14 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/08/30 11:09:54 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/03 13:33:59 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// #include <sys/wait.h>
-// #include <sys/signal.h>         /* [XSI] for siginfo_t */
-// #include <sys/resource.h>
+#include <sys/wait.h> 
+#include <sys/signal.h>         /* [XSI] for siginfo_t */
+#include <sys/resource.h> 
 void	wait_ps(pid_t *pids, t_all *all)
 {
 	int	i;
@@ -31,7 +30,6 @@ void	wait_ps(pid_t *pids, t_all *all)
 		i++;
 	}
 }
-
 void	executing_commands(t_all *all, int *pipe_sides, char **envpp)
 {
 	redirections_set(all);
@@ -39,27 +37,19 @@ void	executing_commands(t_all *all, int *pipe_sides, char **envpp)
 	exec_piped_built_ins(all, pipe_sides);
 	if (all->cmd->cmd_not_found)
 	{
+		// printf("---------------------------\n\n\n\n\n\n\n\n");
+		// printf("%s|\n\n\n",all->cmd->cmd);
+		// ft_write(all->cmd->cmd, 2);
 		ft_write("minishell: command not found\n", 2);
 		ft_error(all);
 	}
 	if (execve(all->cmd->full_path, all->cmd->args, envpp) == -1)
 		ft_write(strerror(errno), 2);
-	printf("%d]n", errno);
-	if (errno == 13 || errno == 2)
+	if (errno == 13)
 		exit(127);
 	exit(1);
 }
-void handler(int sig)
-{
-	if (sig == SIGINT)
-		{
-			printf("\n");
-		}
-	if (sig == SIGQUIT)
-		{
-			printf("QUIT 3:\n");
-		}
-}
+
 void	execution_loop(t_vars *vars, int i, t_all *all, t_cmd *cmd)
 {
 	int	pipe_sides[2];
@@ -70,14 +60,9 @@ void	execution_loop(t_vars *vars, int i, t_all *all, t_cmd *cmd)
 	vars->pids[i] = fork();
 	if (vars->pids[i] < 0)
 		ft_error(all);
-	signal(SIGINT, handler);
-	signal(SIGQUIT, handler);
-
 	if (vars->pids[i] == 0)
 	{
 		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-
 		redirect_in_out_to_pipe(i, pipe_sides, &pr_fd, all);
 		executing_commands(all, pipe_sides, vars->envpp);
 	}
@@ -117,8 +102,6 @@ void	execution(t_all **alll, char *envpp[])
 	cmd_ = all->cmd;
 	vars = set_envp_pids(all, envpp);
 	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-
 	heredoc_check(all);
 	if (exec_built_ins(all))
 	{
@@ -131,8 +114,7 @@ void	execution(t_all **alll, char *envpp[])
 		i++;
 		all->cmd = all->cmd->next;
 	}
-	wait_ps(vars->pids, all);
-	setup_signal_handlers();
+	exiting_execution_loop(vars, all);
 	all = *alll;
 	all->cmd = cmd_;
 }

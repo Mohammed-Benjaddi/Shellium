@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_builtins.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-krid <ael-krid@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/08/16 14:54:50 by ael-krid         ###   ########.fr       */
+/*   Updated: 2024/09/03 13:34:21 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,38 +23,6 @@ void	handle_export(t_all *all)
 		i++;
 	}
 }
-
-int	sh_atoi(char *s)
-{
-	int	res;
-	int	i;
-	int	sign;
-
-	sign = 1;
-	i = 0;
-	res = 0;
-	while (s[i] != 0)
-	{
-		if (s[i] == '+' || s[i] == '-')
-		{
-			if (!(s[i + 1] >= '0' && s[i + 1] <= '9'))
-				return (-1);
-			sign *= -1;
-			i++;
-		}
-		if (!(s[i] >= '0' && s[i] <= '9'))
-			return (-1);
-		res = (res * 10) + (s[i] - 48);
-		i++;
-	}
-	return (res * sign);
-}
-
-void	free_and_exit(t_all *all, int exit_)
-{
-	env_exp_lists_clear(all);
-	exit(exit_);
-}
 void	handle_exit(t_all *all)
 {
 	int	exit_num;
@@ -63,21 +31,8 @@ void	handle_exit(t_all *all)
 	ft_write("exit\n", 2);
 	if (all->cmd->args[1] != NULL)
 	{
-		exit_num = sh_atoi(all->cmd->args[1]);
-		if (exit_num == -1 && (all->cmd->args[1][0] != '-'
-				&& all->cmd->args[1][0] != '1'))
-		{
-			ft_write("minishell: numeric argument required\n", 2);
-			free_and_exit(all, 255);
-			env_exp_lists_clear(all);
-			// free all
-		}
-		if (all->cmd->args[2])
-		{
-			ft_write("minishell: too many arguments\n", 2);
-			return ;
-		}
-		free_and_exit(all, exit_num);
+		env_exp_lists_clear(all);
+		exit(0);
 	}
 	if (all->cmd->pipe)
 		return ;

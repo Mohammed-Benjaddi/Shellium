@@ -53,8 +53,6 @@ void	env_addback(t_env *head, t_env *new)
 {
 	t_env	*tmp;
 
-	if (head == NULL)
-		head = new;
 	tmp = env_getlast(head);
 	tmp->next = new;
 	new->prev = tmp;
