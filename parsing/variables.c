@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 09:42:17 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/03 13:32:22 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/03 09:42:17 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,55 +88,4 @@ int	ft_isalnum(int c)
 	if ((c >= 48 && c <= 57) || (c >= 97 && c <= 122) || (c >= 65 && c <= 90))
 		return (1);
 	return (0);
-}
-
-char *handle_variables(char *str, t_env *env, size_t length, t_all *all)
-{
-  size_t i = 0;
-  size_t len = strlen(str);
-  char output[1024];
-  char* var_value;
-  output[0] = '\0';
-
-  while (i < len)
-  {
-    if (str[i] == '$') 
-    {
-      i++;
-      if(i < len && str[i] == '?')
-      {
-
-        var_value = ft_itoa(all->exit_status);
-        strcat(output, var_value);
-        free(var_value);
-        var_value = NULL;
-        i++;
-      }
-      else
-      {
-        char var_name[1024];
-        size_t var_len = 0;
-        while (i < len && (ft_isalnum(str[i]) || str[i] == '_'))
-        var_name[var_len++] = str[i++];
-        var_name[var_len] = '\0';
-        var_value = get_var_value(ft_strdup(var_name), env);
-        strcat(output, var_value);
-        free(var_value);
-        var_value = NULL;
-      }
-    }
-    else
-    {
-      size_t j = ft_strlen(output);
-      output[j] = str[i];
-      output[j + 1] = '\0';
-      i++;
-    }
-  }
-  free(var_value);
-  free(str);
-  str = NULL;
-  if(!ft_strlen(output))
-    return NULL;
-  return ft_strtok(ft_strdup(output));
 }

@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/09/02 14:39:32 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/03 13:50:36 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	env_addback(t_env *head, t_env *new)
 {
 	t_env	*tmp;
 
+	if (head == NULL)
+		head = new;
 	tmp = env_getlast(head);
 	tmp->next = new;
 	new->prev = tmp;

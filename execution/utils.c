@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-krid <ael-krid@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/09/03 13:36:07 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/08/16 14:54:50 by ael-krid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,18 @@ int	n_flaged(char *str)
 	}
 	return (1);
 }
+
+void	echo_to_file(char **str, int i, int fd)
+{
+	while (str[i])
+	{
+		ft_write(str[i], fd);
+		if (str[i + 1] != NULL)
+			ft_write(" ", fd);
+		i++;
+	}
+}
+
 void	ft_echo(char **str, int fd)
 {
 	int	i;
@@ -54,9 +66,7 @@ void	ft_echo(char **str, int fd)
 	if (index_to_txt > 0)
 	{
 		if (str[1] == NULL)
-		{
 			return ;
-		}
 		flag = 1;
 		i++;
 	}

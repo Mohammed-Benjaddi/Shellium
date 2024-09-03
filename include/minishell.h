@@ -177,6 +177,9 @@ char	*check_filename(char **args, int i, t_all *all);
 char	*fix_cmd(char *cmd, t_all *all);
 int	count_commands(t_cmd *cmd);
 bool	is_correct_cmd(char *cmd, t_all *all);
+int	reds_counter(char *cmd, t_all *all);
+int	find_len(char *str, bool inside_quotes);
+bool	is_incorrect_cmd(char *cmd, int *pipe, t_all *all);
 
 // ----------------------------------------------
 void    wait_ps(pid_t *pids, t_all *all);

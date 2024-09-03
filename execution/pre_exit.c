@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/09/03 13:35:29 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/08/18 13:16:19 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	free_vars(t_all *all)
 {
 	free(all->_vars->pids);
 }
+
 void	exit_way(t_all *all)
 {
 	int	cause_exit;
@@ -67,8 +68,8 @@ void	exit_way(t_all *all)
 	write(2, "\n", 1);
 	exit(1);
 }
+
 void	ft_error(t_all *all)
 {
-	
 	exit_way(all);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft__export.c                                       :+:      :+:    :+:   */
+/*   ft__export.c                                        :+:      :+:    :+:  */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-krid <ael-krid@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/09/03 13:34:58 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/08/16 14:54:50 by ael-krid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	add_it_to_env(t_all *all, char *new, t_exp *new_exp)
 {
 	t_env	*new_env;
 
-	printf("\t\t\t@@@@@@@env@@@@@@\n");
+	printf("\t\t\t###\n\n");
 	new_env = env_new(new);
 	if (new_env == NULL)
 	{
@@ -82,12 +82,57 @@ void	add_it_to_env(t_all *all, char *new, t_exp *new_exp)
 		ft_error(all);
 	}
 	free(new);
-	if (all->env == NULL)
-		all->env = new_env;
-	else
-		env_addback(all->env, new_env);
-	if (all->exp == NULL)
-		all->exp = new_exp;
-	else
-		exp_addback(all->exp, new_exp);
+	env_addback(all->env, new_env);
+	exp_addback(all->exp, new_exp);
+	// free(new_exp->value);
+	// free(new_exp->variable);
+	// free(new_exp);
+}
+
+void	identifier_error(char *indentifer)
+{
+	// ft_write("export: ", 2);
+	// ft_write(indentifer, 2);
+}
+
+void	parse_indetifier(t_all *all, char *str)
+{
+	int i;
+	int ret;
+	t_exp *last;
+	char *tmp_str;
+
+	i = 0;
+	tmp_str = ft_strdup(str);
+	ret = check_before_env(str);
+	if (ret == 0)
+	{
+		// free(tmp_str);
+		ft_write("minishell: not a valid identifier\n", 2);
+		all->exit_status = 1;
+		return ;
+	}
+	last = exp_new(str);
+	if (ret == -1)
+	{
+		if (unset_exp(all, last, ret))
+		{
+			free(last->variable );
+			free(last->value);
+			free(last);
+
+			free(tmp_str); // check ...
+			return ;
+		}
+		printf("HELLO\n\n\n");
+		free(tmp_str);
+		exp_addback(all->exp, last);
+		return ;
+	}
+	if (unset_exp(all, last, ret))
+	{
+		free(tmp_str); // check ...
+		return ;
+	}
+	add_it_to_env(all, tmp_str, last);
 }
