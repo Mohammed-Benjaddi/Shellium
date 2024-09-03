@@ -1,7 +1,7 @@
 CC = cc
 CFLAGS = #-fsanitize=address -g #-Wall -Wextra -Werror
 XFLAGS = -I ~/.brew/opt/readline/include
-X_FLAGS = -L ~/.brew/Cellar/readline/8.2.13/lib
+
 
 HEADER = -I ./include/
 
@@ -15,17 +15,16 @@ PARSING_SRCS = ./parsing/main.c ./parsing/utils_2.c ./parsing/utils_3.c ./parsin
 								./parsing/ft_list_3.c ./parsing/handle_variables.c
 PARSING_OBJS = ${PARSING_SRCS:.c=.o}
 
-EXEC_SRCS = ./execution/exec_utils.c ./execution/unset_funcs__.c ./execution/ft_heredoc__.c ./execution/export_prs.c ./execution/lists_utils.c ./execution/exec_cmd.c ./execution/unset_funcs.c ./execution/execute_piped_ins.c ./execution/lst_utils.c ./execution/redirs_heredoc.c  ./execution/env_utils.c ./execution/ft_chdir.c ./execution/exec.c  ./execution/pre_exit.c ./execution/execute_builtins.c ./execution/unset_vars.c \
+EXEC_SRCS = ./execution/execute_piped_ins.c ./execution/lst_utils.c ./execution/redirs_heredoc.c  ./execution/env_utils.c ./execution/ft_chdir.c ./execution/exec.c  ./execution/pre_exit.c ./execution/execute_builtins.c ./execution/unset_vars.c \
  						./execution/export_list.c  ./execution/ft_heredoc.c ./execution/utils.c \
 						./execution/ft__export.c 
-
-EXEC_RD = ./exec/signals_utils.o
+EXEC_RD = ./exec/signals_utils.o 
 EXEC_OBJS = ${EXEC_SRCS:.c=.o}
 
 all: $(NAME)
 
 $(NAME): $(PARSING_OBJS) $(EXEC_OBJS) $(EXEC_RD)
-	$(CC) $(CFLAGS)  $(X_FLAGS) $(EXEC_RD) $(PARSING_OBJS) $(EXEC_OBJS) -o $(NAME) -lreadline $(XFLAGS)
+	$(CC) $(CFLAGS) -L ~/.brew/Cellar/readline/8.2.13/lib $(EXEC_RD) $(PARSING_OBJS) $(EXEC_OBJS) -o $(NAME) -lreadline $(XFLAGS)
 
 ./parsing/%.o: ./parsing/%.c ./include/minishell.h
 	$(CC) $(CFLAGS) $(HEADER) -c $< -o $@

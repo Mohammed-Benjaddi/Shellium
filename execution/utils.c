@@ -22,28 +22,20 @@ void	ft_write(char *str, int fd)
 		exit(1);
 	}
 }
-
-int	n_flaged(char *str)
+void	ft_echo(char **str, int fd)
 {
-	if (str == NULL)
-		return (0);
-	if ((*str != '-' && *(str + 1) != 0) || *str == 0)
-		return (0);
-	if (*str == '-' && *(str + 1) != 'n')
-		return (0);
-	str++;
-	while (*str)
+	int	i;
+	int	flag;
+
+	flag = 0;
+	i = 0;
+	if (match_word("-n", *str))
 	{
-		if (*str != 'n')
-			return (0);
-		str++;
+		if (str[1] == NULL)
+			return ;
+		flag = 1;
+		i++;
 	}
-	return (1);
-}
-
-void	echo_to_file(char **str, int i, int fd)
-{
-	printf("[%s]", str[i]);
 	while (str[i])
 	{
 		ft_write(str[i], fd);
@@ -51,33 +43,9 @@ void	echo_to_file(char **str, int i, int fd)
 			ft_write(" ", fd);
 		i++;
 	}
-}
-
-void	ft_echo(char **str, int fd)
-{
-	int	i;
-	int	flag;
-	int	index_to_txt;
-
-	flag = 0;
-	i = 0;
-	index_to_txt = 0;
-	while (n_flaged(str[index_to_txt]))
-		index_to_txt++;
-	if (index_to_txt > 0)
-	{
-		if (str[1] == NULL)
-		{
-			return ;
-		}
-		flag = 1;
-		i++;
-	}
-	echo_to_file(str, index_to_txt, fd);
 	if (flag != 1)
 		ft_write("\n", fd);
 }
-
 void	ft_pwd(t_all *all)
 {
 	char	buff[1024];

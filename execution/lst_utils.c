@@ -39,7 +39,6 @@ void	free_e(char **envp)
 		free(envp[i++]);
 	free(envp);
 }
-
 void	set_lists(t_all *all, char **env)
 {
 	int		i;
@@ -67,7 +66,6 @@ void	set_lists(t_all *all, char **env)
 	}
 	free_e(envp);
 }
-
 void	*shell_calloc(size_t size, int count)
 {
 	unsigned char	*ret;
