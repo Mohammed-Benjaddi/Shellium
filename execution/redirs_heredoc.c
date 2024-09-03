@@ -3,14 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   redirs_heredoc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-krid <ael-krid@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/08/16 14:54:50 by ael-krid         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:54:27 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	check_amb(char *file)
+{
+	int	i;
+
+	i = 0;
+	while (file[i])
+	{
+		if (file[i] == ' ')
+			if (i != 0 && file[i + 1] != 0)
+				return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	ambig_outed(t_all *all)
+{
+	if (all->cmd->out_file || all->cmd->append_file)
+	{
+		if (all->cmd->out_file)
+			return (check_amb(all->cmd->out_file));
+		return (check_amb(all->cmd->out_file));
+	}
+	return (0);
+}
 
 void	redirections_set(t_all *all)
 {
@@ -57,7 +83,6 @@ void	heredoc_pipe(t_all *all)
 		redirections_set(all);
 		ft_write(all->cmd->heredoc_content, p[1]);
 		close(p[1]);
-		write(1, "\n", 1);
 		exit(1);
 	}
 	close(p[1]);
