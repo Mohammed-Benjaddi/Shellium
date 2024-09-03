@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static	int	numlen(long int num)
+static int	numlen(long int num)
 {
 	int	i;
 
@@ -30,7 +30,7 @@ static	int	numlen(long int num)
 	return (i);
 }
 
-static	char	*ft_strrev(char *res)
+static char	*ft_strrev(char *res)
 {
 	size_t	i;
 	size_t	j;
@@ -49,7 +49,7 @@ static	char	*ft_strrev(char *res)
 	return (res);
 }
 
-static	char	*alloc_str(long int *num)
+static char	*alloc_str(long int *num)
 {
 	char	*res;
 	int		len;

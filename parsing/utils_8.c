@@ -72,4 +72,3 @@ bool	is_correct_cmd(char *cmd, t_all *all)
 	}
 	return (true);
 }
-

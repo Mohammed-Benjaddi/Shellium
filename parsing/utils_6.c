@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 21:53:15 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/02 22:26:06 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/03 09:42:32 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ char	*get_str_in_quotes(char *command, int *i, char c, t_all *all)
 	char	*rest;
 	char	*var_value;
 
-	// *i += 1;
 	len = ft_strchr(command + *i + 1, c);
 	if (len == -1)
 	{

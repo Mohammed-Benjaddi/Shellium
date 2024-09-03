@@ -49,10 +49,10 @@ char	*fix_cmd(char *cmd, t_all *all)
 			handle_s_d_quotes(&vars, cmd);
 		else if (((cmd[vars.i] == IN_RED || cmd[vars.i] == OUT_RED
 					|| cmd[vars.i] == PIPE) && (vars.i > 0 && (cmd[vars.i
-						- 1] != IN_RED || cmd[vars.i - 1] != OUT_RED))))
+							- 1] != IN_RED || cmd[vars.i - 1] != OUT_RED))))
 			vars.line[vars.j++] = ' ';
 		else if (vars.i > 0 && (cmd[vars.i - 1] == IN_RED || cmd[vars.i
-				- 1] == OUT_RED) && cmd[vars.i] != SPACE)
+					- 1] == OUT_RED) && cmd[vars.i] != SPACE)
 			vars.line[vars.j++] = ' ';
 		vars.line[vars.j++] = cmd[vars.i++];
 	}

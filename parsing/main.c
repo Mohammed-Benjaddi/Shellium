@@ -6,18 +6,11 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 20:17:09 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/02 22:33:32 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/02 22:36:04 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
-
-// void	check_leaks(void)
-// {
-// 	system("leaks -q minishell");
-// }
 
 void	skip_spaces(char *cmd, int *i)
 {
@@ -50,7 +43,6 @@ int	start_shell(char *read, t_all **all, char **env)
 		return (0);
 	}
 	(*all)->nums_of_cmds = count_commands((*all)->cmd);
-	// print_list((*all)->cmd);
 	if (!(*all)->error)
 		execution(all, env);
 	free((*all)->_vars->pids);
@@ -69,7 +61,6 @@ int	main(int ac, char **av, char **env)
 	all = malloc(sizeof(t_all));
 	all->cmd = NULL;
 	shell_init(all, env);
-	// atexit(check_leaks);
 	while (1)
 	{
 		all->error = false;
@@ -86,7 +77,11 @@ int	main(int ac, char **av, char **env)
 		}
 		else
 			free(read);
-		// check_leaks();
 	}
 	return (0);
 }
+
+// void	check_leaks(void)
+// {
+// 	system("leaks -q minishell");
+// }

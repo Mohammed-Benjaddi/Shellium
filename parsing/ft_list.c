@@ -68,7 +68,7 @@ char	*one_cmd_found(char **words, int len, char *buffer, int *j)
 	free(buffer);
 	buffer = NULL;
 	*j += 1;
-	return result;
+	return (result);
 }
 
 void	handle_var_as_cmd(char **result, char *arg, int *j, t_all *all)

@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 20:19:17 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/02 20:19:32 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/03 11:41:28 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,21 @@ int	skip_reds(char *str, int *i, char c, t_all *all)
 	return (1);
 }
 
+int	count_len(char *str, int *i, int *length, int str_len)
+{
+	if (*i < str_len && str[*i] == VAR_SIGN && (*i == 0 || (*i > 0 
+				&& str[*i - 1] != BACK_SLASH)))
+	{
+		while (*i < str_len && str[*i] != DOUBLE_QUOTE && str[*i] != PIPE)
+		{
+			*i += 1;
+			*length += 1;
+		}
+		return (0);
+	}
+	return (1);
+}
+
 int	get_vars_length(char *str)
 {
 	int	i;
@@ -53,23 +68,14 @@ int	get_vars_length(char *str)
 		return (length);
 	while (i < str_len)
 	{
-		while (i < str_len && ft_isspace(str[i]))
-			i++;
+		skip_spaces(str, &i);
 		if (i < str_len && str[i] == SINGLE_QUOTE)
 		{
 			i++;
 			skip_str_inside_quote(str, &i, str[i - 1]);
 		}
-		if (i < str_len && str[i] == VAR_SIGN && (i == 0 || (i > 0 && str[i
-			- 1] != BACK_SLASH)))
-		{
-			while (i < str_len && str[i] != DOUBLE_QUOTE && str[i] != PIPE)
-			{
-				i++;
-				length++;
-			}
+		if (!count_len(str, &i, &length, str_len))
 			break ;
-		}
 		i++;
 	}
 	return (length);
@@ -130,33 +136,3 @@ char	*find_and_remove(char *str, char c)
 	str = NULL;
 	return (res);
 }
-
-// void print_list(t_cmd *head)
-// {
-//   int i;
-
-//   i = 0;
-//   if(!head)
-//     printf("head is null\n");
-//   printf("-----------------------------\n");
-//   while(head)
-//   {
-//     int i;
-
-//     i = 0;
-//     printf("%s --> ", head->cmd);
-//     while(head->args[i])
-//     {
-//       printf("%s{ %s } %s", YELLOW, head->args[i], NC);
-//       i++;
-//     }
-//     printf("%s %s %s", CYAN, head->full_path, NC);
-//     printf("%s %d %s", RED, head->cmd_not_found, NC);
-//     // printf("%s %s %s", RED, head->in_file, NC);
-//     // printf("%s %s %s", GREEN, head->out_file, NC);
-//     // printf("%s %s %s", RED, head->append_file, NC);
-//     // printf("%s %d %s", GREEN, head->pipe, NC);
-//     head = head->next;
-//   }
-//   printf("\n-----------------------------\n");
-// }

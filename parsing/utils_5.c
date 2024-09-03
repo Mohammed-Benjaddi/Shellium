@@ -54,7 +54,7 @@ int	reds_counter(char *cmd, t_all *all)
 			if (!skip_reds(cmd, &i, cmd[i], all))
 				return (0);
 		}
-    is_pipe(cmd[i], &counter);
+		is_pipe(cmd[i], &counter);
 		i++;
 	}
 	return ((counter * 2));
