@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 20:17:09 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/04 15:19:41 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/04 19:22:31 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	shell_init(t_all *all, char **env)
 {
 	using_history();
 	set_lists(all, env);
-	setup_signal_handlers();
+	// setup_signal_handlers();
 	all->exit_status = 0;
 }
 
@@ -96,6 +96,8 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	(void)ac;
 	all = malloc(sizeof(t_all));
+	if(!all)
+		exit(1);
 	all->cmd = NULL;
 	shell_init(all, env);
 	// atexit(check_leaks);
@@ -118,9 +120,9 @@ int	main(int ac, char **av, char **env)
 		}
 		else
 			free(read);
-		system("leaks -q minishell");
+		// system("leaks -q minishell");
 	}
-	return (0);
+	return (all->exit_status);
 }
 
 // void	check_leaks(void)

@@ -1,17 +1,18 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <dirent.h>
-# include <errno.h>
-# include <fcntl.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <signal.h>
-# include <stdbool.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <unistd.h>
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdbool.h>
+#include <string.h>
+#include <fcntl.h>
+#include <string.h>
+#include <signal.h>
+#include <errno.h>
+#include <dirent.h>
 
 # define SINGLE_QUOTE '\''
 # define DOUBLE_QUOTE '\"'

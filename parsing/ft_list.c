@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:43:28 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/03 23:49:43 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/04 19:27:12 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	get_first_word_index(char *str)
 	int	i;
 
 	i = 0;
-	printf("str: %s\n", str);
+	// printf("str: %s\n", str);
 	while (str[i] && str[i] != ' ')
 		i++;
 	return (i);

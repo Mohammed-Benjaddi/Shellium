@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/08/30 11:09:54 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/04 19:06:05 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	executing_commands(t_all *all, int *pipe_sides, char **envpp)
 		ft_write("minishell: command not found\n", 2);
 		ft_error(all, 1);
 	}
-	write(2, ">>executing<<\n", 14);
 	if (execve(all->cmd->full_path, all->cmd->args, envpp) == -1)
 		ft_write(strerror(errno), 2);
 	if (errno == 13 || errno == 2)

@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/08/30 11:09:54 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/04 19:22:58 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ void	handle_sigs(int sig)
 
 void	ignore_sigs(void)
 {
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
+	// signal(SIGINT, SIG_IGN);
+	// signal(SIGQUIT, SIG_IGN);
 }
 
 void	exiting_execution_loop(t_vars *vars, t_all *all)
 {
 	wait_ps(vars->pids, all);
-	setup_signal_handlers();
+	// setup_signal_handlers();
 }

@@ -11,10 +11,10 @@ void signal_handler(int signo)
             // rl_on_new_line();
             
         //    rl_on_new_line();
-           write(1, "\n", 1);
-           rl_on_new_line();
-          rl_replace_line("", 0);
-           rl_redisplay();
+        //    write(1, "\n", 1);
+        //    rl_on_new_line();
+        //   rl_replace_line("", 0);
+        //    rl_redisplay();
 
 
             }
@@ -30,8 +30,8 @@ void signal_handler(int signo)
 }
 void set_sigs()
 {
-	signal(SIGINT, handle_sigs);
-	signal(SIGQUIT, handle_sigs);
+	// signal(SIGINT, handle_sigs);
+	// signal(SIGQUIT, handle_sigs);
 }
 void setup_signal_handlers() 
 {
@@ -39,8 +39,8 @@ void setup_signal_handlers()
     // sa.sa_handler = signal_handler;
     // sigemptyset(&sa.sa_mask);
     // sa.sa_flags = SA_RESTART;
-     signal(SIGINT, signal_handler);
-     signal(SIGQUIT, SIG_IGN);
+    //  signal(SIGINT, signal_handler);
+    //  signal(SIGQUIT, SIG_IGN);
 
 
     // sigaction(SIGINT, &sa, NULL);
@@ -50,7 +50,7 @@ void setup_signal_handlers()
 }
 void reset_signal_handlers() 
 {
-     signal(SIGINT, SIG_DFL);
-     signal(SIGQUIT, SIG_DFL);
-     signal(SIGTSTP, SIG_DFL);
+    //  signal(SIGINT, SIG_DFL);
+    //  signal(SIGQUIT, SIG_DFL);
+    //  signal(SIGTSTP, SIG_DFL);
 };

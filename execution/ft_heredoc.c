@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-krid <ael-krid@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/08/16 14:54:50 by ael-krid         ###   ########.fr       */
+/*   Updated: 2024/09/04 19:23:42 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	heredoc_child(int *_pipe, t_cmd *cmd, t_all *all)
 {
-	signal(SIGINT, SIG_DFL);
+	// signal(SIGINT, SIG_DFL);
 	close(_pipe[0]);
 	heredoc_(cmd, all);
 	write(_pipe[1], cmd->heredoc_content, ft_strlen(cmd->heredoc_content));

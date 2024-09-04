@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/08/30 11:09:54 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/04 19:23:38 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int	execution_loop(t_vars *vars, int i, t_all *all, t_cmd *cmd)
 	if (vars->pids[i] == 0)
 	{
 		close(pipe_sides[0]);
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
+		// signal(SIGINT, SIG_DFL);
+		// signal(SIGQUIT, SIG_DFL);
 		redirect_in_out_to_pipe(i, pipe_sides, &pr_fd, all);
 		executing_commands(all, pipe_sides, vars->envpp);
 	}
