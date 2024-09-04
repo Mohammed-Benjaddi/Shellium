@@ -29,7 +29,6 @@ void	shell_init(t_all *all, char **env)
 void	print_list(t_cmd *head)
 {
 	int	i;
-	int	i;
 
 	i = 0;
 	if (!head)
@@ -94,6 +93,8 @@ int	main(int ac, char **av, char **env)
 	t_all	*all;
 	char	*read;
 
+	(void) av;
+	(void) ac;
 	all = malloc(sizeof(t_all));
 	all->cmd = NULL;
 	shell_init(all, env);

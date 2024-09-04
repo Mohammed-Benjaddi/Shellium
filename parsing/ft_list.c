@@ -31,16 +31,16 @@ int	count_valid_args(char **args)
 	return (counter);
 }
 
-char	*catch_arg(char *arg, t_all *all, int i)
+char	*catch_arg(char *arg, t_all *all)
 {
 	char	*buffer;
 	int		index;
 
 	if (get_vars_length(arg) > 0)
-		buffer = handle_variables(arg, all->env, get_vars_length(arg), all);
+		buffer = handle_variables(arg, all->env, all);
 	else
 		buffer = ft_strdup(arg);
-	index = ft_strchr_pro(buffer, DOUBLE_QUOTE, SINGLE_QUOTE, false);
+	index = ft_strchr_pro(buffer, DOUBLE_QUOTE, SINGLE_QUOTE);
 	if (index != -1 && buffer[index - 1] == SINGLE_QUOTE)
 		buffer = find_and_remove(buffer, SINGLE_QUOTE);
 	else if (index != -1 && buffer[index - 1] == DOUBLE_QUOTE)
@@ -76,11 +76,9 @@ void	handle_var_as_cmd(char **result, char *arg, int *j, t_all *all)
 	char	*buffer;
 	char	**words;
 	int		index;
-	int		i;
 	int		len;
 
-	i = 0;
-	buffer = handle_variables(arg, all->env, get_vars_length(arg), all);
+	buffer = handle_variables(arg, all->env, all);
 	if (!buffer)
 		return ;
 	words = ft_split(buffer, ' ');

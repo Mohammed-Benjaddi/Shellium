@@ -55,14 +55,13 @@ char	*get_var(char *str, t_all *all)
 {
 	char	*buffer;
 
-	buffer = handle_variables(str, all->env, get_vars_length(str), all);
+	buffer = handle_variables(str, all->env, all);
 	return (buffer);
 }
 
 char	*check_filename(char **args, int i, t_all *all)
 {
 	char	*buffer;
-	char	*result;
 	char	**words;
 	int		index;
 
@@ -80,7 +79,7 @@ char	*check_filename(char **args, int i, t_all *all)
 		else
 			return (buffer);
 	}
-	index = ft_strchr_pro(args[i + 1], DOUBLE_QUOTE, SINGLE_QUOTE, false);
+	index = ft_strchr_pro(args[i + 1], DOUBLE_QUOTE, SINGLE_QUOTE);
 	if (index != -1 && args[i + 1][index - 1] == SINGLE_QUOTE)
 		return (find_and_remove(ft_strdup(args[i + 1]), SINGLE_QUOTE));
 	else if (index != -1 && args[i + 1][index - 1] == DOUBLE_QUOTE)

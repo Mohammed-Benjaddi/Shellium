@@ -19,9 +19,8 @@ int	ft_isspace(char c)
 	return (0);
 }
 
-int	find_len(char *str, bool inside_quotes)
+int	find_len(char *str)
 {
-	int	len;
 	int	i;
 	int	str_len;
 
@@ -29,7 +28,7 @@ int	find_len(char *str, bool inside_quotes)
 	str_len = ft_strlen(str);
 	while (i < str_len && str[i] != SPACE && str[i] != PIPE)
 	{
-		if (i < len && (str[i] == SINGLE_QUOTE || str[i] == DOUBLE_QUOTE))
+		if (i < str_len && (str[i] == SINGLE_QUOTE || str[i] == DOUBLE_QUOTE))
 		{
 			i++;
 			skip_str_inside_quote(str, &i, str[i - 1]);

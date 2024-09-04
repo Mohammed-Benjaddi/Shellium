@@ -30,19 +30,19 @@ char	*ft_strdup(char *str)
 	return (buf);
 }
 
-char	*ft_substr(char *s, unsigned int start, int len)
+char	*ft_substr(char *s, int start, int len)
 {
 	int				i;
-	unsigned int	slen;
+	int	slen;
 	char			*res;
 
 	i = 0;
-	slen = (unsigned int)ft_strlen(s);
+	slen = ft_strlen(s);
 	if (!s || start > slen)
 		return (ft_strdup(""));
-	if (len > (size_t)slen || (len < (size_t)slen && len
-			+ (size_t)start > (size_t)slen))
-		len = (size_t)slen - (size_t)start;
+	if (len > slen || (len < slen && len
+			+ start > slen))
+		len = slen - start;
 	res = (char *)malloc(sizeof(char) * (len) + 1);
 	if (res == NULL)
 		return (NULL);
@@ -81,8 +81,8 @@ char	*ft_strjoin(char *s1, char *s2)
 
 size_t	ft_strlcpy(char *dst, char *src, int dstsize)
 {
-	size_t	src_size;
-	size_t	i;
+	int	src_size;
+	int	i;
 
 	i = 0;
 	src_size = ft_strlen(src);

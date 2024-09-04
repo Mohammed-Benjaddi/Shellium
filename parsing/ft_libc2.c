@@ -52,11 +52,9 @@ int	ft_strchr(char *str, char c)
 {
 	int	i;
 	int	in_quotes;
-	int	count_quotes;
 
 	i = 0;
 	in_quotes = 1;
-	count_quotes = 0;
 	if (!search_for_2nd_quote(str, c))
 		return (-1);
 	while (str[i])
@@ -75,7 +73,7 @@ int	ft_strchr(char *str, char c)
 	return (i);
 }
 
-int	ft_strchr_pro(char *str, char c1, char c2, bool inside_quotes)
+int	ft_strchr_pro(char *str, char c1, char c2)
 {
 	int	i;
 

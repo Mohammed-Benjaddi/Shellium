@@ -15,7 +15,6 @@
 int	skip_reds(char *str, int *i, char c, t_all *all)
 {
 	int		counter;
-	char	redirection;
 	int		len;
 
 	counter = 0;

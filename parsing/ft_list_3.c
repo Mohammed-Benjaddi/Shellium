@@ -35,7 +35,7 @@ char	**ft_args_dup(char **args, t_all *all)
 			&& args[i][0] != DOUBLE_QUOTE)
 			handle_var_as_cmd(result, args[i], &j, all);
 		else
-			result[j++] = catch_arg(args[i], all, i);
+			result[j++] = catch_arg(args[i], all);
 	}
 	result[j] = NULL;
 	return (result);

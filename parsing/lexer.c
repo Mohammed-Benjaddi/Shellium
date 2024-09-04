@@ -23,8 +23,7 @@ int	check_command(t_lexer *lexer, t_all **all, char *command)
 		else if (command[lexer->i] == DOUBLE_QUOTE)
 			lexer->buffer = get_str_in_quotes(command, &lexer->i, '\"', *all);
 		else
-			lexer->buffer = get_str_without_quotes(command, &lexer->i,
-					(*all)->env, *all);
+			lexer->buffer = get_str_without_quotes(command, &lexer->i);
 		if ((*all)->error == true)
 			return (free(lexer->buffer), 0);
 		if (ft_strlen(lexer->buffer))

@@ -27,7 +27,7 @@ char	*isolate_cmd_from_path(char *cmd)
 	return (command);
 }
 
-static char	**get_all_paths(char *cmd, t_env *env)
+static char	**get_all_paths(t_env *env)
 {
 	char	**all_paths;
 	char	*path;
@@ -43,11 +43,9 @@ static char	**get_all_paths(char *cmd, t_env *env)
 
 char	*search_at_curr_dir(char *cmd)
 {
-	int		i;
 	char	cwd[256];
 	char	*path;
 
-	i = 0;
 	path = NULL;
 	getcwd(cwd, sizeof(cwd));
 	path = ft_strjoin(ft_strjoin(ft_strdup(cwd), "/"), cmd);
@@ -93,7 +91,7 @@ char	*get_path(char *cmd, t_env *env)
 	path = NULL;
 	if (!cmd)
 		return (NULL);
-	all_paths = get_all_paths(cmd, env);
+	all_paths = get_all_paths(env);
 	line = NULL;
 	if (cmd[0] && cmd[0] == SLASH && cmd[ft_strlen(cmd) - 1])
 	{

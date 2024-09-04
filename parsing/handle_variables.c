@@ -68,7 +68,7 @@ char	*append_regular_char(char *output, char c)
 	return (result);
 }
 
-char	*handle_variables(char *str, t_env *env, int length, t_all *all)
+char	*handle_variables(char *str, t_env *env, t_all *all)
 {
 	int		i;
 	int		len;

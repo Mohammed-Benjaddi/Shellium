@@ -53,11 +53,12 @@ static int	get_delimiters_len(char **args)
 
 char	*get_delimiter(char *arg)
 {
-	int		index;
 	char	*buffer;
 
 	buffer = find_and_remove(ft_strdup(arg), DOUBLE_QUOTE);
 	buffer = find_and_remove(buffer, SINGLE_QUOTE);
+	if(ft_strlen(buffer) == 0)
+		return NULL;
 	return (buffer);
 }
 

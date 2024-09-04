@@ -52,8 +52,7 @@ char	*fill_full_str(char *full_str, char *input, t_all *all)
 	if (full_str == NULL)
 		ft_error(all);
 	if (get_vars_length(full_str) > 0)
-		full_str = ft_strjoin(handle_variables(full_str, all->env,
-					get_vars_length(full_str), all), "\n");
+		full_str = ft_strjoin(handle_variables(full_str, all->env , all), "\n");
 	else
 		full_str = ft_strjoin(full_str, "\n");
 	free(input);

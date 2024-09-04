@@ -43,11 +43,9 @@ char	*ft_strtok(char *str)
 
 char	*get_only_var(char *str)
 {
-	int		i;
 	int		len;
 	char	*result;
 
-	i = 0;
 	len = 0;
 	while (str[len] && !is_symbol(str[len]) && str[len] != SPACE
 		&& str[len] != SINGLE_QUOTE)

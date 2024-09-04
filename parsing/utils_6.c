@@ -16,8 +16,6 @@ char	*get_str_in_quotes(char *command, int *i, char c, t_all *all)
 {
 	int		len;
 	char	*buffer;
-	char	*rest;
-	char	*var_value;
 
 	len = ft_strchr(command + *i + 1, c);
 	if (len == -1)
@@ -33,13 +31,12 @@ char	*get_str_in_quotes(char *command, int *i, char c, t_all *all)
 	return (buffer);
 }
 
-char	*get_str_without_quotes(char *command, int *i, t_env *env, t_all *all)
+char	*get_str_without_quotes(char *command, int *i)
 {
 	int		len;
 	char	*buffer;
-	int		index;
 
-	len = find_len(command + *i, false);
+	len = find_len(command + *i);
 	buffer = ft_substr(command, *i, len);
 	*i += len;
 	return (buffer);
