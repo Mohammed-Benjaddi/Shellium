@@ -32,16 +32,15 @@ char	*ft_strdup(char *str)
 
 char	*ft_substr(char *s, int start, int len)
 {
-	int				i;
-	int	slen;
-	char			*res;
+	int		i;
+	int		slen;
+	char	*res;
 
 	i = 0;
 	slen = ft_strlen(s);
 	if (!s || start > slen)
 		return (ft_strdup(""));
-	if (len > slen || (len < slen && len
-			+ start > slen))
+	if (len > slen || (len < slen && len + start > slen))
 		len = slen - start;
 	res = (char *)malloc(sizeof(char) * (len) + 1);
 	if (res == NULL)

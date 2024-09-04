@@ -54,10 +54,13 @@ void	free_vars(t_all *all)
 	free(all->_vars->pids);
 }
 
-void	ft_error(t_all *all)
+void	ft_error(t_all *all, int child)
 {
-	int	cause_exit;
-
+	if (!child)
+	{
+		ft_write(strerror(errno), 2);
+		return ;
+	}
 	env_exp_lists_clear(all);
 	free_vars(all);
 	all->exit_status = 1;

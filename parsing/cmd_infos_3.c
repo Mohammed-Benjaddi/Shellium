@@ -6,68 +6,68 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:36:20 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/02 21:43:42 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:59:41 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_output_redirection_file(char **args, t_all *all)
+static int	is_output_red(t_cmd *node, t_all *all, char **args, int i)
 {
-	int		i;
-	int		fd;
-	char	*out_file;
+	int	fd;
 
-	i = -1;
-	out_file = NULL;
-	while (args[++i])
-	{
-		if (!ft_strcmp(args[i], ">"))
-		{
-			if (!args[i + 1])
-				return (throw_error("syntax error", all, 258), NULL);
-			else
-			{
-				if (!ft_strcmp(args[i + 1], ">"))
-					return (NULL);
-				free(out_file);
-				out_file = NULL;
-				out_file = check_filename(args, i, all);
-				fd = open(out_file, O_CREAT | O_RDWR, 0777);
-				close(fd);
-			}
-		}
-	}
-	return (out_file);
+	if (!args[i + 1])
+		return (throw_error("syntax error", all, 258), 0);
+	free(node->out_file);
+	free(node->append_file);
+	node->out_file = NULL;
+	node->append_file = NULL;
+	node->out_file = NULL;
+	node->out_file = check_filename(args, i, all);
+	fd = open(node->out_file, O_CREAT | O_RDWR, 0777);
+	close(fd);
+	return (1);
 }
 
-char	*get_append_to_file(char **args, t_all *all)
+static int	is_output_append_red(t_cmd *node, t_all *all, char **args, int i)
 {
-	int		i;
-	int		fd;
-	char	*file;
+	int	fd;
 
-	i = 0;
-	file = NULL;
-	while (args[i])
+	if (!args[i + 1])
+		return (throw_error("syntax error", all, 258), 0);
+	free(node->append_file);
+	free(node->out_file);
+	node->out_file = NULL;
+	node->append_file = NULL;
+	node->append_file = check_filename(args, i, all);
+	fd = open(node->append_file, O_CREAT | O_RDWR | O_APPEND, 0777);
+	close(fd);
+	return (1);
+}
+
+void	get_output_redirection_file(char **args, t_all *all, t_cmd *node)
+{
+	int	i;
+
+	node->append_file = NULL;
+	node->out_file = NULL;
+	i = -1;
+	while (args[++i])
 	{
-		if (!ft_strcmp(args[i], ">") && args[i + 1] && !ft_strcmp(args[i + 1],
+		if (!ft_strcmp(args[i], ">") && args[i + 1] && ft_strcmp(args[i + 1],
 				">"))
 		{
-			i++;
-			if (!args[i + 1])
-				return (throw_error("syntax error", all, 258), NULL);
-			else
-			{
-				free(file);
-				file = check_filename(args, i, all);
-				fd = open(file, O_CREAT | O_RDWR | O_APPEND, 0777);
-				close(fd);
-			}
+			if (!is_output_red(node, all, args, i))
+				return ;
 		}
-		i++;
+		else if (!ft_strcmp(args[i], ">") && args[i + 1] && !ft_strcmp(args[i
+					+ 1], ">"))
+		{
+			i++;
+			if (!is_output_append_red(node, all, args, i))
+				return ;
+		}
 	}
-	return (file);
 }
 
 int	ft_isalpha(char c)

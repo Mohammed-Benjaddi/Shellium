@@ -1,28 +1,27 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdbool.h>
-#include <string.h>
-#include <fcntl.h>
-#include <string.h>
-#include <signal.h>
-#include <errno.h>
-#include <dirent.h>
+# include <dirent.h>
+# include <errno.h>
+# include <fcntl.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <signal.h>
+# include <stdbool.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <unistd.h>
 
-#define SINGLE_QUOTE '\''
-#define DOUBLE_QUOTE '\"'
-#define PIPE '|'
-#define SPACE ' '
-#define IN_RED '<'
-#define OUT_RED '>'
-#define VAR_SIGN '$'
-#define SLASH '/'
-#define BACK_SLASH '\\'
+# define SINGLE_QUOTE '\''
+# define DOUBLE_QUOTE '\"'
+# define PIPE '|'
+# define SPACE ' '
+# define IN_RED '<'
+# define OUT_RED '>'
+# define VAR_SIGN '$'
+# define SLASH '/'
+# define BACK_SLASH '\\'
 
 # define NC "\e[0m"
 # define YELLOW "\e[1;33m"
@@ -32,159 +31,153 @@
 # define BLUE "\x1b[34m"
 # define MAGENTA "\x1b[35m"
 # define WHITE "\x1b[37m"
-typedef struct s_command_line {
-  char *cmd;        // The command name (e.g., "echo", "ls")
-  char *full_path;  // The full path to the command (e.g., "/bin/echo", "/bin
-  char **args;      // Array of arguments including the command
-  int  arg_count; // Number of arguments
-  char *in_file; // For input redirection (<)
-  char *out_file; // For output redirection (>)
-  char *append_file; // For append redirection (>>)
-  // char *append_from_file; // For append redirection (>>)
-  char **heredoc_delimiter; // For heredoc (<<)
-  char *heredoc_content; // Content of heredoc
-  int   pipe; // 1 if this command pipes to next, 0 otherwise
-  struct s_command_line *next; // Pointer to next command in pipeline
-  bool cmd_not_found;
-  char *varibale;
-  bool is_red_to_var;
-} t_cmd;
+typedef struct s_command_line
+{
+	char *cmd;         
+	char *full_path;   
+	char **args;       
+	int arg_count;     
+	char *in_file;     
+	char *out_file;    
+	char *append_file; 
+	char **heredoc_delimiter;    
+	char *heredoc_content;       
+	int pipe;                    
+	struct s_command_line *next; 
+	bool			cmd_not_found;
+	char			*varibale;
+	bool			is_red_to_var;
+}					t_cmd;
 
 typedef struct s_lexer
 {
-  int i;
-  int j;
-  char *buffer;
-  int pipe_idx;
-  int words;
-  char **args;
-  int length;
-  int pipe;
-} t_lexer;
+	int				i;
+	int				j;
+	char			*buffer;
+	int				pipe_idx;
+	int				words;
+	char			**args;
+	int				length;
+	int				pipe;
+}					t_lexer;
 
 typedef struct s_vars
 {
-  char **envpp;
-  int	pr_fd;
-	pid_t	*pids;
-  
-} t_vars;
+	char			**envpp;
+	int				pr_fd;
+	pid_t			*pids;
 
-typedef struct s_env{
-  char *variable;
-  char *value;
-  struct s_env *next;
-  struct s_env *prev;
-} t_env;
+}					t_vars;
 
-typedef struct s_exp{
-  char *variable;
-  char *value;
-  struct s_exp *prev;
-  struct s_exp *next;
-} t_exp;
+typedef struct s_env
+{
+	char			*variable;
+	char			*value;
+	struct s_env	*next;
+	struct s_env	*prev;
+}					t_env;
+
+typedef struct s_exp
+{
+	char			*variable;
+	char			*value;
+	struct s_exp	*prev;
+	struct s_exp	*next;
+}					t_exp;
 
 typedef struct s_all
 {
-  t_cmd    *cmd; // our parsing struct
-  t_env      *env; // environment variables list
-  t_exp     *exp; // exported variables list
-  int     nums_of_cmds;
-  int        pipes_num;
-  t_vars    *_vars;
-  bool error;
-  int exit_status;
-} t_all;
+	t_cmd *cmd;
+	t_env *env;
+	t_exp *exp;
+	int				nums_of_cmds;
+	int				pipes_num;
+	t_vars			*_vars;
+	bool			error;
+	int				exit_status;
+}					t_all;
 
 typedef struct s_fix_cmd
 {
-  int		i;
-	int		j;
-	int		k;
-	char	*line;
-	char	quote;
-	int		reds_nums;
-} t_fix_cmd;
+	int				i;
+	int				j;
+	int				k;
+	char			*line;
+	char			quote;
+	int				reds_nums;
+}					t_fix_cmd;
 
-
-void check_leaks();
-
-
+void				check_leaks(void);
 
 // libc functions
-char *ft_strdup(char *str);
-char	*ft_strjoin(char   *s1, char   *s2);
-int ft_strlen(char *str);
-char	*ft_substr(char *s, int start, int len);
-size_t	ft_strlcpy(char *dst,   char *src, int dstsize);
-char    **ft_split(char   *s, char c);
-int ft_strcmp(char *s1, char *s2);
-int ft_isalpha(char c);
-int ft_strchr(char *str, char c);
-int ft_strchr_pro(char *str, char c1, char c2);
-int ft_isspace(char c);
-char *ft_strndup(char *str, int n);
-char	*ft_itoa(int n);
-// ft_list.c
-t_cmd	*ft_lstnew(t_all **all, char **args, int args_nbr, int pipe);
-void	ft_lstadd_back(t_cmd **lst, t_cmd *new);
-// void  ft_init(t_shell *shell);
-void    ft_lstclear(t_cmd **lst);
-// ft_lexer.c
-int ft_lexer(char *command, t_all **all);
-bool is_symbol(char c);
-void skip_str_inside_quote(char *cmd, int *i, char c);
-char *fix_cmd(char *cmd, t_all *all);
-bool no_herdoc_delemiter(char *cmd, int i);
-// utils_1.c
-void throw_error(char *msg, t_all *all, int exit_status);
-int find_pipe_index(char *str);
-int args_counter(char *str, int len);
-void ft_free(char **args, int len);
-void print_list(t_cmd *head);
-char *find_and_remove(char *str, char c);
-int skip_reds(char *str, int *i, char c, t_all *all);
-int get_vars_length(char *str);
-char *get_var_value(char *str, t_env *env);
-// cmd_infos.c
-char *get_path(char *cmd, t_env *env);
-char *get_input_redirection_file(char **args, t_all *all);
-char *get_output_redirection_file(char **args, t_all *all);
-char **get_herdoc_delimiter(char **args, t_all *all);
-int get_arr_len(char **arr);
-// char *get_herdoc_delimiter(char **args);
-// char *get_append_from_file(char **args);
-char *get_append_to_file(char **args, t_all *all);
-// char *handle_variables(char *str, t_env *env, int length);
-// executables.c
-int	ft_isalnum(int c);
-char *get_executable(char *cmd);
-char *handle_variables(char *str, t_env *env, t_all *all);
-void skip_spaces(char *cmd, int *i);
-// char *fix_file_name(char *p_file);
-// char *handle_variables(char *str, t_env *env, int length, t_all *all);
-char *ft_strtok(char *str);
-bool correct_path(char *path, char *cmd, bool is_path);
-int nums_of_chars(char *str, char c);
-char *get_str_in_quotes(char *command, int *i, char c, t_all *all);
-char *get_str_without_quotes(char *command, int *i);
-bool is_pipe_after(char *str);
-int create_cmd(t_all **all, char **args, int words, int is_pipe);
-char **allocate_args(char *command, int *pipe_idx, int *words, int i);
-char **ft_args_dup(char **args, t_all *all);
-void handle_var_as_cmd(char **result, char *arg, int *j, t_all *all);
-char *catch_arg(char *arg, t_all *all);
-int is_redirection(char *str, char *next);
-int count_valid_args(char **args);
-char	*check_filename(char **args, int i, t_all *all);
-char	*fix_cmd(char *cmd, t_all *all);
-int	count_commands(t_cmd *cmd);
-bool	is_correct_cmd(char *cmd, t_all *all);
-int	reds_counter(char *cmd, t_all *all);
-bool	is_incorrect_cmd(char *cmd, int *pipe, t_all *all);
-int	find_len(char *str);
+char				*ft_strdup(char *str);
+char				*ft_strjoin(char *s1, char *s2);
+int					ft_strlen(char *str);
+char				*ft_substr(char *s, int start, int len);
+size_t				ft_strlcpy(char *dst, char *src, int dstsize);
+char				**ft_split(char *s, char c);
+int					ft_strcmp(char *s1, char *s2);
+int					ft_isalpha(char c);
+int					ft_strchr(char *str, char c);
+int					ft_strchr_pro(char *str, char c1, char c2);
+int					ft_isspace(char c);
+char				*ft_strndup(char *str, int n);
+char				*ft_itoa(int n);
+t_cmd				*ft_lstnew(t_all **all, char **args, int args_nbr,
+						int pipe);
+void				ft_lstadd_back(t_cmd **lst, t_cmd *new);
+void				ft_lstclear(t_cmd **lst);
+int					ft_lexer(char *command, t_all **all);
+bool				is_symbol(char c);
+void				skip_str_inside_quote(char *cmd, int *i, char c);
+char				*fix_cmd(char *cmd, t_all *all);
+bool				no_herdoc_delemiter(char *cmd, int i);
+void				throw_error(char *msg, t_all *all, int exit_status);
+int					find_pipe_index(char *str);
+int					args_counter(char *str, int len);
+void				ft_free(char **args, int len);
+void				print_list(t_cmd *head);
+char				*find_and_remove(char *str, char c);
+int					skip_reds(char *str, int *i, char c, t_all *all);
+int					get_vars_length(char *str);
+char				*get_var_value(char *str, t_env *env);
+char				*get_path(char *cmd, t_env *env);
+char				*get_input_redirection_file(char **args, t_all *all);
+void				get_output_redirection_file(char **args, t_all *all,
+						t_cmd *node);
+char				**get_herdoc_delimiter(char **args, t_all *all);
+int					get_arr_len(char **arr);
+int					ft_isalnum(int c);
+char				*get_executable(char *cmd);
+char				*handle_variables(char *str, t_env *env, t_all *all);
+void				skip_spaces(char *cmd, int *i);
+char				*ft_strtok(char *str);
+bool				correct_path(char *path, char *cmd, bool is_path);
+int					nums_of_chars(char *str, char c);
+char				*get_str_in_quotes(char *command, int *i, char c,
+						t_all *all);
+char				*get_str_without_quotes(char *command, int *i);
+bool				is_pipe_after(char *str);
+int					create_cmd(t_all **all, char **args, int words,
+						int is_pipe);
+char				**allocate_args(char *command, int *pipe_idx, int *words,
+						int i);
+char				**ft_args_dup(char **args, t_all *all);
+void				handle_var_as_cmd(char **result, char *arg, int *j,
+						t_all *all);
+char				*catch_arg(char *arg, t_all *all);
+int					is_redirection(char *str, char *next);
+int					count_valid_args(char **args);
+char				*check_filename(char **args, int i, t_all *all);
+char				*fix_cmd(char *cmd, t_all *all);
+int					count_commands(t_cmd *cmd);
+bool				is_correct_cmd(char *cmd, t_all *all);
+int					reds_counter(char *cmd, t_all *all);
+bool				is_incorrect_cmd(char *cmd, int *pipe, t_all *all);
+int					find_len(char *str);
 
 // ----------------------------------------------
+void    set_sigs();
 t_env   *new_env_(t_exp *exp);
 t_env   *new_empty_env(t_all *all);
 int     handle_exit(t_all *all);
@@ -205,7 +198,7 @@ void    unset_exp_list(t_all *all, char *var);
 void    mirroring_exp_and_env(t_all *all);
 t_exp   *exp_getlast(t_exp *exp);
 void    *shell_calloc(size_t size , int count);
-void    ft_error(t_all *all);
+void    ft_error(t_all *all, int child);
 void    mirroring_env_and_exp(t_all *all);
 void    heredoc_pipe(t_all *all);
 void    redirect_in_out_to_pipe(int index, int pipe[],int *pr_fd, t_all *all);

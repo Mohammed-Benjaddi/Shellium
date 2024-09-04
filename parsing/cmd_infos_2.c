@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:35:38 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/03 17:31:22 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:32:25 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,11 @@ char	*get_delimiter(char *arg)
 
 	buffer = find_and_remove(ft_strdup(arg), DOUBLE_QUOTE);
 	buffer = find_and_remove(buffer, SINGLE_QUOTE);
-	if(ft_strlen(buffer) == 0)
-		return NULL;
+	if (buffer[0] == '\0')
+	{
+		free(buffer);
+		buffer = ft_strdup("\0");
+	}
 	return (buffer);
 }
 

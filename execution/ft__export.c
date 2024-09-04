@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft__export.c                                       :+:      :+:    :+:   */
+/*   ft__export.c                                        :+:      :+:    :+:  */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ael-krid <ael-krid@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/09/03 23:36:51 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/08/16 14:54:50 by ael-krid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	add_it_to_env(t_all *all, char *new, t_exp *new_exp)
 	if (new_env == NULL)
 	{
 		free(new);
-		ft_error(all);
+		ft_error(all, 0);
 	}
 	free(new);
 	if (all->env == NULL)

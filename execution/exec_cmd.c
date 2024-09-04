@@ -22,13 +22,9 @@ void	executing_commands(t_all *all, int *pipe_sides, char **envpp)
 	if (all->cmd->cmd_not_found)
 	{
 		ft_write("minishell: command not found\n", 2);
-		ft_error(all);
+		ft_error(all, 1);
 	}
-	if (match_word(all->cmd->cmd, "exit"))
-	{
-		handle_exit(all);
-		exit(0);
-	}
+	write(2, ">>executing<<\n", 14);
 	if (execve(all->cmd->full_path, all->cmd->args, envpp) == -1)
 		ft_write(strerror(errno), 2);
 	if (errno == 13 || errno == 2)

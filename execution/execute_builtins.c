@@ -33,7 +33,7 @@ void	free_and_exit(t_all *all, int exit_)
 int	check_exit_args(int exit_num, t_all *all)
 {
 	if (exit_num == -1 && (all->cmd->args[1][0] != '-'
-			|| all->cmd->args[1][1] != '1'))
+		|| all->cmd->args[1][1] != '1'))
 	{
 		ft_write("minishell: numeric argument required\n", 2);
 		all->exit_status = 255;

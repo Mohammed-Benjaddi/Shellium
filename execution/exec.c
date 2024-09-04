@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 14:54:34 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/09/03 22:43:54 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/08/30 11:09:54 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,17 @@ void	close_pipe_sides(int pipe_sides[2])
 	close(pipe_sides[0]);
 }
 
-void	execution_loop(t_vars *vars, int i, t_all *all, t_cmd *cmd)
+int	execution_loop(t_vars *vars, int i, t_all *all, t_cmd *cmd)
 {
 	int	pipe_sides[2];
 	int	pr_fd;
 
 	if (pipe(pipe_sides) < 0)
-		ft_error(all);
+		ft_error(all, 0);
 	vars->pids[i] = fork();
 	if (vars->pids[i] < 0)
-		ft_error(all);
-	signal(SIGINT, handle_sigs);
-	signal(SIGQUIT, handle_sigs);
+		return (ft_error(all, 0), 0);
+	set_sigs();
 	if (vars->pids[i] == 0)
 	{
 		close(pipe_sides[0]);
@@ -59,9 +58,10 @@ void	execution_loop(t_vars *vars, int i, t_all *all, t_cmd *cmd)
 		close(pr_fd);
 	pr_fd = dup(pipe_sides[0]);
 	if (pr_fd < 0)
-		ft_error(all);
+		ft_error(all, 0);
 	vars->pr_fd = pr_fd;
 	close_pipe_sides(pipe_sides);
+	return (1);
 }
 
 t_vars	*set_envp_pids(t_all *all, char **env)
@@ -70,11 +70,11 @@ t_vars	*set_envp_pids(t_all *all, char **env)
 
 	vars = (t_vars *)malloc(sizeof(t_vars));
 	if (!vars)
-		ft_error(all);
+		ft_error(all, 0);
 	vars->envpp = env;
 	vars->pids = (pid_t *)malloc(sizeof(pid_t) * all->nums_of_cmds);
 	if (!vars->pids)
-		ft_error(all);
+		ft_error(all, 0);
 	all->_vars = vars;
 	return (vars);
 }
@@ -96,7 +96,8 @@ void	execution(t_all **alll, char *envpp[])
 		exec_built_ins(all);
 	while (i < all->nums_of_cmds)
 	{
-		execution_loop(vars, i, all, all->cmd);
+		if (!execution_loop(vars, i, all, all->cmd))
+			break ;
 		i++;
 		all->cmd = all->cmd->next;
 	}

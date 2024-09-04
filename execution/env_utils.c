@@ -26,7 +26,7 @@ t_env	*env_new(char *new_line)
 		new->value = NULL;
 	else
 	{
-		new->value = strdup(new_line + index);
+		new->value = ft_strdup(new_line + index);
 	}
 	new->next = NULL;
 	new->prev = NULL;

@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 20:19:17 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/03 23:48:47 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:33:13 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	skip_reds(char *str, int *i, char c, t_all *all)
 {
-	int		counter;
-	int		len;
+	int	counter;
+	int	len;
 
 	counter = 0;
 	len = ft_strlen(str);
@@ -42,7 +42,7 @@ int	skip_reds(char *str, int *i, char c, t_all *all)
 int	count_len(char *str, int *i, int *length, int str_len)
 {
 	if (*i < str_len && str[*i] == VAR_SIGN && (*i == 0 || (*i > 0 && str[*i
-				- 1] != BACK_SLASH)))
+					- 1] != BACK_SLASH)))
 	{
 		while (*i < str_len && str[*i] != DOUBLE_QUOTE && str[*i] != PIPE)
 		{

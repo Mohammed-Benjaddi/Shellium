@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 22:25:32 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/03 23:48:22 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:34:31 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	handle_s_d_quotes(t_fix_cmd *vars, char *cmd)
 	while (vars->i < ft_strlen(cmd) && cmd[vars->i] != vars->quote)
 		vars->line[vars->j++] = cmd[vars->i++];
 	if (vars->i - vars->k == 1 && cmd[vars->i + 1] == SPACE && cmd[vars->k
-		- 1] == SPACE)
+			- 1] == SPACE)
 		vars->line[vars->j++] = ' ';
 }
 
@@ -49,10 +49,10 @@ char	*fix_cmd(char *cmd, t_all *all)
 			handle_s_d_quotes(&vars, cmd);
 		else if (((cmd[vars.i] == IN_RED || cmd[vars.i] == OUT_RED
 					|| cmd[vars.i] == PIPE) && (vars.i > 0 && (cmd[vars.i
-						- 1] != IN_RED || cmd[vars.i - 1] != OUT_RED))))
+							- 1] != IN_RED || cmd[vars.i - 1] != OUT_RED))))
 			vars.line[vars.j++] = ' ';
 		else if (vars.i > 0 && (cmd[vars.i - 1] == IN_RED || cmd[vars.i
-				- 1] == OUT_RED) && cmd[vars.i] != SPACE)
+					- 1] == OUT_RED) && cmd[vars.i] != SPACE)
 			vars.line[vars.j++] = ' ';
 		vars.line[vars.j++] = cmd[vars.i++];
 	}

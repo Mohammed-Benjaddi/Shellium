@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:41:52 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/03 16:59:09 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:31:48 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ t_cmd	*ft_lstnew(t_all **all, char **args, int args_nbr, int pipe)
 	new_node->arg_count = args_nbr;
 	new_node->args = ft_args_dup(args, *all);
 	new_node->in_file = get_input_redirection_file(args, *all);
-	new_node->out_file = get_output_redirection_file(args, *all);
-	new_node->append_file = get_append_to_file(args, *all);
+	get_output_redirection_file(args, *all, new_node);
 	new_node->heredoc_delimiter = get_herdoc_delimiter(args, *all);
 	new_node->heredoc_content = NULL;
 	new_node->pipe = pipe;

@@ -32,7 +32,7 @@ void	read_heredoc_input(int *pipefd, t_cmd *cmd, t_all *all)
 	{
 		buffer = (char *)shell_calloc(sizeof(char), 1001);
 		if (!buffer)
-			ft_error(all);
+			ft_error(all, 1);
 		buffer[1000] = 0;
 		read_ret = read(pipefd[0], buffer, 1000);
 		cmd->heredoc_content = ft_strjoin(cmd->heredoc_content, buffer);
@@ -49,10 +49,10 @@ void	heredoc_ing(t_cmd *cmd, t_all *all)
 
 	read_ret = 1;
 	if (pipe(pipefd) == -1)
-		ft_error(all);
+		ft_error(all, 1);
 	pid = fork();
 	if (pid < 0)
-		ft_error(all);
+		ft_error(all, 1);
 	if (pid == 0)
 		heredoc_child(pipefd, cmd, all);
 	else

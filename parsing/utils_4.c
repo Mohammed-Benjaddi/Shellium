@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 20:22:26 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/02 20:23:10 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:33:48 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,27 +70,27 @@ bool	is_pipe_after(char *str)
 	return (false);
 }
 
-// bool	no_herdoc_delemiter(char *cmd, int i)
-// {
-// 	if (!cmd)
-// 		false;
-// 	while (i >= 0)
-// 	{
-// 		if (cmd[i] == SINGLE_QUOTE || cmd[i] == DOUBLE_QUOTE)
-// 		{
-// 			i--;
-// 			while (i >= 0 && cmd[i] != cmd[i + 1])
-// 				i--;
-// 		}
-// 		if (i >= 0 && cmd[i] == PIPE)
-// 			return (true);
-// 		else if (cmd[i] == '<')
-// 		{
-// 			i--;
-// 			if (i >= 1 && cmd[i] == SPACE && cmd[i - 1] == '<')
-// 				return (false);
-// 		}
-// 		i--;
-// 	}
-// 	return (true);
-// }
+bool	no_herdoc_delemiter(char *cmd, int i)
+{
+	if (!cmd)
+		return (false);
+	while (i >= 0)
+	{
+		if (cmd[i] == SINGLE_QUOTE || cmd[i] == DOUBLE_QUOTE)
+		{
+			i--;
+			while (i >= 0 && cmd[i] != cmd[i + 1])
+				i--;
+		}
+		if (i >= 0 && cmd[i] == PIPE)
+			return (true);
+		else if (cmd[i] == '<')
+		{
+			i--;
+			if (i >= 1 && cmd[i] == SPACE && cmd[i - 1] == '<')
+				return (false);
+		}
+		i--;
+	}
+	return (true);
+}

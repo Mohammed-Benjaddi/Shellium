@@ -36,10 +36,12 @@ int	__unset_exp(t_all *all, t_exp *last, int ret, char *tmp_str)
 
 void	parse_indetifier(t_all *all, char *str)
 {
+	int		i;
 	int		ret;
 	t_exp	*last;
 	char	*tmp_str;
 
+	i = 0;
 	tmp_str = ft_strdup(str);
 	ret = check_before_env(str);
 	if (ret == 0)

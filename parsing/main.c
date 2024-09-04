@@ -6,7 +6,7 @@
 /*   By: mben-jad <mben-jad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 20:17:09 by mben-jad          #+#    #+#             */
-/*   Updated: 2024/09/03 23:29:30 by mben-jad         ###   ########.fr       */
+/*   Updated: 2024/09/04 15:19:41 by mben-jad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ void	print_list(t_cmd *head)
 	{
 		i = 0;
 		printf("%s --> ", head->cmd);
-		while (head->args[i])
+		while (head->heredoc_delimiter[i])
 		{
-			printf("%s{ %s } %s", YELLOW, head->args[i], NC);
+			printf("%s{ %s } %s", YELLOW, head->heredoc_delimiter[i], NC);
 			i++;
 		}
 		printf("%s %s %s", CYAN, head->full_path, NC);
@@ -93,8 +93,8 @@ int	main(int ac, char **av, char **env)
 	t_all	*all;
 	char	*read;
 
-	(void) av;
-	(void) ac;
+	(void)av;
+	(void)ac;
 	all = malloc(sizeof(t_all));
 	all->cmd = NULL;
 	shell_init(all, env);
@@ -118,7 +118,7 @@ int	main(int ac, char **av, char **env)
 		}
 		else
 			free(read);
-		// system("leaks -q minishell");
+		system("leaks -q minishell");
 	}
 	return (0);
 }
