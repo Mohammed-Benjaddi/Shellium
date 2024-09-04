@@ -29,7 +29,7 @@ void	shell_init(t_all *all, char **env)
 void	print_list(t_cmd *head)
 {
 	int	i;
-		int i;
+	int	i;
 
 	i = 0;
 	if (!head)

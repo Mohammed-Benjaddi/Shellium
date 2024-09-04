@@ -43,7 +43,7 @@ int	skip_reds(char *str, int *i, char c, t_all *all)
 int	count_len(char *str, int *i, int *length, int str_len)
 {
 	if (*i < str_len && str[*i] == VAR_SIGN && (*i == 0 || (*i > 0 && str[*i
-					- 1] != BACK_SLASH)))
+				- 1] != BACK_SLASH)))
 	{
 		while (*i < str_len && str[*i] != DOUBLE_QUOTE && str[*i] != PIPE)
 		{
